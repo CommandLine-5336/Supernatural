@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
+
 import os
 import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myapp.settings')
+    # start the application with default port
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "myapp.settings")
     try:
+        # pylint: disable=import-outside-toplevel
         from django.core.management import execute_from_command_line
     except ImportError as exc:
         raise ImportError(
@@ -16,11 +19,11 @@ def main():
         ) from exc
 
     if len(sys.argv) == 2 and sys.argv[1] == "runserver":
-        port = os.getenv('DJANGO_PORT', '4242')
+        port = os.getenv("DJANGO_PORT", "4242")
         sys.argv.append(f"0.0.0.0:{port}")
 
     execute_from_command_line(sys.argv)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

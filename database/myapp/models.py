@@ -1,6 +1,9 @@
+"""Models for database"""
 from django.db import models
 
+
 class User(models.Model):
+    """Users table"""
     name = models.CharField(max_length=100)
     alias = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -17,6 +20,7 @@ class User(models.Model):
 
 
 class Post(models.Model):
+    """Posts table"""
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     latitude = models.CharField(max_length=100)
@@ -31,8 +35,8 @@ class Post(models.Model):
         return f"{self.name}"
 
 
-
 class Report(models.Model):
+    """Reports table"""
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -46,6 +50,7 @@ class Report(models.Model):
 
 
 class Federal(models.Model):
+    """Federals table"""
     ip_address = models.GenericIPAddressField()
 
     class Meta:

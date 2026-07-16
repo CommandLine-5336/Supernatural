@@ -8,14 +8,15 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Prevent Python from buffering stdout/stderr so logs appear immediately.
 ENV PYTHONUNBUFFERED=1
 
+# hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     default-libmysqlclient-dev \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-# Donwloading uv and ignoring logs and warnings
-RUN pip install --quiet --root-user-action=ignore uv
+# Downloading uv and ignoring logs and warnings
+RUN pip install --no-cache-dir --quiet --root-user-action=ignore uv==0.5.21
 # Use copy mode since the cache and build filesystem are on different volumes.
 ENV UV_LINK_MODE=copy
 
@@ -37,7 +38,7 @@ ENV PYTHONUNBUFFERED=1
 # Activate the virtual environment copied from the build stage.
 ENV PATH="/app/.venv/bin:$PATH"
 
-
+# hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libmariadb3 \
     && rm -rf /var/lib/apt/lists/*

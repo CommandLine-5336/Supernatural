@@ -1,6 +1,6 @@
-# Database for upernatural
+# Database for Supernatural
 
-## Decription
+## Description
 Sets up database service for Supernatural with Docker. Creates database with a user, migrates models from Django application into created database.
 
 ## Steps
