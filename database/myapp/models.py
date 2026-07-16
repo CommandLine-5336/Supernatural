@@ -1,10 +1,13 @@
 """Models for database"""
+
 from django.db import models
 
 # pylint: disable=too-few-public-methods
 
+
 class User(models.Model):
     """Users table"""
+
     name = models.CharField(max_length=100)
     alias = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -13,6 +16,7 @@ class User(models.Model):
 
     class Meta:
         """Meta for Users"""
+
         db_table = "users"
         verbose_name = "User"
         app_label = "myapp"
@@ -23,6 +27,7 @@ class User(models.Model):
 
 class Post(models.Model):
     """Posts table"""
+
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     latitude = models.CharField(max_length=100)
@@ -30,6 +35,7 @@ class Post(models.Model):
 
     class Meta:
         """Meta for Posts"""
+
         db_table = "posts"
         verbose_name = "Post"
         app_label = "myapp"
@@ -40,11 +46,13 @@ class Post(models.Model):
 
 class Report(models.Model):
     """Reports table"""
+
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         """Meta for Reports"""
+
         db_table = "reports"
         verbose_name = "Report"
         app_label = "myapp"
@@ -55,10 +63,12 @@ class Report(models.Model):
 
 class Federal(models.Model):
     """Federals table"""
+
     ip_address = models.GenericIPAddressField()
 
     class Meta:
         """Meta for Federals"""
+
         db_table = "federals"
         verbose_name = "Federal"
         app_label = "myapp"

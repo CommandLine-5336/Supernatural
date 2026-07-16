@@ -6,6 +6,7 @@ import sys
 
 
 def main():
+    """Run administrative tasks, starting the app on the default port."""
     # start the application with default port
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "myapp.settings")
     try:
