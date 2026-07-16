@@ -1,4 +1,4 @@
-module github.com/CommandLine-5336/Supernatural
+module github.com/CommandLine-5336/Supernatural/cleanup
 
 go 1.26.5
 
