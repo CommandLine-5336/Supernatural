@@ -1,6 +1,7 @@
 """Models for database"""
 from django.db import models
 
+# pylint: disable=too-few-public-methods
 
 class User(models.Model):
     """Users table"""
@@ -11,6 +12,7 @@ class User(models.Model):
     status = models.CharField(max_length=100)
 
     class Meta:
+        """Meta for Users"""
         db_table = "users"
         verbose_name = "User"
         app_label = "myapp"
@@ -27,6 +29,7 @@ class Post(models.Model):
     longitude = models.CharField(max_length=100)
 
     class Meta:
+        """Meta for Posts"""
         db_table = "posts"
         verbose_name = "Post"
         app_label = "myapp"
@@ -41,6 +44,7 @@ class Report(models.Model):
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
+        """Meta for Reports"""
         db_table = "reports"
         verbose_name = "Report"
         app_label = "myapp"
@@ -54,6 +58,7 @@ class Federal(models.Model):
     ip_address = models.GenericIPAddressField()
 
     class Meta:
+        """Meta for Federals"""
         db_table = "federals"
         verbose_name = "Federal"
         app_label = "myapp"
