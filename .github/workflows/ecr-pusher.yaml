@@ -1,0 +1,44 @@
+---
+name: Build & Push Docker Images into ECR
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build-tag-push-image:
+    runs-on: ubuntu-latest
+
+
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+            aws-region: us-east-1
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Login into ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Automatic Tagging of Releases
+        id: increment-git-tag
+        run: |
+            bash ./.github/build/tag_bilder.sh -v major
+
+      - name: Build, Tag and Push Image to ECR
+        id: build-image
+        working-directory: ./action_test
+
+        env:
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            ECR_REPOSITORY: supernatural
+            IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
