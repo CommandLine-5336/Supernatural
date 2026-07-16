@@ -26,11 +26,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Automatic Tagging of Releases
-        id: increment-git-tag
-        run: |
-            bash ./.github/build/tag_bilder.sh -v major
-
       - name: Build, Tag and Push Image to ECR
         id: build-image
         working-directory: ./action_test
