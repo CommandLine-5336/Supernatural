@@ -1,0 +1,22 @@
+info:
+  name: logout
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: http://127.0.0.1:8080/logout?username=johndoe
+  headers:
+    - name: X-CSRF-Token
+      value: ""
+  params:
+    - name: username
+      value: johndoe
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
