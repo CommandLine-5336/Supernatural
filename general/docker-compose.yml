@@ -1,5 +1,5 @@
 services:
-  db:
+  database:
     image: mysql:8.0
     restart: always
     env_file:
@@ -20,7 +20,7 @@ services:
       start_period: 30s
       timeout: 10s
 
-  web:
+  general:
     build: .
     command: >
       sh -c "python manage.py makemigrations myapp &&
@@ -30,7 +30,7 @@ services:
       - .:/app
       - /app/.venv
     ports:
-      - "4242:4242"
+      - "4040:4040"
     depends_on:
       db:
         condition: service_healthy

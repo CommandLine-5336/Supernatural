@@ -20,7 +20,7 @@ def main():
         ) from exc
 
     if len(sys.argv) == 2 and sys.argv[1] == "runserver":
-        port = os.getenv("DJANGO_PORT", "4242")
+        port = os.getenv("DJANGO_PORT", "4040")
         sys.argv.append(f"0.0.0.0:{port}")
 
     execute_from_command_line(sys.argv)

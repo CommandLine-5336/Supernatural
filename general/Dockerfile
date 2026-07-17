@@ -49,7 +49,7 @@ WORKDIR /app
 COPY --from=builder /app/.venv /app/.venv
 COPY . .
 
-EXPOSE 4242
+EXPOSE 4040
 
 # Run Gunicorn as the production WSGI server.
-CMD ["gunicorn", "myapp.wsgi:application", "--bind", "0.0.0.0:4242"]
+CMD ["gunicorn", "myapp.wsgi:application", "--bind", "0.0.0.0:4040"]
