@@ -20,13 +20,12 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           dir_names: true
-          matrix: true
 
   build-tag-push-image:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dir: ${{fromJson(needs.find-out-changes.outputs.dirs)}}
+        dir: ${{ needs.find-out-changes.outputs.dirs }}
     needs:
       - find-out-changes
     steps:
