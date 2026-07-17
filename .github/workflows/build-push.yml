@@ -8,6 +8,8 @@ on:
 jobs:
   build-tag-push-image:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     strategy:
       fail-fast: false
@@ -21,6 +23,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Get changed files
         id: changed-files
@@ -55,5 +58,5 @@ jobs:
             DIR_NAME: ${{ matrix.dir }}
             TAG_PREFIX: ${{ github.ref == 'refs/heads/main' && 'dev' || 'test' }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$DIR_NAME-$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$DIR_NAME-$IMAGE_TAG
+          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$DIR_NAME-$IMAGE_TAG" .
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$DIR_NAME-$IMAGE_TAG"

@@ -17,7 +17,7 @@ Note: if you what to be unsure that image on ur device run a command:
 ```bash
 docker image ls
 ```
-* Finaly can easily run that image
+* Finally can easily run that image
 ```bash
 docker run 704427427594.dkr.ecr.us-east-1.amazonaws.com/supernatural:<image tag>
 ```
