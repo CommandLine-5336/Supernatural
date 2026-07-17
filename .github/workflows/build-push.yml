@@ -4,10 +4,6 @@ name: Build & Push Docker Images into ECR
 on:
   workflow_dispatch:
   push:
-    paths:
-      - 'action_test/**'
-      - 'action_test2/**'
-      - 'action_test3/**'
 
 jobs:
   find-out-changes:
