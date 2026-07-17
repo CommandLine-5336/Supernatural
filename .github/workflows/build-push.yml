@@ -17,7 +17,7 @@ jobs:
         dir:
           - action_test
           - action_test2
-          - action_test3
+          - action_no_existing_folder
     steps:
       - name: Checkout code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0    #checkout@v7
