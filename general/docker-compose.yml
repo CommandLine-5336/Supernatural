@@ -14,7 +14,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "db", "-u", "master", "-p${DB_PASS}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "-p${DB_PASS}"]
       interval: 10s
       retries: 5
       start_period: 30s
@@ -23,7 +23,7 @@ services:
   general:
     build: .
     command: >
-      sh -c "python manage.py makemigrations myapp &&
+      sh -c "sleep 10 && python manage.py makemigrations myapp &&
       python manage.py migrate &&
       python manage.py runserver"
     volumes:
@@ -32,7 +32,7 @@ services:
     ports:
       - "4040:4040"
     depends_on:
-      db:
+      database:
         condition: service_healthy
 
 volumes:
