@@ -1,0 +1,39 @@
+services:
+  database:
+    image: mysql:8.0
+    restart: always
+    env_file:
+      - .env
+    environment:
+        MYSQL_ROOT_PASSWORD: ${DB_PASS}
+        MYSQL_DATABASE: ${DB_NAME}
+        MYSQL_USER: ${DB_USER}
+        MYSQL_PASSWORD: ${DB_PASS}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "-p${DB_PASS}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+  general:
+    build: .
+    command: >
+      sh -c "sleep 10 && python manage.py makemigrations myapp &&
+      python manage.py migrate &&
+      python manage.py runserver"
+    volumes:
+      - .:/app
+      - /app/.venv
+    ports:
+      - "4040:4040"
+    depends_on:
+      database:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
