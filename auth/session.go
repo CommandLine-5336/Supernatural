@@ -16,7 +16,7 @@ func Authorize(r *http.Request) error {
 
 	// Get the session token from the cookie
 	st, err := r.Cookie("session_token")
-	if err != nil || st.Value == "" || st.Value == user.SessionToken {
+	if err != nil || st.Value == "" || st.Value != user.SessionToken {
 		return AuthError
 	}
 
