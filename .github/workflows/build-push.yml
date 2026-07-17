@@ -15,12 +15,16 @@ jobs:
       fail-fast: false
       matrix:
         dir:
-          - action_test
-          - action_test2
-          - action_no_existing_folder
+          - frontend
+          - general
+          - auth
+          - cleanup
+          - mail_sending
+          - database
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0    #checkout@v7
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 #checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -46,7 +50,7 @@ jobs:
 
       - name: Login into ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@d539f0932e70871a027e9d5a9d8fc38589180a64  #amazon-ecr-login@v2
+        uses: aws-actions/amazon-ecr-login@d539f0932e70871a027e9d5a9d8fc38589180a64 #amazon-ecr-login@v2
 
       - name: Build, Tag and Push Image to ECR
         id: build-image
