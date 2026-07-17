@@ -28,9 +28,13 @@ jobs:
         with:
           files: ${{ matrix.dir }}/**
 
+      - name: Force success if no file changes
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "Folder ${{ matrix.dir }} wasn't changed"
+          exit 0
 
       - name: Configure AWS Credentials
-        if: steps.changed-files.outputs.any_changed == 'true'
         uses: aws-actions/configure-aws-credentials@v6
         with:
             aws-region: us-east-1
