@@ -4,6 +4,10 @@ name: Build & Push Docker Images into ECR
 on:
   workflow_dispatch:
   push:
+    paths:
+      - 'action_test/**'
+      - 'action_test2/**'
+      - 'action_test3/**'
 
 jobs:
   build-tag-push-image:
@@ -34,6 +38,7 @@ jobs:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: supernatural
             IMAGE_TAG: ${{ github.sha }}
+            TAG_PREFIX: ${{ github.ref == 'refs/heads/main' && 'dev' || 'test' }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$IMAGE_TAG
