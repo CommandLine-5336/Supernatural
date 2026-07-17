@@ -2,21 +2,37 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
+	"os"
+	"strings"
 
 	_ "github.com/lib/pq"
 )
 
+func WriteResponseToJSON(w http.ResponseWriter, status int, payload map[string]any) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(payload)
+}
+
+func DBHealthCheck(w http.ResponseWriter, r *http.Request) {
+	if err := db.Ping(); err != nil {
+		WriteResponseToJSON(w, http.StatusServiceUnavailable, map[string]any{"status": "error"})
+		return
+	}
+	WriteResponseToJSON(w, http.StatusOK, map[string]any{"status": "ok"})
+}
+
 func eraseHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		http.Error(w, "use POST", http.StatusMethodNotAllowed)
+		WriteResponseToJSON(w, http.StatusMethodNotAllowed, map[string]any{"status": "error", "message": "use POST"})
 		return
 	}
 	rows, err := db.Query(`SELECT tablename FROM pg_tables WHERE schemaname = 'public'`)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		WriteResponseToJSON(w, http.StatusInternalServerError, map[string]any{"status": "error", "message": err.Error()})
 		return
 	}
 	defer rows.Close()
@@ -25,23 +41,37 @@ func eraseHandler(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var t string
 		if err := rows.Scan(&t); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			WriteResponseToJSON(w, http.StatusInternalServerError, map[string]any{"status": "error", "message": err.Error()})
 			return
 		}
-		tables = append(tables, t)
+		tables = append(tables, `"`+t+`"`)
 	}
 	if err := rows.Err(); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		WriteResponseToJSON(w, http.StatusInternalServerError, map[string]any{"status": "error", "message": err.Error()})
 		return
 	}
-
-	w.Write([]byte("found tables: " + fmt.Sprint(tables)))
+	if len(tables) == 0 {
+		WriteResponseToJSON(w, http.StatusOK, map[string]any{"status": "ok", "message": "No Tables Found"})
+		return
+	}
+	query := "TRUNCATE TABLE " + strings.Join(tables, ", ") + " RESTART IDENTITY CASCADE"
+	if _, err := db.Exec(query); err != nil {
+		WriteResponseToJSON(w, http.StatusInternalServerError, map[string]any{"status": "error", "message": err.Error()})
+		return
+	}
+	WriteResponseToJSON(w, http.StatusOK, map[string]any{
+		"status":           "ok",
+		"tables_truncated": tables,
+	})
 }
 
 var db *sql.DB
 
 func main() {
-	connStr := "postgres://user:password@localhost:5432/yourdb?sslmode=disable"
+	connStr := os.Getenv("DATABASE_URL")
+	if connStr == "" {
+		log.Fatal("DATABASE_URL is not set via ENV")
+	}
 
 	var err error
 	db, err = sql.Open("postgres", connStr)
@@ -49,12 +79,14 @@ func main() {
 		log.Fatalf("failed to open db: %v", err)
 	}
 	defer db.Close()
+
 	if err := db.Ping(); err != nil {
 		log.Fatalf("failed to connect to db: %v", err)
 	}
 	log.Println("connected to database")
 	mux := http.NewServeMux()
 	mux.HandleFunc("/erase", eraseHandler)
+	mux.HandleFunc("/health", DBHealthCheck)
 
 	log.Println("listening on :5000")
 	log.Fatal(http.ListenAndServe(":5000", mux))
