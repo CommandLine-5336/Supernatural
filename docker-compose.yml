@@ -1,5 +1,6 @@
 services:
   database:
+    container_name: database
     image: mysql:8.0
     restart: always
     env_file:
@@ -21,18 +22,25 @@ services:
       timeout: 10s
 
   general:
+    container_name: general
     build: ./general
     command: >
       sh -c "
         python manage.py makemigrations myapp &&
         python manage.py migrate &&
-        python manage.py runserver 0.0.0.0:4040
+        python manage.py runserver
       "
-    volumes:
-      - ./general:/app
-      - /app/.venv
     ports:
       - "4040:4040"
+    depends_on:
+      database:
+        condition: service_healthy
+  
+  auth:
+    container_name: auth
+    build: ./auth
+    ports:
+      - "8080:8080"
     depends_on:
       database:
         condition: service_healthy
