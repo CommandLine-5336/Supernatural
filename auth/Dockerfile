@@ -1,7 +1,7 @@
 # Build stage
 FROM golang:1.26.5-alpine AS build
 WORKDIR /auth
-COPY go.mod go.sum main.go utils.go ./
+COPY go.mod go.sum main.go utils.go session.go ./
 RUN go build -o main
 
 # Runtime stage
