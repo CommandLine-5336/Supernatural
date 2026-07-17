@@ -10,11 +10,28 @@ on:
       - 'action_test3/**'
 
 jobs:
+  find-out-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      dirs: ${{ steps.changed-files.outputs.all_changed_files }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v35
+        with:
+          dir_names: true
+
   build-tag-push-image:
     runs-on: ubuntu-latest
-
-
-
+    strategy:
+      matrix:
+        dir: ${{fromJson(needs.find-out-changes.outputs.dirs)}}
+    needs:
+      - find-out-changes
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -32,8 +49,7 @@ jobs:
 
       - name: Build, Tag and Push Image to ECR
         id: build-image
-        working-directory: ./action_test
-
+        working-directory: ${{ matrix.dir }}
         env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: supernatural
