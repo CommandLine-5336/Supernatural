@@ -48,7 +48,8 @@ jobs:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: supernatural
             IMAGE_TAG: ${{ github.sha }}
+            DIR_NAME: ${{ matrix.dir }}
             TAG_PREFIX: ${{ github.ref == 'refs/heads/main' && 'dev' || 'test' }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$DIR_NAME-$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$DIR_NAME-$IMAGE_TAG
