@@ -20,7 +20,7 @@ func main() {
 	http.HandleFunc("/register", register)
 	http.HandleFunc("/login", login)
 	http.HandleFunc("/logout", logout)
-	http.HandleFunc("/home", home)
+	http.HandleFunc("/protected", protected)
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -80,6 +80,15 @@ func login(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Login successful!")
 }
 
-func logout(w http.ResponseWriter, r *http.Request) {}
+func protected(w http.ResponseWriter, r *http.Request) {
+	if err := Authorize(r); err != nil {
+		status := http.StatusUnauthorized // 401
+		http.Error(w, "Unauthorized", status)
+		return
+	}
 
-func home(w http.ResponseWriter, r *http.Request) {}
+	username := r.FormValue("username")
+	fmt.Fprintf(w, "CSRF validation successful! Welcome, %s", username)
+}
+
+func logout(w http.ResponseWriter, r *http.Request) {}
