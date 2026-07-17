@@ -39,7 +39,19 @@ func register(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "User registered successfully!")
 }
 
-func login(w http.ResponseWriter, r *http.Request) {}
+func login(w http.ResponseWriter, r *http.Request) {
+	var username string = r.FormValue("username")
+	var password string = r.FormValue("password")
+
+	user, ok := users[username]
+	if !ok || !checkPasswordHash(password, user.HashedPassword) {
+		status := http.StatusUnauthorized // 401
+		http.Error(w, "Invalid username or password", status)
+		return
+	}
+
+	fmt.Fprintln(w, "Login successful!")
+}
 
 func logout(w http.ResponseWriter, r *http.Request) {}
 
