@@ -20,6 +20,7 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           dir_names: true
+          matrix: true
 
   build-tag-push-image:
     runs-on: ubuntu-latest
