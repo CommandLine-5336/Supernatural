@@ -1,0 +1,1 @@
+We need .env for ERASE_TOKEN and POST_USER POST_PASS POST_DB
