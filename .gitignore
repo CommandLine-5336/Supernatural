@@ -1,4 +1,4 @@
-# OS files
+# OS Files
 .DS_Store
 Thumbs.db
 
@@ -6,16 +6,19 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Secrets
-.env*
-
-# Environments
-venv/
-.venv/
-env/
-.env/
+# Environment and Secrets
+**/.env*
+**/venv/
+**/.venv/
+**/env/
 
 # Python
-__pycache__/
+**/__pycache__/
 *.py[cod]
 *$py.class
+
+# Local Configuration
+**/my.cnf
+
+# Git
+.git
