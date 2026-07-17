@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -14,6 +15,7 @@ type Login struct {
 var users = map[string]Login{}
 
 func main() {
+	log.Println("Server listening on :8080")
 	http.HandleFunc("/register", register)
 	http.HandleFunc("/login", login)
 	http.HandleFunc("/logout", logout)
