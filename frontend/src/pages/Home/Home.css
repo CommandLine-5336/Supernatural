@@ -11,15 +11,14 @@
   .home-frame {
     width: 100%;
     height: 100%;
-    background: #000000;
+    background: #000;
     display: flex;
     padding: 20px;
-    display: flex;
     gap: 20px;
     box-sizing: border-box;
   }
 
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     .home-frame {
       flex-direction: column;
       padding: 12px;

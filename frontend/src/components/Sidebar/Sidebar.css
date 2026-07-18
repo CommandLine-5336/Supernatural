@@ -1,3 +1,4 @@
+/* stylelint-disable selector-class-pattern */
 .sidebar {
     width: 30%;
     flex-shrink: 0;
@@ -16,7 +17,7 @@
     align-items: center;
     gap: 10px;
     padding: 10px 18px;
-    border: 1.5px solid #ffffff;
+    border: 1.5px solid #fff;
     border-radius: 999px;
     flex: 1;
     min-width: 0;
@@ -35,7 +36,7 @@
   }
    
   .sidebar__username {
-    color: #ffffff;
+    color: #fff;
     font-family: inherit;
     font-size: 16px;
     white-space: nowrap;
@@ -43,7 +44,7 @@
     text-overflow: ellipsis;
   }
 
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     .sidebar {
       width: 100%;
       height: auto;
