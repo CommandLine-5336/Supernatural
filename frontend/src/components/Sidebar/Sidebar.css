@@ -1,0 +1,52 @@
+.sidebar {
+    width: 30%;
+    flex-shrink: 0;
+    height: 100%;
+    padding-top: 4px;
+  }
+   
+  .sidebar__top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+   
+  .sidebar__user-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border: 1.5px solid #ffffff;
+    border-radius: 999px;
+    flex: 1;
+    min-width: 0;
+  }
+   
+  .sidebar__avatar {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    transform: rotate(45deg);
+  }
+   
+  .sidebar__avatar--copper {
+    background: linear-gradient(135deg, #d97757, #b55a3c);
+  }
+   
+  .sidebar__username {
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      padding-top: 0;
+    }
+  }
