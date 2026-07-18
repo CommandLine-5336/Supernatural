@@ -12,6 +12,7 @@ Sets up database service for Supernatural with Docker. Creates database with a u
 DB_NAME='supernatural_db'
 DB_USER='*'
 DB_PASS='*'
+DB_HOST='database'
 `
 - my.cnf: `[client]
 database = supernatural_db

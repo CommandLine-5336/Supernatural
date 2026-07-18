@@ -35,5 +35,25 @@ services:
       database:
         condition: service_healthy
 
+  db_backup:
+    image: selim13/automysqlbackup:latest
+    container_name: db_backup
+    env_file:
+      - .env
+    environment:
+        DBHOST : ${DB_HOST}
+        USERNAME : ${DB_USER}
+        PASSWORD : ${DB_PASS}
+        DBNAMES : ${DB_NAME}
+        CRON_SCHEDULE: "0 0 * * *"
+        EXTRA_OPTS: "--no-tablespaces"
+    volumes:
+      - ./db_backups:/backup
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   mysql_data:
+  db_backups:
