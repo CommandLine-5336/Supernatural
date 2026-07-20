@@ -2,9 +2,9 @@
   width: 42px;
   height: 42px;
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgb(255 255 255 / 12%);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgb(255 255 255 / 4%);
   color: #9ca3af;
   cursor: pointer;
   display: flex;
@@ -14,8 +14,8 @@
 }
 
 .ui-logout-btn:hover {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: rgba(239, 68, 68, 0.4);
+  background: rgb(239 68 68 / 15%);
+  border-color: rgb(239 68 68 / 40%);
   color: #f87171;
   transform: translateY(-1px);
 }
