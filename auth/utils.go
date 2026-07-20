@@ -68,7 +68,7 @@ func parseJWT(tokenString string) (string, error) {
 	}
 
 	if !token.Valid {
-		return "", fmt.Errorf("Invalid token")
+		return "", fmt.Errorf("invalid token")
 	}
 
 	return claims.Subject, nil

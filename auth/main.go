@@ -32,12 +32,12 @@ func register(w http.ResponseWriter, r *http.Request) {
 	var password string = r.FormValue("password")
 
 	if _, err := mail.ParseAddress(email); err != nil {
-		http.Error(w, "Invalid email format", http.StatusBadRequest) // 400
+		http.Error(w, "invalid email format", http.StatusBadRequest) // 400
 		return
 	}
 
 	if _, ok := users[email]; ok {
-		http.Error(w, "User already exists", http.StatusConflict) // 409
+		http.Error(w, "user already exists", http.StatusConflict) // 409
 		return
 	}
 
@@ -59,13 +59,13 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 	user, ok := users[email]
 	if !ok || !checkPasswordHash(password, user.HashedPassword) {
-		http.Error(w, "Invalid email or password", http.StatusUnauthorized) // 401
+		http.Error(w, "invalid email or password", http.StatusUnauthorized) // 401
 		return
 	}
 
 	token, err := createJWT(email)
 	if err != nil {
-		http.Error(w, "Server error", http.StatusInternalServerError) // 500
+		http.Error(w, "server error", http.StatusInternalServerError) // 500
 		return
 	}
 
@@ -82,7 +82,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 func protected(w http.ResponseWriter, r *http.Request) {
 	email, err := Authorize(r)
 	if err != nil {
-		http.Error(w, "Unauthorized", http.StatusUnauthorized) // 401
+		http.Error(w, "unauthorized", http.StatusUnauthorized) // 401
 		return
 	}
 

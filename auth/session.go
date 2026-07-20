@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-var AuthError = errors.New("Unauthorized")
+var AuthError = errors.New("unauthorized")
 
 func Authorize(r *http.Request) (string, error) {
 	cookie, err := r.Cookie("jwt")
