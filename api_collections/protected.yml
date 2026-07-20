@@ -5,13 +5,13 @@ info:
 
 http:
   method: POST
-  url: http://127.0.0.1:8080/protected?username=johndoe
+  url: http://127.0.0.1:8080/protected?email=johndoe@email.com
   headers:
     - name: X-CSRF-Token
       value: ""
   params:
-    - name: username
-      value: johndoe
+    - name: email
+      value: johndoe@email.com
       type: query
 
 settings:

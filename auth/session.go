@@ -8,8 +8,8 @@ import (
 var AuthError = errors.New("Unauthorized")
 
 func Authorize(r *http.Request) error {
-	username := r.FormValue("username")
-	user, ok := users[username]
+	email := r.FormValue("email")
+	user, ok := users[email]
 	if !ok {
 		return AuthError
 	}

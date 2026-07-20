@@ -5,10 +5,10 @@ info:
 
 http:
   method: POST
-  url: http://127.0.0.1:8080/login?username=johndoe&password=strong-password
+  url: http://127.0.0.1:8080/login?email=johndoe@email.com&password=strong-password
   params:
-    - name: username
-      value: johndoe
+    - name: email
+      value: johndoe@email.com
       type: query
     - name: password
       value: strong-password

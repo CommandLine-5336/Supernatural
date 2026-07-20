@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/mail"
 	"time"
 )
 
@@ -29,10 +30,15 @@ func main() {
 }
 
 func register(w http.ResponseWriter, r *http.Request) {
-	var username string = r.FormValue("username")
+	var email string = r.FormValue("email")
 	var password string = r.FormValue("password")
 
-	if _, ok := users[username]; ok {
+	if _, err := mail.ParseAddress(email); err != nil {
+		http.Error(w, "Invalid email format", http.StatusBadRequest)
+		return
+	}
+
+	if _, ok := users[email]; ok {
 		status := http.StatusConflict // 409
 		http.Error(w, "User already exists", status)
 		return
@@ -42,7 +48,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 
 	displayName := generateRandomName()
 
-	users[username] = User{
+	users[email] = User{
 		DisplayName:    displayName,
 		HashedPassword: hashedPassword,
 	}
@@ -51,13 +57,13 @@ func register(w http.ResponseWriter, r *http.Request) {
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
-	var username string = r.FormValue("username")
+	var email string = r.FormValue("email")
 	var password string = r.FormValue("password")
 
-	user, ok := users[username]
+	user, ok := users[email]
 	if !ok || !checkPasswordHash(password, user.HashedPassword) {
 		status := http.StatusUnauthorized // 401
-		http.Error(w, "Invalid username or password", status)
+		http.Error(w, "Invalid email or password", status)
 		return
 	}
 
@@ -83,7 +89,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	// Store tokens in the database
 	user.SessionToken = sessionToken
 	user.CSRFToken = csrfToken
-	users[username] = user
+	users[email] = user
 
 	fmt.Fprintln(w, "Login successful!")
 }
@@ -95,8 +101,8 @@ func protected(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	username := r.FormValue("username")
-	fmt.Fprintf(w, "CSRF validation successful! Welcome, %s", username)
+	email := r.FormValue("email")
+	fmt.Fprintf(w, "Welcome, %s", email)
 }
 
 func logout(w http.ResponseWriter, r *http.Request) {
@@ -122,11 +128,11 @@ func logout(w http.ResponseWriter, r *http.Request) {
 	})
 
 	// Delete tokens from the database
-	username := r.FormValue("username")
-	user, _ := users[username]
+	email := r.FormValue("email")
+	user, _ := users[email]
 	user.SessionToken = ""
 	user.CSRFToken = ""
-	users[username] = user
+	users[email] = user
 
 	fmt.Fprintln(w, "Logged out successfully!")
 }

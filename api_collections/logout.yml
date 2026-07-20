@@ -5,13 +5,13 @@ info:
 
 http:
   method: POST
-  url: http://127.0.0.1:8080/logout?username=johndoe
+  url: http://127.0.0.1:8080/logout?email=johndoe@email.com
   headers:
     - name: X-CSRF-Token
-      value: ""
+      value: SmGrvCLNNDxGxxcl-pGb09ktfFLKzaBO_jcfIZEG1hI=
   params:
-    - name: username
-      value: johndoe
+    - name: email
+      value: johndoe@email.com
       type: query
   auth: inherit
 
