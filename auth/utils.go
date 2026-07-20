@@ -2,11 +2,11 @@ package main
 
 import (
 	"crypto/rand"
-	"encoding/base64"
 	"fmt"
-	"log"
 	"math/big"
+	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -40,10 +40,36 @@ func checkPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-func generateToken(length int) string {
-	bytes := make([]byte, length)
-	if _, err := rand.Read(bytes); err != nil {
-		log.Fatalf("Failed to generate token: %v", err)
+var jwtSecret = []byte("super-secret-key-for-dev")
+
+func createJWT(email string) (string, error) {
+	claims := jwt.RegisteredClaims{
+		Subject:   email,
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 	}
-	return base64.URLEncoding.EncodeToString(bytes)
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(jwtSecret)
+}
+
+func parseJWT(tokenString string) (string, error) {
+	claims := &jwt.RegisteredClaims{}
+
+	token, err := jwt.ParseWithClaims(
+		tokenString,
+		claims,
+		func(token *jwt.Token) (interface{}, error) {
+			return jwtSecret, nil
+		},
+	)
+
+	if err != nil {
+		return "", err
+	}
+
+	if !token.Valid {
+		return "", fmt.Errorf("Invalid token")
+	}
+
+	return claims.Subject, nil
 }

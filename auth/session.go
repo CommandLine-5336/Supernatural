@@ -7,24 +7,16 @@ import (
 
 var AuthError = errors.New("Unauthorized")
 
-func Authorize(r *http.Request) error {
-	email := r.FormValue("email")
-	user, ok := users[email]
-	if !ok {
-		return AuthError
+func Authorize(r *http.Request) (string, error) {
+	cookie, err := r.Cookie("jwt")
+	if err != nil || cookie.Value == "" {
+		return "", AuthError
 	}
 
-	// Get the session token from the cookie
-	st, err := r.Cookie("session_token")
-	if err != nil || st.Value == "" || st.Value != user.SessionToken {
-		return AuthError
+	email, err := parseJWT(cookie.Value)
+	if err != nil {
+		return "", AuthError
 	}
 
-	// Get the CSRF token from the header
-	csrf := r.Header.Get("X-CSRF-Token")
-	if csrf != user.CSRFToken || csrf == "" {
-		return AuthError
-	}
-
-	return nil
+	return email, nil
 }
