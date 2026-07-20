@@ -3,3 +3,4 @@
 **/__pycache__/
 **/.env
 **/my.cnf
+**/db_backups

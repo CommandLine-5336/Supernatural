@@ -1,20 +1,19 @@
 services:
   database:
-    image: mysql:8.0
+    image: postgres:16
     restart: always
     env_file:
       - .env
     environment:
-        MYSQL_ROOT_PASSWORD: ${DB_PASS}
-        MYSQL_DATABASE: ${DB_NAME}
-        MYSQL_USER: ${DB_USER}
-        MYSQL_PASSWORD: ${DB_PASS}
+        POSTGRES_DB: ${DB_NAME}
+        POSTGRES_USER: ${DB_USER}
+        POSTGRES_PASSWORD: ${DB_PASS}
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgresql_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "-p${DB_PASS}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 10s
       retries: 5
       start_period: 30s
@@ -22,6 +21,8 @@ services:
 
   general:
     build: .
+    env_file:
+      - .env
     command: >
       sh -c "sleep 10 && python manage.py makemigrations myapp &&
       python manage.py migrate &&
@@ -35,5 +36,27 @@ services:
       database:
         condition: service_healthy
 
+  db_backup:
+    build:
+      context: .
+      dockerfile: Dockerfile.backup
+    container_name: db_backup
+    env_file:
+      - .env
+    environment:
+        POSTGRES_HOST : ${DB_HOST}
+        POSTGRES_USER : ${DB_USER}
+        POSTGRES_PASSWORD : ${DB_PASS}
+        POSTGRES_DB : ${DB_NAME}
+    volumes:
+      - ./db_backups:/db_backups
+      - ./backup.sh:/backup.sh
+    entrypoint: ["sh", "/entrypoint.sh"]
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
-  mysql_data:
+  postgresql_data:
+  db_backups:
