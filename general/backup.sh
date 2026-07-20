@@ -1,5 +1,4 @@
 #!/bin/bash
-set -uo pipefail
 
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 BACKUP_DIR="db_backups/"
