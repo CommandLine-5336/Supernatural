@@ -57,7 +57,7 @@ func TestDBHealthCheck(t *testing.T) {
 	}
 	defer db.Close()
 
-	request := httptest.NewRequest(http.MethodGet, "/health", nil)
+	request := httptest.NewRequest(http.MethodGet, "/healthdb", nil)
 	result := httptest.NewRecorder()
 
 	DBHealthCheck(result, request)

@@ -92,11 +92,11 @@ func main() {
 	log.Println("connected to database")
 	mux := http.NewServeMux()
 	mux.HandleFunc("/erase", eraseHandler)
-	mux.HandleFunc("/health", DBHealthCheck)
+	mux.HandleFunc("/healthdb", DBHealthCheck)
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "5000"
+		port = "8080"
 	}
 	log.Println("listening on port:", port)
 	log.Fatal(http.ListenAndServe(":"+port, mux))
