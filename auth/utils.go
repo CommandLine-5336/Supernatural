@@ -3,7 +3,9 @@ package main
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"fmt"
 	"log"
+	"math/big"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -11,6 +13,13 @@ import (
 func hashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 10)
 	return string(bytes), err
+}
+
+func generateRandomName() string {
+	adjIndex, _ := rand.Int(rand.Reader, big.NewInt(int64(len(adjectives))))
+	nounIndex, _ := rand.Int(rand.Reader, big.NewInt(int64(len(nouns))))
+
+	return fmt.Sprintf("%s %s", adjectives[adjIndex.Int64()], nouns[nounIndex.Int64()])
 }
 
 func checkPasswordHash(password, hash string) bool {

@@ -7,13 +7,17 @@ import (
 	"time"
 )
 
-type Login struct {
+type User struct {
+	DisplayName    string
 	HashedPassword string
 	SessionToken   string
 	CSRFToken      string
 }
 
-var users = map[string]Login{}
+var users = map[string]User{}
+
+var adjectives = []string{"Swift", "Silver", "Brave", "Golden", "Clever", "Quiet", "Bright", "Shadowy", "Wild", "Calm"}
+var nouns = []string{"Fox", "Shadow", "Eagle", "Wolf", "River", "Falcon", "Bear", "Lion", "Hawk", "Knight"}
 
 func main() {
 	log.Println("Server listening on :8080")
@@ -35,11 +39,15 @@ func register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	hashedPassword, _ := hashPassword(password)
-	users[username] = Login{
+
+	displayName := generateRandomName()
+
+	users[username] = User{
+		DisplayName:    displayName,
 		HashedPassword: hashedPassword,
 	}
 
-	fmt.Fprintln(w, "User registered successfully!")
+	fmt.Fprintf(w, "User registered successfully! Assigned Name: %s\n", displayName)
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
