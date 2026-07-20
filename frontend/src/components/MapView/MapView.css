@@ -3,7 +3,6 @@
   position: relative;
   height: 100%;
   flex: 1;
-  border-radius: 16px;
   overflow: hidden;
 }
 
@@ -15,7 +14,7 @@
 .map-view__logo {
   position: absolute;
   top: 20px;
-  left: 60px;
+  left: 20px;
   z-index: 1000;
   pointer-events: none;
 }
@@ -26,18 +25,68 @@
   height: auto; 
 }
 
+.map-zoom-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.map-zoom-controls button {
+  width: 38px;
+  height: 38px;
+  background: transparent;
+  border: none;
+  color: #f3f4f6;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.map-zoom-controls button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.map-zoom-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
 @media (width <= 768px) {
   .map-view {
     width: 100%;
-    height: 60%;
+    height: 350px;
+    flex-shrink: 0;
   }
 
   .map-view__logo img {
-    max-width: 160px;
+    max-width: 140px;
   }
   
   .map-view__logo {
     top: 12px;
     left: 16px;
+  }
+  
+  .map-zoom-controls {
+    bottom: 12px;
+    right: 12px;
+    width: 30px;
+    height: 60px;
+    align-items: center;
   }
 }
