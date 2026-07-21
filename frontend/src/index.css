@@ -1,0 +1,17 @@
+@font-face {
+  font-family: SupernaturalFont;
+  src: url('./assets/fonts/Nunito-VariableFont_wght.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  font-family: SupernaturalFont, sans-serif;
+  color: #fff;
+  overflow: hidden; 
+}

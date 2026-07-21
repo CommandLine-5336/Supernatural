@@ -40,4 +40,10 @@ terraform/state_bucket/terraform.tfvars
 **/__pycache__/
 **/.env
 **/my.cnf
+
+**/node_modules/
+**/dist/
+**/.vite/
+
+**/.DS_Store
 **/db_backups
