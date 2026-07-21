@@ -1,4 +1,4 @@
-"""Models for authentification"""
+"""Models for authentication"""
 
 from django.db import models
 

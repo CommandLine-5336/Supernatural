@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="Banned",
+            name="User",
             fields=[
                 (
                     "id",
@@ -22,11 +22,14 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("ip_address", models.GenericIPAddressField()),
+                ("alias", models.CharField(max_length=100)),
+                ("email", models.EmailField(max_length=254, unique=True)),
+                ("password", models.CharField(max_length=300)),
+                ("status", models.CharField(max_length=100)),
             ],
             options={
-                "verbose_name": "Banned",
-                "db_table": "banned",
+                "verbose_name": "User",
+                "db_table": "users",
             },
         ),
     ]

@@ -2,9 +2,10 @@
 
 from django.db import models
 
+from ..authentication.models import User
+
 # pylint: disable=too-few-public-methods
 
-from ..authentification.models import User
 
 class Post(models.Model):
     """Posts table"""
