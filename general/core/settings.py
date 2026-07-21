@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     "apps.authentication",
     "apps.main",
     "apps.posts",
-    "apps.promotion",
+    "apps.votes",
 ]
 
 MIDDLEWARE = [
