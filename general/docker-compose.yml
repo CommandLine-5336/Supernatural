@@ -1,6 +1,6 @@
 services:
   database:
-    image: postgres:16
+    image: postgres:18-alpine
     restart: always
     env_file:
       - .env
@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgresql_data:/var/lib/postgresql/data
+      - postgresql_data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 10s
@@ -24,7 +24,7 @@ services:
     env_file:
       - .env
     command: >
-      sh -c "sleep 10 && python manage.py makemigrations myapp &&
+      sh -c "sleep 10 && python manage.py makemigrations authentication main posts promotion &&
       python manage.py migrate &&
       python manage.py runserver"
     volumes:
