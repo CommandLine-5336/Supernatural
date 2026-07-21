@@ -18,4 +18,3 @@ class Banned(models.Model):
 
     def __str__(self) -> str:
         return f"{self.ip_address}"
-
