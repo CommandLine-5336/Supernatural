@@ -4,9 +4,11 @@ import (
 	"crypto/rand"
 	"fmt"
 	"math/big"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	_ "github.com/joho/godotenv/autoload"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -40,7 +42,7 @@ func checkPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-var jwtSecret = []byte("super-secret-key-for-dev")
+var jwtSecret = []byte(os.Getenv("JWT_KEY"))
 
 func createJWT(email string) (string, error) {
 	claims := jwt.RegisteredClaims{
