@@ -14,7 +14,6 @@ export default function Votes() {
   const [votes, setVotes] = useState([]);
   const [votedIds, setVotedIds] = useState(new Set());
   const [error, setError] = useState("");
-  const [me, setMe] = useState(null);
 
   const load = async () => {
     setError("");
@@ -24,7 +23,6 @@ export default function Votes() {
       const voted = Array.isArray(data?.user_voted) ? data.user_voted : [];
       setVotes(v);
       setVotedIds(new Set(voted.map((r) => r.vote)));
-      setMe(data?.me ?? null);
     } catch (err) {
       setError(err?.message || "Couldn`t get amy votes");
     }
