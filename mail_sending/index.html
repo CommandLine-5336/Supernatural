@@ -9,11 +9,11 @@
     <div style="max-width: 500px; margin: 0 auto; background-color: #1a1a1a; padding: 40px 30px; border: 1px solid #333333;">
 
         <h1 style="color: #ffffff; letter-spacing: 5px; font-weight: normal; margin-top: 0; margin-bottom: 30px; border-bottom: 1px solid #333333; padding-bottom: 20px;">
-            THE CIRCLE
+            THE <span style="text-transform: uppercase;">{{.Status}}</span> CIRCLE
         </h1>
 
         <p style="font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
-            You have been selected. <br><br>
+            {{.Alias}}, you have been selected. <br><br>
             We have been watching your progress. You are now ready to cross the threshold and access the inner archive.
         </p>
 
@@ -22,7 +22,7 @@
         </p>
 
         <div style="background-color: #000000; color: #cc0000; padding: 15px; font-size: 22px; letter-spacing: 3px; border: 1px dashed #444444; margin-bottom: 30px;">
-            PASSWORD
+            {{.SecretPswd}}
         </div>
 
         <p style="font-size: 12px; color: #555555; line-height: 1.5; margin-bottom: 0;">
