@@ -13,13 +13,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type User struct {
-	DisplayName    string
-	HashedPassword string
-}
-
-var users = map[string]User{}
-
 var db *sql.DB
 
 func main() {
@@ -86,16 +79,24 @@ func register(w http.ResponseWriter, r *http.Request) {
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
-	var user User
+	var (
+		userID       int
+		displayName  string
+		passwordHash string
+		status       string
+	)
+
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
 	err := db.QueryRow(
-		"SELECT display_name, password FROM users WHERE email=$1",
+		`SELECT id, display_name, password, status FROM users WHERE email=$1`,
 		email,
 	).Scan(
-		&user.DisplayName,
-		&user.HashedPassword,
+		&userID,
+		&displayName,
+		&passwordHash,
+		&status,
 	)
 
 	if err == sql.ErrNoRows {
@@ -103,7 +104,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if !checkPasswordHash(password, user.HashedPassword) {
+	if !checkPasswordHash(password, passwordHash) {
 		http.Error(w, "incorrect password", http.StatusUnauthorized) // 401
 		return
 	}
@@ -121,7 +122,8 @@ func login(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		Path:     "/",
 	})
-	fmt.Fprintf(w, "Login successful, %s!", user.DisplayName)
+
+	fmt.Fprintf(w, "Login successful, %s!", displayName)
 }
 
 func protected(w http.ResponseWriter, r *http.Request) {
@@ -131,7 +133,7 @@ func protected(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Welcome, %s!", users[email].DisplayName)
+	fmt.Fprintf(w, "Welcome, %s!", displayName)
 }
 
 func logout(w http.ResponseWriter, r *http.Request) {
