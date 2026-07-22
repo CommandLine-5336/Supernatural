@@ -81,12 +81,25 @@ func register(w http.ResponseWriter, r *http.Request) {
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
+	var user User
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
-	user, ok := users[email]
-	if !ok || !checkPasswordHash(password, user.HashedPassword) {
-		http.Error(w, "invalid email or password", http.StatusUnauthorized) // 401
+	err := db.QueryRow(
+		"SELECT display_name, password FROM users WHERE email=$1",
+		email,
+	).Scan(
+		&user.DisplayName,
+		&user.HashedPassword,
+	)
+
+	if err == sql.ErrNoRows {
+		http.Error(w, "no user found with the given email address", http.StatusUnauthorized) // 401
+		return
+	}
+
+	if !checkPasswordHash(password, user.HashedPassword) {
+		http.Error(w, "incorrect password", http.StatusUnauthorized) // 401
 		return
 	}
 
@@ -103,7 +116,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		Path:     "/",
 	})
-	fmt.Fprintf(w, "Login successful, %s!", users[email].DisplayName)
+	fmt.Fprintf(w, "Login successful, %s!", user.DisplayName)
 }
 
 func protected(w http.ResponseWriter, r *http.Request) {
