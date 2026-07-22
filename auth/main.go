@@ -45,8 +45,16 @@ func main() {
 }
 
 func connectDB() (*sql.DB, error) {
-	connStr := os.Getenv("DSN")
-	return sql.Open("postgres", connStr)
+	db, err := sql.Open("postgres", os.Getenv("DSN"))
+	if err != nil {
+		return nil, err
+	}
+
+	if err := db.Ping(); err != nil {
+		return nil, err
+	}
+
+	return db, nil
 }
 
 func register(w http.ResponseWriter, r *http.Request) {
