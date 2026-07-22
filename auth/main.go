@@ -53,34 +53,36 @@ func connectDB() (*sql.DB, error) {
 }
 
 func register(w http.ResponseWriter, r *http.Request) {
-	var email string = r.FormValue("email")
-	var password string = r.FormValue("password")
+	email := r.FormValue("email")
+	password := r.FormValue("password")
 
 	if _, err := mail.ParseAddress(email); err != nil {
 		http.Error(w, "invalid email format", http.StatusBadRequest) // 400
 		return
 	}
 
-	if _, ok := users[email]; ok {
-		http.Error(w, "user already exists", http.StatusConflict) // 409
-		return
-	}
-
 	hashedPassword, _ := hashPassword(password)
-
 	displayName := generateRandomName()
 
-	users[email] = User{
-		DisplayName:    displayName,
-		HashedPassword: hashedPassword,
+	_, err := db.Exec(
+		"INSERT INTO users (display_name, email, password, status) VALUES ($1, $2, $3, $4)",
+		displayName,
+		email,
+		hashedPassword,
+		"Copper",
+	)
+
+	if err != nil {
+		http.Error(w, "user already exists", http.StatusConflict) // 409
+		return
 	}
 
 	fmt.Fprintf(w, "Registration successful! Assigned Name: %s", displayName)
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
-	var email string = r.FormValue("email")
-	var password string = r.FormValue("password")
+	email := r.FormValue("email")
+	password := r.FormValue("password")
 
 	user, ok := users[email]
 	if !ok || !checkPasswordHash(password, user.HashedPassword) {
