@@ -126,6 +126,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		Name:     "jwt",
 		Value:    token,
 		Expires:  time.Now().Add(24 * time.Hour),
+		SameSite: http.SameSiteStrictMode,
 		HttpOnly: true,
 		Path:     "/",
 	})
