@@ -1,10 +1,11 @@
 [project]
 name = "supernatural"
 version = "0.1.0"
-description = "Setting up database for supernatural"
+description = "Add your description here"
+readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "django==6.0.7",
     "gunicorn==26.0.0",
-    "mysqlclient==2.2.8",
+    "psycopg[binary]==3.3.4",
 ]

@@ -1,0 +1,122 @@
+/* stylelint-disable selector-class-pattern */
+.sidebar {
+  width: 34%;
+  flex-shrink: 0;
+  height: 100vh;
+  background: linear-gradient(145deg, #0b0f19 0%, #111827 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  box-sizing: border-box;
+  border-left: 1px solid rgb(139 92 246 / 20%);
+  box-shadow: -10px 0 40px rgb(0 0 0 / 50%);
+}
+   
+.sidebar__top {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sidebar__header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  flex-shrink: 0;
+}
+   
+.sidebar__user-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgb(255 255 255 / 4%);
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 999px;
+  flex: 1;
+  min-width: 0;
+  backdrop-filter: blur(10px);
+}
+   
+.sidebar__avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+   
+.sidebar__avatar--copper {
+  background: linear-gradient(135deg, #f97316 0%, #ec4899 100%);
+  box-shadow: 0 0 12px rgb(249 115 22 / 40%);
+}
+   
+.sidebar__username {
+  color: #f3f4f6;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__card {
+  width: 100%;
+  padding: 22px;
+  border-radius: 20px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  background: rgb(17 24 39 / 60%);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px 0 rgb(0 0 0 / 37%);
+  box-sizing: border-box;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar__card-text {
+  margin: 0;
+  font-size: 15px;
+  color: #9ca3af;
+  line-height: 1.6;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.sidebar__card-text::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar__card-text::-webkit-scrollbar-track {
+  background: rgb(255 255 255 / 2%);
+}
+
+.sidebar__card-text::-webkit-scrollbar-thumb {
+  background: rgb(139 92 246 / 40%);
+  border-radius: 4px;
+}
+
+.sidebar__card-text::-webkit-scrollbar-thumb:hover {
+  background: rgb(139 92 246 / 70%);
+}
+
+@media (width <= 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .sidebar__card-text {
+    max-height: 250px;
+    overflow-y: auto;
+  }
+}

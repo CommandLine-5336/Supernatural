@@ -8,7 +8,7 @@ import sys
 def main():
     """Run administrative tasks, starting the app on the default port."""
     # start the application with default port
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "myapp.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
     try:
         # pylint: disable=import-outside-toplevel
         from django.core.management import execute_from_command_line
