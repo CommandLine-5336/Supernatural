@@ -21,19 +21,7 @@ func generateRandomName() string {
 	for {
 		adjIndex, _ := rand.Int(rand.Reader, big.NewInt(int64(len(adjectives))))
 		nounIndex, _ := rand.Int(rand.Reader, big.NewInt(int64(len(nouns))))
-		candidate := fmt.Sprintf("%s %s", adjectives[adjIndex.Int64()], nouns[nounIndex.Int64()])
-
-		taken := false
-		for _, user := range users {
-			if user.DisplayName == candidate {
-				taken = true
-				break
-			}
-		}
-
-		if !taken {
-			return candidate
-		}
+		return fmt.Sprintf("%s %s", adjectives[adjIndex.Int64()], nouns[nounIndex.Int64()])
 	}
 }
 
