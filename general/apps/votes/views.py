@@ -4,8 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from ..authentication.models import User
-from .models import Vote
-from .serializers import VoteSerializer
+from .models import Vote, Vote_res
+from .serializers import VoteResSerializer, VoteSerializer
 
 
 class VoteViewSet(viewsets.ModelViewSet):
@@ -16,16 +16,42 @@ class VoteViewSet(viewsets.ModelViewSet):
     ordering_fields = ["id", "agree", "disagree"]
     ordering = ["-id"]
 
-    def get_queryset(self):
-        return Vote.objects.all()
+    def list(self, request):
+        votes_queryset = Vote.objects.all().select_related("user")
+        votes_serializer = VoteSerializer(votes_queryset, many=True)
+        user_votes_queryset = Vote_res.objects.filter(user=request.user)
+        user_votes_serializer = VoteResSerializer(user_votes_queryset, many=True)
+        return Response(
+            {
+                "votes": votes_serializer.data,
+                "user_voted": user_votes_serializer.data,
+            }
+        )
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def perform_create(self, request, serializer):
+        user_alias = self.request.data.get("user_alias")
+        if user_alias is None:
+            return Response(
+                {"error": "user_alias is required"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        try:
+            user = User.objects.get(alias=user_alias)
+        except User.DoesNotExist:
+            return Response(
+                {"message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+        serializer.save(user=user)
 
     @action(detail=True, methods=["post", "put"])
     def set_vote(self, request, pk=None):
         vote = self.get_object()
         res = request.data.get("res")
+        user = request.user
+        if Vote_res.objects.filter(user=user, vote=vote).exists():
+            return Response(
+                {"detail": "You have already set vote here"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         if res == "+":
             vote.agree = vote.agree + 1
         elif res == "-":
@@ -35,7 +61,9 @@ class VoteViewSet(viewsets.ModelViewSet):
                 {"detail": "res can only be + or -"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
         vote.save(update_fields=["agree", "disagree"])
+        Vote_res.objects.create(user=user, vote=vote)
         serializer = self.get_serializer(vote)
         return Response(serializer.data)
 
@@ -45,20 +73,22 @@ class VoteViewSet(viewsets.ModelViewSet):
         user = vote.user
         total_users = User.objects.count()
         if user is not None:
-            if vote.agree > total_users / 2:
-                if vote.type == "promotion":
+            if vote.type == "promotion":
+                if vote.agree > total_users / 2:
                     if user.status == "copper":
                         user.status = "silver"
                     else:
                         user.status = "gold"
                     user.save(update_fields=["status"])
 
-                elif vote.type == "excommunication":
+            elif vote.type == "excommunication":
+                if vote.agree > total_users * 0.8:
                     user.delete()
 
+        Vote_res.objects.filter(vote=vote).delete()
         self.perform_destroy(vote)
 
         return Response(
-            {"detail": "Vote deleted and resolution applied successfully"},
+            {"detail": "Vote is deleted and are results applied"},
             status=status.HTTP_204_NO_CONTENT,
         )
