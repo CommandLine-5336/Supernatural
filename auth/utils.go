@@ -18,6 +18,28 @@ func hashPassword(password string) (string, error) {
 }
 
 func generateRandomName() string {
+	var adjectives = []string{
+		"Swift", "Brave", "Clever", "Quiet", "Bright", "Shadowy", "Wild", "Calm",
+		"Bold", "Gentle", "Fearless", "Mighty", "Nimble", "Lucky", "Curious", "Wise",
+		"Silent", "Fierce", "Radiant", "Frosty", "Sunny", "Stormy", "Shining", "Glowing",
+		"Ancient", "Mystic", "Hidden", "Rapid", "Soaring", "Daring", "Lively", "Noble",
+		"Playful", "Steady", "Humble", "Vivid", "Whispering", "Distant", "Emerald", "Crimson",
+		"Azure", "Ivory", "Scarlet", "Amber", "Verdant", "Cobalt", "Sapphire", "Pearl",
+		"Crystal", "Obsidian", "Moonlit", "Starry", "Dusky", "Dawn", "Twilight", "Echoing",
+		"Majestic", "Valiant", "Gallant", "Charming", "Serene", "Boundless", "Endless", "Blooming",
+	}
+
+	var nouns = []string{
+		"Fox", "Shadow", "Eagle", "Wolf", "River", "Falcon", "Bear", "Lion", "Hawk", "Knight",
+		"Tiger", "Panther", "Otter", "Raven", "Owl", "Lynx", "Badger", "Bison", "Stag", "Moose",
+		"Phoenix", "Dragon", "Griffin", "Pegasus", "Unicorn", "Wyvern", "Hydra", "Sprite",
+		"Comet", "Meteor", "Star", "Moon", "Sun", "Aurora", "Breeze", "Storm", "Thunder", "Rain",
+		"Leaf", "Oak", "Pine", "Maple", "Cedar", "Willow", "Forest", "Meadow", "Mountain", "Valley",
+		"Ocean", "Wave", "Brook", "Lake", "Summit", "Canyon", "Glacier", "Harbor", "Island", "Cave",
+		"Blaze", "Ember", "Flame", "Spark", "Echo", "Whisper", "Dream", "Spirit", "Guardian", "Voyager",
+		"Ranger", "Scout", "Wanderer", "Seeker", "Pathfinder", "Champion", "Sentinel", "Nomad", "Sage", "Voyage",
+	}
+
 	for {
 		adjIndex, _ := rand.Int(rand.Reader, big.NewInt(int64(len(adjectives))))
 		nounIndex, _ := rand.Int(rand.Reader, big.NewInt(int64(len(nouns))))

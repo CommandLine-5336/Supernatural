@@ -20,9 +20,6 @@ type User struct {
 
 var users = map[string]User{}
 
-var adjectives = []string{"Swift", "Brave", "Clever", "Quiet", "Bright", "Shadowy", "Wild", "Calm"}
-var nouns = []string{"Fox", "Shadow", "Eagle", "Wolf", "River", "Falcon", "Bear", "Lion", "Hawk", "Knight"}
-
 var db *sql.DB
 
 func main() {
