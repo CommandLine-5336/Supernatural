@@ -115,7 +115,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	)
 
 	if err != nil {
-		http.Error(w, "server error", http.StatusInternalServerError) // 500
+		http.Error(w, "could not create token", http.StatusInternalServerError) // 500
 		return
 	}
 
@@ -146,7 +146,7 @@ func protected(w http.ResponseWriter, r *http.Request) {
 	).Scan(&displayName)
 
 	if err != nil {
-		http.Error(w, "unauthorized", http.StatusUnauthorized) // 401
+		http.Error(w, "user not found", http.StatusNotFound) // 404
 		return
 	}
 
