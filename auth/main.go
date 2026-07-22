@@ -33,8 +33,11 @@ func main() {
 	http.HandleFunc("/protected", protected)
 
 	// Start HTTP server
-	log.Println("Server listening on :8080")
-	http.ListenAndServe(":8080", nil)
+	log.Println("Starting server at port 8080")
+	err = http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Println("Error starting the server:", err)
+	}
 }
 
 func connectDB() (*sql.DB, error) {
