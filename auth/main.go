@@ -109,7 +109,11 @@ func login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := createJWT(email)
+	token, err := createJWT(
+		userID,
+		status,
+	)
+
 	if err != nil {
 		http.Error(w, "server error", http.StatusInternalServerError) // 500
 		return
@@ -127,7 +131,20 @@ func login(w http.ResponseWriter, r *http.Request) {
 }
 
 func protected(w http.ResponseWriter, r *http.Request) {
-	email, err := Authorize(r)
+	userID, err := Authorize(r)
+
+	if err != nil {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var displayName string
+
+	err = db.QueryRow(
+		`SELECT display_name FROM users WHERE id=$1`,
+		userID,
+	).Scan(&displayName)
+
 	if err != nil {
 		http.Error(w, "unauthorized", http.StatusUnauthorized) // 401
 		return

@@ -7,16 +7,16 @@ import (
 
 var AuthError = errors.New("unauthorized")
 
-func Authorize(r *http.Request) (string, error) {
+func Authorize(r *http.Request) (int, error) {
 	cookie, err := r.Cookie("jwt")
 	if err != nil || cookie.Value == "" {
-		return "", AuthError
+		return 0, AuthError
 	}
 
-	email, err := parseJWT(cookie.Value)
+	userID, err := parseJWT(cookie.Value)
 	if err != nil {
-		return "", AuthError
+		return 0, AuthError
 	}
 
-	return email, nil
+	return userID, nil
 }

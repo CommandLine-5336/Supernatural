@@ -54,34 +54,27 @@ func checkPasswordHash(password, hash string) bool {
 
 var jwtSecret = []byte(os.Getenv("JWT_KEY"))
 
-func createJWT(email string) (string, error) {
-	claims := jwt.RegisteredClaims{
-		Subject:   email,
-		ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+func createJWT(id int, status string) (string, error) {
+	claims := jwt.MapClaims{
+		"sub":    id,
+		"status": status,
+		"exp":    time.Now().Add(24 * time.Hour).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(jwtSecret)
 }
 
-func parseJWT(tokenString string) (string, error) {
-	claims := &jwt.RegisteredClaims{}
+func parseJWT(tokenString string) (int, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
 
-	token, err := jwt.ParseWithClaims(
-		tokenString,
-		claims,
-		func(token *jwt.Token) (interface{}, error) {
-			return jwtSecret, nil
-		},
-	)
-
-	if err != nil {
-		return "", err
+	if err != nil || !token.Valid {
+		return 0, AuthError
 	}
 
-	if !token.Valid {
-		return "", fmt.Errorf("invalid token")
-	}
+	claims := token.Claims.(jwt.MapClaims)
 
-	return claims.Subject, nil
+	return int(claims["sub"].(float64)), nil
 }
