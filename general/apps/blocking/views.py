@@ -46,7 +46,8 @@ def report_ip(request):
     payload = get_user_from_JWT(request)
     if payload is None:
         return JsonResponse(
-            {"status": "error", "message": "unauthorized or invalid cookie"}, status=401
+            {"status": "error", "message": "unauthorized or invalid cookie"},
+            status=401,
         )
 
     jwtstatus = payload.get("status")
@@ -76,10 +77,12 @@ def report_ip(request):
 
     if Banned.objects.filter(ip_address=ip_address).exists():
         return JsonResponse(
-            {"status": "ok", "message": "IP already exists in DB"}, status=200
+            {"status": "ok", "message": "IP already exists in DB"},
+            status=200,
         )
 
     Banned.objects.create(ip_address=ip_address)
     return JsonResponse(
-        {"status": "ok", "message": "IP reported and banned"}, status=200
+        {"status": "ok", "message": "IP reported and banned"},
+        status=200,
     )
