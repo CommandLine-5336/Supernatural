@@ -1,8 +1,10 @@
 import React from "react";
 import LogoutButton from "../../shared/ui/LogoutButton/LogoutButton";
+import PostForm from "../PostForm/PostForm";
+import PostDetails from "../PostDetails/PostDetails";
 import "./Sidebar.css";
 
-export default function Sidebar({ user, onLogout }) {
+export default function Sidebar({ user, onLogout, mode, posts = [] }) {
   return (
     <aside className="sidebar">
       <div className="sidebar__top">
@@ -15,12 +17,18 @@ export default function Sidebar({ user, onLogout }) {
         </div>
 
         <div className="sidebar__card">
-          <p className="sidebar__card-text">
-          Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. 
-          In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. 
-          Iaculis massa nisl malesuada lacinia integer nunc posuere. 
-          Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+          {mode?.type === "create" && (
+            <PostForm lat={mode.lat} lng={mode.lng} locked={mode.locked} />
+          )}
+          {mode?.type === "view" && (
+            <PostDetails post={posts.find((p) => p.id === mode.postId)} />
+          )}
+          {(!mode || mode.type === "idle") && (
+            <p className="sidebar__card-text custom-scrollbar">
+            Click on the map to see a marked anomaly, or press{" "}
+            <span className="sidebar__highlight">"+ Add new post"</span> button to report your own sighting.
           </p>
+          )}
         </div>
       </div>
     </aside>
