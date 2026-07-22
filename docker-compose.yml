@@ -30,17 +30,18 @@ services:
       python manage.py migrate &&
       python manage.py runserver"
     volumes:
-      - .:/app
+      - ./general:/app
       - /app/.venv
     ports:
       - "4040:4040"
     depends_on:
       database:
         condition: service_healthy
-  
+
   auth:
     container_name: auth
     build: ./auth
+    env_file: .env
     ports:
       - "8080:8080"
     depends_on:
@@ -48,10 +49,10 @@ services:
         condition: service_healthy
 
   db_backup:
+    container_name: db_backup
     build:
       context: ./general
       dockerfile: Dockerfile.backup
-    container_name: db_backup
     env_file:
       - .env
     environment:

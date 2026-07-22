@@ -8,7 +8,7 @@ from django.db import models
 class User(models.Model):
     """Users table"""
 
-    alias = models.CharField(max_length=100)
+    display_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=300)
     status = models.CharField(max_length=100)
@@ -20,4 +20,4 @@ class User(models.Model):
         verbose_name = "User"
 
     def __str__(self) -> str:
-        return f"{self.alias}"
+        return f"{self.display_name}"

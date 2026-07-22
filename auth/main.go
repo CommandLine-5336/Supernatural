@@ -1,11 +1,16 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"net/mail"
+	"os"
 	"time"
+
+	_ "github.com/joho/godotenv/autoload"
+	_ "github.com/lib/pq"
 )
 
 type User struct {
@@ -18,13 +23,33 @@ var users = map[string]User{}
 var adjectives = []string{"Swift", "Brave", "Clever", "Quiet", "Bright", "Shadowy", "Wild", "Calm"}
 var nouns = []string{"Fox", "Shadow", "Eagle", "Wolf", "River", "Falcon", "Bear", "Lion", "Hawk", "Knight"}
 
+var db *sql.DB
+
 func main() {
-	log.Println("Server listening on :8080")
+	// Init database connection
+	var err error
+	db, err = connectDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Close database connection when main exits
+	defer db.Close()
+
+	// Register HTTP routes
 	http.HandleFunc("/register", register)
 	http.HandleFunc("/login", login)
 	http.HandleFunc("/logout", logout)
 	http.HandleFunc("/protected", protected)
+
+	// Start HTTP server
+	log.Println("Server listening on :8080")
 	http.ListenAndServe(":8080", nil)
+}
+
+func connectDB() (*sql.DB, error) {
+	connStr := os.Getenv("DSN")
+	return sql.Open("postgres", connStr)
 }
 
 func register(w http.ResponseWriter, r *http.Request) {
