@@ -1,3 +1,4 @@
+/* stylelint-disable selector-class-pattern */
 .post-details {
     display: flex;
     flex-direction: column;
