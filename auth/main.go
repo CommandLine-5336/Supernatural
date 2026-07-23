@@ -29,8 +29,8 @@ func main() {
 	// Register HTTP routes
 	http.HandleFunc("/register", register)
 	http.HandleFunc("/login", login)
+	http.HandleFunc("/session", session)
 	http.HandleFunc("/logout", logout)
-	http.HandleFunc("/protected", protected)
 
 	// Start HTTP server
 	log.Println("Starting server at port 8080")
@@ -134,27 +134,37 @@ func login(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Login successful, %s!", displayName)
 }
 
-func protected(w http.ResponseWriter, r *http.Request) {
+func session(w http.ResponseWriter, r *http.Request) {
 	userID, err := Authorize(r)
 
 	if err != nil {
-		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		http.Error(w, "unauthorized", http.StatusUnauthorized) // 401
 		return
 	}
 
 	var displayName string
+	var status string
 
 	err = db.QueryRow(
-		`SELECT display_name FROM users WHERE id=$1`,
+		`SELECT display_name, status FROM users WHERE id=$1`,
 		userID,
-	).Scan(&displayName)
+	).Scan(
+		&displayName,
+		&status,
+	)
 
 	if err != nil {
 		http.Error(w, "user not found", http.StatusNotFound) // 404
 		return
 	}
 
-	fmt.Fprintf(w, "Welcome, %s!", displayName)
+	w.Header().Set("Content-Type", "application/json")
+
+	fmt.Fprintf(w, `{
+		"id": %d,
+		"displayName": "%s",
+		"status": "%s"
+	}`, userID, displayName, status)
 }
 
 func logout(w http.ResponseWriter, r *http.Request) {
