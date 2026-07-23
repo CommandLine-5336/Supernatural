@@ -2,32 +2,42 @@ import os
 
 import jwt
 from django.test import TestCase
-from dotenv import load_dotenv
 
-from ...core import settings
 from ..authentication.models import User
 from .models import Vote, Vote_res
 
-load_dotenv()
+JWT_SECRET = os.getenv("JWT_KEY")
 
 
 class VoteTestCase(TestCase):
     def setUp(self):
         """Creating new post"""
         self.Ben = User.objects.create(
-            alias="Ben", email="he@gmail.com", password="1234", status="silver"
+            alias="Ben",
+            email="he@gmail.com",
+            password="1234",
+            status="silver",
+            inquisitor=False,
         )
         self.Donna = User.objects.create(
-            alias="Donna", email="she@gmail.com", password="1234", status="copper"
+            alias="Donna",
+            email="she@gmail.com",
+            password="1234",
+            status="copper",
+            inquisitor=False,
         )
 
         payload = {
-            "id": self.Ben.id,
+            "sub": str(self.Ben.id),
             "status": self.Ben.status,
-            "email": self.Ben.email,
         }
 
-        self.token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+        self.token = jwt.encode(payload, JWT_SECRET, algorithm="HS256")
+
+        if isinstance(self.token, bytes):
+            self.token = self.token.decode("utf-8")
+
+        self.client.cookies["jwt"] = self.token
 
         self.Promo = Vote.objects.create(
             type="promotion",
@@ -48,9 +58,7 @@ class VoteTestCase(TestCase):
         """Setting agree vote"""
         url = f"/api/votes/{self.Ex.id}/set_vote/"
         data = {"res": "+"}
-        response = self.client.post(
-            url, data, HTTP_AUTHORIZATION=f"Bearer {self.token}"
-        )
+        response = self.client.post(url, data, content_type="application/json")
         self.assertEqual(response.status_code, 200)
         self.Ex.refresh_from_db()
         self.assertEqual(self.Ex.agree, 2)

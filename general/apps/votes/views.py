@@ -1,20 +1,23 @@
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from ..authentication.models import User
-from .models import Vote, Vote_res
+from .models import User, Vote, Vote_res
 from .serializers import VoteResSerializer, VoteSerializer
+from .token import CookieJWTAuthentication
 
 
 class VoteViewSet(viewsets.ModelViewSet):
     http_method_names = ["get", "post", "put", "patch", "delete"]
     serializer_class = VoteSerializer
     permission_classes = (IsAuthenticated,)
+    authentication_classes = [CookieJWTAuthentication]
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ["id", "agree", "disagree"]
     ordering = ["-id"]
+    queryset = Vote.objects.all()
 
     def list(self, request):
         votes_queryset = Vote.objects.all().select_related("user")
@@ -25,21 +28,21 @@ class VoteViewSet(viewsets.ModelViewSet):
             {
                 "votes": votes_serializer.data,
                 "user_voted": user_votes_serializer.data,
+                "me": {
+                    "id": request.user.id,
+                    "status": request.user.status,
+                },
             }
         )
 
-    def perform_create(self, request, serializer):
+    def perform_create(self, serializer):
         user_alias = self.request.data.get("user_alias")
-        if user_alias is None:
-            return Response(
-                {"error": "user_alias is required"}, status=status.HTTP_400_BAD_REQUEST
-            )
+        if not user_alias:
+            raise ValidationError({"user_alias": "user_alias is required"})
         try:
             user = User.objects.get(alias=user_alias)
         except User.DoesNotExist:
-            return Response(
-                {"message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND
-            )
+            raise NotFound({"detail": f"User with alias '{user_alias}' does not exist"})
         serializer.save(user=user)
 
     @action(detail=True, methods=["post", "put"])

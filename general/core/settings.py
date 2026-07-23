@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "apps.main",
     "apps.posts",
     "apps.votes",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -43,6 +44,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -74,6 +76,9 @@ DATABASES = {
         "PORT": "5432",
     }
 }
+
+CORS_ALLOWED_ORIGINS = ["http:////127.0.0.1:8080"]  # frontend port
+CORS_ALLOW_CREDENTIALS = True
 
 AUTH_PASSWORD_VALIDATORS = [
     {

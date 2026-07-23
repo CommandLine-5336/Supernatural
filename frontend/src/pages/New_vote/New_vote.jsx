@@ -1,40 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { apiFetch } from '../api/client';
+import { newVote } from '../../api/user';
+import "./New_vote.css";
 
-export default function SpiceForm({ mode }) {
-    const params = useParams();
-
+export default function NewVote({ mode }) {
     const [error, setError] = useState('');
     const [form, setForm] = useState({
-        type: '',
+        type: 'promotion',
         description: '',
-        user: '',
-        agree: 0
-        disagree: 0
+        user_alias: '',
+        agree: 0,
+        disagree: 0,
     });
-
-    const isEdit = (mode === 'edit');
-
-    useEffect(() => {
-        if (!isEdit) return;
-
-        (async () => {
-            setError('');
-            try
-                const obj = await apiFetch(`/votes/`, { method: 'GET' });
-                setForm({
-                    type: obj.type || '',
-                    description: obj.description || '',
-                    agree: obj.agree || '',
-                    disagree: obj.disagree || '',
-                    user: obj.user || '',
-                });
-            } catch (err) {
-                setError(err.message);
-            }
-        })();
-    }, [isEdit, id]);
 
     const setField = (name, value) => {
         setForm((prev) => ({ ...prev, [name]: value }));
@@ -45,17 +21,14 @@ export default function SpiceForm({ mode }) {
         setError('');
 
         try {
-            await await apiFetch('/votes/', {
-                method: 'POST',
-                body: JSON.stringify({
-                    type: form.type,
-                    description: form.description,
-                    user_alias: form.user_alias,
-                    agree: 0,
-                    disagree: 0,
-                }),
+            await  newVote({
+                type: form.type,
+                description: form.description,
+                user_alias: form.user_alias,
+                agree: 0,
+                disagree: 0,
             });
-            navigate('/voting_court');
+        window.location.href = '/votes';
         } catch (err) {
             setError(err.message || 'Couldn`t create vote');
         }
@@ -63,11 +36,12 @@ export default function SpiceForm({ mode }) {
 
 
     return (
-        <main className="vote-create-container">
+        <main className="vote-catalog">
             <header className="vote-header">
                 <div className="vote-header-row">
-                  <Button href="/voting_court">{"<-"}</Button>
+                  <a href="/votes">{"<-"}</a>
                   <h1 className="vote-title">New vote</h1>
+                  <div className="for-title"></div>
                 </div>
             </header>
 
@@ -84,24 +58,26 @@ export default function SpiceForm({ mode }) {
 
                         <div className="form-group">
                             <label htmlFor="id_type">Type</label>
-                            <textarea
+                            <select
                                 id="id_type"
                                 name="type"
-                                rows={2}
                                 value={form.type}
                                 onChange={(e) => setField('type', e.target.value)}
-                            />
+                            >
+                                <option value="promotion">promotion</option>
+                                <option value="excommunication">excommunication</option>
+                            </select>
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="id_user">User alias</label>
+                            <label htmlFor="id_user_alias">User alias</label>
                             <input
                                 type="text"
-                                id="id_user"
-                                name="user"
+                                id="id_user_alias"
+                                name="user_alias"
                                 required
-                                value={form.user}
-                                onChange={(e) => setField('user', e.target.value)}
+                                value={form.user_alias}
+                                onChange={(e) => setField('user_alias', e.target.value)}
                             />
                         </div>
 
