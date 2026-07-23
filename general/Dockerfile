@@ -11,7 +11,7 @@ ENV PYTHONUNBUFFERED=1
 # hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    default-libmysqlclient-dev \
+    libpq-dev \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
@@ -40,7 +40,7 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 # hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libmariadb3 \
+    libpq5 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
