@@ -1,7 +1,5 @@
-# OS Files
+# OS files
 .DS_Store
-.DS_Store?
-**/.DS_Store
 ._*
 .Spotlight-V100
 .Trashes
@@ -16,27 +14,20 @@ ehthumbs.db
 
 # Environment
 .env
-**/.env*
 venv/
+.venv/
 env/
-**/venv/
-**/.venv/
-**/env/
 .Python
 
 # Python
-**/__pycache__/
 __pycache__/
 *.py[cod]
-*.pyc
-*.pyo
-*.pyd
 *$py.class
 
 # Node.js
-**/node_modules/
-**/dist/
-**/.vite/
+node_modules/
+dist/
+.vite/
 
 # Terraform
 terraform/iac/.terraform/
@@ -51,11 +42,8 @@ terraform/state_bucket/terraform.tfstate
 terraform/state_bucket/terraform.tfstate.backup
 terraform/state_bucket/terraform.tfvars
 
-# Local Configuration
-**/my.cnf
+# Local configuration
+my.cnf
 
-# Local Data
-**/db_backups
-
-# Git
-.git
+# Local data
+db_backups/
