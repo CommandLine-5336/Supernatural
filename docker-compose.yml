@@ -23,8 +23,6 @@ services:
   general:
     container_name: general
     build: ./general
-    environment:
-      - PYTHONUNBUFFERED=1
     env_file:
       - .env
     command: >
@@ -71,6 +69,15 @@ services:
       - general
     restart: unless-stopped
 
+  mail_service:
+    container_name: mail_service
+    build: ./mail_sending
+    env_file: .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
 volumes:
   postgresql_data:
   db_backups:
