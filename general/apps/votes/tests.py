@@ -12,16 +12,18 @@ JWT_SECRET = os.getenv("JWT_KEY")
 
 
 class VoteTestCase(TestCase):
-    def setUp(self):
+    """Test suite for Vote API operations."""
+
+    def setUp(self):  # pylint: disable=invalid-name
         """Creating new post"""
-        self.Ben = User.objects.create(
+        self.ben = User.objects.create(
             alias="Ben",
             email="he@gmail.com",
             password="1234",
             status="silver",
             inquisitor=False,
         )
-        self.Donna = User.objects.create(
+        self.donna = User.objects.create(
             alias="Donna",
             email="she@gmail.com",
             password="1234",
@@ -30,8 +32,8 @@ class VoteTestCase(TestCase):
         )
 
         payload = {
-            "sub": str(self.Ben.id),
-            "status": self.Ben.status,
+            "sub": str(self.ben.id),
+            "status": self.ben.status,
         }
 
         self.token = jwt.encode(payload, JWT_SECRET, algorithm="HS256")
@@ -41,44 +43,44 @@ class VoteTestCase(TestCase):
 
         self.client.cookies["jwt"] = self.token
 
-        self.Promo = Vote.objects.create(
+        self.promo = Vote.objects.create(
             type="promotion",
             description="promoting",
-            user=self.Ben,
+            user=self.ben,
             agree=2,
             disagree=0,
         )
-        self.Ex = Vote.objects.create(
+        self.ex = Vote.objects.create(
             type="excommunication",
             description="executing",
-            user=self.Donna,
+            user=self.donna,
             agree=2,
             disagree=0,
         )
 
     def test_set_vote(self):
         """Setting agree vote"""
-        url = f"/api/votes/{self.Ex.id}/set_vote/"
+        url = f"/api/votes/{self.ex.id}/set_vote/"
         data = {"res": "+"}
         response = self.client.post(url, data, content_type="application/json")
         self.assertEqual(response.status_code, 200)
-        self.Ex.refresh_from_db()
-        self.assertEqual(self.Ex.agree, 3)
-        self.assertTrue(VoteRes.objects.filter(user=self.Ben, vote=self.Ex).exists())
+        self.ex.refresh_from_db()
+        self.assertEqual(self.ex.agree, 3)
+        self.assertTrue(VoteRes.objects.filter(user=self.ben, vote=self.ex).exists())
 
     def test_delete_ex_vote(self):
         """Delete excommunication vote"""
-        url = f"/api/votes/{self.Ex.id}/"
+        url = f"/api/votes/{self.ex.id}/"
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
-        self.assertFalse(Vote.objects.filter(id=self.Ex.id).exists())
-        self.assertFalse(User.objects.filter(id=self.Donna.id).exists())
+        self.assertFalse(Vote.objects.filter(id=self.ex.id).exists())
+        self.assertFalse(User.objects.filter(id=self.donna.id).exists())
 
     def test_delete_promo_vote(self):
         """Delete promo vote"""
-        url = f"/api/votes/{self.Promo.id}/"
+        url = f"/api/votes/{self.promo.id}/"
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
-        self.Ben.refresh_from_db()
-        self.assertFalse(Vote.objects.filter(id=self.Promo.id).exists())
-        self.assertEqual(self.Ben.status, "gold")
+        self.ben.refresh_from_db()
+        self.assertFalse(Vote.objects.filter(id=self.promo.id).exists())
+        self.assertEqual(self.ben.status, "gold")

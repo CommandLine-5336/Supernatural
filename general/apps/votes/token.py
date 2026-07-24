@@ -1,4 +1,4 @@
-"""Retrieving authentification data from JWT token stored in HTTP cookie"""
+"""Retrieving authentication data from JWT token stored in HTTP cookie"""
 
 import os
 
@@ -15,7 +15,7 @@ class CookieJWTAuthentication(BaseAuthentication):
     """Authentication handler reading JWT from HTTP cookies"""
 
     def authenticate(self, request):
-        """Authentificating with JWT cookie value"""
+        """Authenticating with JWT cookie value"""
         token = request.COOKIES.get("jwt")
         if not token:
             return None

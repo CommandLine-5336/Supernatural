@@ -68,12 +68,14 @@ class VoteViewSet(viewsets.ModelViewSet):
             raise ValidationError({"user_alias": "user_alias is required"})
         try:
             user = User.objects.get(alias=user_alias)
-        except User.DoesNotExist:
-            raise NotFound({"detail": f"User with alias '{user_alias}' does not exist"})
+        except User.DoesNotExist as exc:
+            raise NotFound(
+                {"detail": f"User with alias '{user_alias}' does not exist"}
+            ) from exc
         serializer.save(user=user)
 
     @action(detail=True, methods=["post", "put"])
-    def set_vote(self, request, pk=None):
+    def set_vote(self, request, _pk=None):
         """Set vote"""
         vote = self.get_object()
         res = request.data.get("res")
@@ -98,7 +100,7 @@ class VoteViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(vote)
         return Response(serializer.data)
 
-    def destroy(self, request, *args, **kwargs):
+    def destroy(self, _request, *_args, **_kwargs):
         """Delete vote"""
         vote = self.get_object()
         execute_vote(vote)

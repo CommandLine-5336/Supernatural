@@ -1,5 +1,6 @@
 """Serializers for votes"""
 
+# pylint: disable=too-few-public-methods
 from rest_framework import serializers
 
 from .models import Vote, VoteRes

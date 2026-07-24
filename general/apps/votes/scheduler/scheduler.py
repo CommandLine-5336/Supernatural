@@ -1,3 +1,5 @@
+"""Scheduler for automatic vote deletions"""
+
 import sys
 from datetime import timedelta
 
@@ -9,6 +11,7 @@ from ..views import execute_vote
 
 
 def delete_votes():
+    """Delete votes older than day"""
     time = timezone.now() - timedelta(days=1)
     expired_votes = Vote.objects.filter(time_created__lt=time)
     count = 0
@@ -16,7 +19,7 @@ def delete_votes():
         try:
             execute_vote(vote)
             count += 1
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             print("Couldn't delete the vote: ", e)
     print(f"Deleted {count} votes")
 
@@ -25,6 +28,7 @@ scheduler = BackgroundScheduler()
 
 
 def start():
+    """Start the scheduler"""
     if not scheduler.running:
         scheduler.add_job(
             delete_votes,

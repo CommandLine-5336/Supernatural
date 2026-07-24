@@ -4,7 +4,7 @@ import os
 
 from django.apps import AppConfig
 
-# pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods,import-outside-toplevel
 
 
 class VotesConfig(AppConfig):
@@ -16,6 +16,6 @@ class VotesConfig(AppConfig):
         """Starting scheduler with application"""
         if os.environ.get("RUN_MAIN") != "true":
             return
-        from .scheduler.scheduler import start
+        from .scheduler.scheduler import start  # isort: skip
 
         start()
