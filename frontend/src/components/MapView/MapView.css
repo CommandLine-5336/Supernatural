@@ -20,7 +20,7 @@
 .map-view__logo img {
   display: block;
   max-width: 240px;
-  height: auto; 
+  height: auto;
 }
 
 .map-view__add-btn {
@@ -60,7 +60,7 @@
   .map-view__logo img {
     max-width: 140px;
   }
-  
+
   .map-view__logo {
     top: 12px;
     left: 16px;
