@@ -83,7 +83,7 @@ services:
     build: ./mail_sending
     env_file: .env
     ports:
-      - "8080:8080"
+      - "8070:8080"
     depends_on:
       database:
         condition: service_healthy
