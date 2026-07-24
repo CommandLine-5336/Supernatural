@@ -11,6 +11,7 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
+	"github.com/rs/cors"
 )
 
 var db *sql.DB
@@ -33,8 +34,15 @@ func main() {
 	http.HandleFunc("/logout", logout)
 
 	// Start HTTP server
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:8090"},
+		AllowCredentials: true,
+	})
+
+	handler := c.Handler(http.DefaultServeMux)
+
 	log.Println("Starting server at port 8080")
-	err = http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe(":8080", handler)
 	if err != nil {
 		log.Println("Error starting the server:", err)
 	}
