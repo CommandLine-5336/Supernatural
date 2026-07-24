@@ -46,7 +46,7 @@ func SendDailyPassword() {
 
 	result := config.DB.Find(&users)
 	if result.Error != nil {
-		log.Fatal("Error fetchin emails", result)
+		log.Fatal("Error fetching emails", result)
 
 	}
 	// send email for each email in db
