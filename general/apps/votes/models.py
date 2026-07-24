@@ -15,6 +15,7 @@ class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     agree = models.IntegerField()
     disagree = models.IntegerField()
+    time_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         """Meta for Votes"""

@@ -1,5 +1,6 @@
 services:
   database:
+    container_name: database
     image: postgres:18-alpine
     restart: always
     env_file:
@@ -20,15 +21,16 @@ services:
       timeout: 10s
 
   general:
-    build: .
+    container_name: general
+    build: ./general
     env_file:
       - .env
     command: >
-      sh -c "sleep 10 && python manage.py makemigrations authentication main posts votes &&
+      sh -c "sleep 10 &&
       python manage.py migrate &&
       python manage.py runserver"
     volumes:
-      - .:/app
+      - ./general:/app
       - /app/.venv
     ports:
       - "4040:4040"
@@ -37,10 +39,10 @@ services:
         condition: service_healthy
 
   db_backup:
-    build:
-      context: .
-      dockerfile: Dockerfile.backup
     container_name: db_backup
+    build:
+      context: ./general
+      dockerfile: Dockerfile.backup
     env_file:
       - .env
     environment:
@@ -55,6 +57,16 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - general
     restart: unless-stopped
 
 volumes:

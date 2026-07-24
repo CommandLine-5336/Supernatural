@@ -35,3 +35,4 @@ export async function setVote(voteId, value) {
     throw new Error(errorData.detail || "Couldn't set a vote");
   }
   return res.json();
+}

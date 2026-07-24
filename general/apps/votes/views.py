@@ -9,6 +9,26 @@ from .serializers import VoteResSerializer, VoteSerializer
 from .token import CookieJWTAuthentication
 
 
+def execute_vote(vote):
+    user = vote.user
+    total_users = User.objects.count()
+    if user is not None:
+        if vote.type == "promotion":
+            if vote.agree > total_users / 2:
+                if user.status == "copper":
+                    user.status = "silver"
+                else:
+                    user.status = "gold"
+                user.save(update_fields=["status"])
+
+        elif vote.type == "excommunication":
+            if vote.agree > total_users * 0.8:
+                user.delete()
+
+    Vote_res.objects.filter(vote=vote).delete()
+    vote.delete()
+
+
 class VoteViewSet(viewsets.ModelViewSet):
     http_method_names = ["get", "post", "put", "patch", "delete"]
     serializer_class = VoteSerializer
@@ -72,26 +92,8 @@ class VoteViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         vote = self.get_object()
-
-        user = vote.user
-        total_users = User.objects.count()
-        if user is not None:
-            if vote.type == "promotion":
-                if vote.agree > total_users / 2:
-                    if user.status == "copper":
-                        user.status = "silver"
-                    else:
-                        user.status = "gold"
-                    user.save(update_fields=["status"])
-
-            elif vote.type == "excommunication":
-                if vote.agree > total_users * 0.8:
-                    user.delete()
-
-        Vote_res.objects.filter(vote=vote).delete()
-        self.perform_destroy(vote)
-
+        execute_vote(vote)
         return Response(
-            {"detail": "Vote is deleted and are results applied"},
+            {"detail": "Vote is deleted and results are applied"},
             status=status.HTTP_204_NO_CONTENT,
         )
