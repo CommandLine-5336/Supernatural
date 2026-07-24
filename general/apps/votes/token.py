@@ -32,18 +32,17 @@ class CookieJWTAuthentication(BaseAuthentication):
             user = User.objects.get(pk=int(user_id))
             user.is_authenticated = True
 
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed("Token expired")
-        except jwt.InvalidTokenError:
-            raise AuthenticationFailed("Invalid token")
-        except jwt.DecodeError:
-            raise AuthenticationFailed("Invalid format")
-
-        except User.DoesNotExist:
-            raise AuthenticationFailed("User not found")
+        except jwt.ExpiredSignatureError as exc:
+            raise AuthenticationFailed("Token expired") from exc
+        except jwt.InvalidTokenError as exc:
+            raise AuthenticationFailed("Invalid token") from exc
+        except jwt.DecodeError as exc:
+            raise AuthenticationFailed("Invalid format") from exc
+        except User.DoesNotExist as exc:
+            raise AuthenticationFailed("User not found") from exc
 
         return (user, token)
 
-    def authenticate_header(self, request):
+    def authenticate_header(self, _request):
         """Return authenticate header value"""
         return "Bearer"
