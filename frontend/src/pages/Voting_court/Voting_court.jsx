@@ -22,7 +22,7 @@ export default function VotingCourt() {
       setVotedIds(new Set(voted.map((r) => r.vote)));
       setMe(data?.me ?? null);
     } catch (err) {
-      setError(err?.message || "Couldn`t get amy votes");
+      setError(err?.message || "Couldn't get amy votes");
     }
   };
 

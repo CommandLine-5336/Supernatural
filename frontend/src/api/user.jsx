@@ -18,7 +18,7 @@ export async function newVote(voteData) {
   });
   if (!res.ok) {
     const errorData = await res.json();
-    throw new Error(errorData.detail || "Couldn`t create vote");
+    throw new Error(errorData.detail || "Couldn't create vote");
   }
   return res.json();
 }
