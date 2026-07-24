@@ -1,10 +1,12 @@
+"""Tests for votes application."""
+
 import os
 
 import jwt
 from django.test import TestCase
 
 from ..authentication.models import User
-from .models import Vote, Vote_res
+from .models import Vote, VoteRes
 
 JWT_SECRET = os.getenv("JWT_KEY")
 
@@ -50,7 +52,7 @@ class VoteTestCase(TestCase):
             type="excommunication",
             description="executing",
             user=self.Donna,
-            agree=1,
+            agree=2,
             disagree=0,
         )
 
@@ -61,8 +63,8 @@ class VoteTestCase(TestCase):
         response = self.client.post(url, data, content_type="application/json")
         self.assertEqual(response.status_code, 200)
         self.Ex.refresh_from_db()
-        self.assertEqual(self.Ex.agree, 2)
-        self.assertTrue(Vote_res.objects.filter(user=self.Ben, vote=self.Ex).exists())
+        self.assertEqual(self.Ex.agree, 3)
+        self.assertTrue(VoteRes.objects.filter(user=self.Ben, vote=self.Ex).exists())
 
     def test_delete_ex_vote(self):
         """Delete excommunication vote"""

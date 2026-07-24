@@ -27,7 +27,7 @@ class Vote(models.Model):
         return f"{self.user_id} {self.type}"
 
 
-class Vote_res(models.Model):
+class VoteRes(models.Model):
     """Votes results table"""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)

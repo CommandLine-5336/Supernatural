@@ -1,15 +1,18 @@
+"""Views for votes"""
+
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .models import User, Vote, Vote_res
+from .models import User, Vote, VoteRes
 from .serializers import VoteResSerializer, VoteSerializer
 from .token import CookieJWTAuthentication
 
 
 def execute_vote(vote):
+    """Deleting vote and applying its results"""
     user = vote.user
     total_users = User.objects.count()
     if user is not None:
@@ -25,11 +28,13 @@ def execute_vote(vote):
             if vote.agree > total_users * 0.8:
                 user.delete()
 
-    Vote_res.objects.filter(vote=vote).delete()
+    VoteRes.objects.filter(vote=vote).delete()
     vote.delete()
 
 
 class VoteViewSet(viewsets.ModelViewSet):
+    """ViewSet for Vote"""
+
     http_method_names = ["get", "post", "put", "patch", "delete"]
     serializer_class = VoteSerializer
     permission_classes = (IsAuthenticated,)
@@ -40,9 +45,10 @@ class VoteViewSet(viewsets.ModelViewSet):
     queryset = Vote.objects.all()
 
     def list(self, request):
+        """List of all votes and votes on which specific user has already voted"""
         votes_queryset = Vote.objects.all().select_related("user")
         votes_serializer = VoteSerializer(votes_queryset, many=True)
-        user_votes_queryset = Vote_res.objects.filter(user=request.user)
+        user_votes_queryset = VoteRes.objects.filter(user=request.user)
         user_votes_serializer = VoteResSerializer(user_votes_queryset, many=True)
         return Response(
             {
@@ -56,6 +62,7 @@ class VoteViewSet(viewsets.ModelViewSet):
         )
 
     def perform_create(self, serializer):
+        """Create new vote"""
         user_alias = self.request.data.get("user_alias")
         if not user_alias:
             raise ValidationError({"user_alias": "user_alias is required"})
@@ -67,10 +74,11 @@ class VoteViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["post", "put"])
     def set_vote(self, request, pk=None):
+        """Set vote"""
         vote = self.get_object()
         res = request.data.get("res")
         user = request.user
-        if Vote_res.objects.filter(user=user, vote=vote).exists():
+        if VoteRes.objects.filter(user=user, vote=vote).exists():
             return Response(
                 {"detail": "You have already set vote here"},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -86,11 +94,12 @@ class VoteViewSet(viewsets.ModelViewSet):
             )
 
         vote.save(update_fields=["agree", "disagree"])
-        Vote_res.objects.create(user=user, vote=vote)
+        VoteRes.objects.create(user=user, vote=vote)
         serializer = self.get_serializer(vote)
         return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
+        """Delete vote"""
         vote = self.get_object()
         execute_vote(vote)
         return Response(

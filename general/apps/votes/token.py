@@ -1,3 +1,5 @@
+"""Retrieving authentification data from JWT token stored in HTTP cookie"""
+
 import os
 
 import jwt
@@ -10,7 +12,10 @@ JWT_SECRET = os.getenv("JWT_KEY")
 
 
 class CookieJWTAuthentication(BaseAuthentication):
+    """Authentication handler reading JWT from HTTP cookies"""
+
     def authenticate(self, request):
+        """Authentificating with JWT cookie value"""
         token = request.COOKIES.get("jwt")
         if not token:
             return None
@@ -40,4 +45,5 @@ class CookieJWTAuthentication(BaseAuthentication):
         return (user, token)
 
     def authenticate_header(self, request):
+        """Return authenticate header value"""
         return "Bearer"

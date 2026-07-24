@@ -1,9 +1,13 @@
+"""Serializers for votes"""
+
 from rest_framework import serializers
 
-from .models import Vote, Vote_res
+from .models import Vote, VoteRes
 
 
 class VoteSerializer(serializers.ModelSerializer):
+    """Serializer for Vote model"""
+
     user_alias = serializers.ReadOnlyField(source="user.alias")
 
     class Meta:
@@ -12,6 +16,8 @@ class VoteSerializer(serializers.ModelSerializer):
 
 
 class VoteResSerializer(serializers.ModelSerializer):
+    """Serializer for VoteRes model"""
+
     class Meta:
-        model = Vote_res
+        model = VoteRes
         fields = "__all__"
