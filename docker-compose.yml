@@ -23,6 +23,8 @@ services:
   general:
     container_name: general
     build: ./general
+    environment:
+      - PYTHONUNBUFFERED=1
     env_file:
       - .env
     command: >

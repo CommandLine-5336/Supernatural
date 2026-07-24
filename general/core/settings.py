@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "apps.main",
     "apps.posts",
     "apps.votes",
-    "django_crontab",
 ]
 
 MIDDLEWARE = [
@@ -107,7 +106,3 @@ USE_TZ = True
 
 
 STATIC_URL = "static/"
-
-CRONJOBS = [
-    ("*/10 * * * *", "apps.votes.tasks.delete_votes"),
-]
