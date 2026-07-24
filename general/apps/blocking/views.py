@@ -53,7 +53,10 @@ def report_ip(request):
     jwtstatus = payload.get("status")
     if jwtstatus not in ("silver", "gold", "inquisitor"):
         return JsonResponse(
-            {"status": "error", "message": "forbidden, not enough priviliges"},
+            {
+                "status": "error",
+                "message": "forbidden, get out of here you dirty copper",
+            },
             status=403,
         )
 
@@ -77,7 +80,7 @@ def report_ip(request):
 
     if Banned.objects.filter(ip_address=ip_address).exists():
         return JsonResponse(
-            {"status": "ok", "message": "IP already exists in DB"},
+            {"status": "ok", "message": "IP is already banned"},
             status=200,
         )
 
