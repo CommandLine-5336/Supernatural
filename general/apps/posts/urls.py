@@ -1,3 +1,4 @@
+"""URLs for posts"""
 from rest_framework.routers import DefaultRouter
 from .views import PostViewSet
 

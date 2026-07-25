@@ -1,3 +1,4 @@
+"""S3/SeaweedFS storage"""
 import json
 import uuid
 import boto3
@@ -5,6 +6,7 @@ from django.conf import settings
 
 
 def _get_s3_client():
+    """Returns a boto3 S3 client"""
     return boto3.client(
         "s3",
         endpoint_url=settings.AWS_S3_ENDPOINT_URL,
@@ -14,6 +16,7 @@ def _get_s3_client():
 
 
 def ensure_public_bucket():
+    """Creates the bucket if needed and makes it publicly readable"""
     s3 = _get_s3_client()
     bucket = settings.AWS_STORAGE_BUCKET_NAME
 
@@ -36,6 +39,7 @@ def ensure_public_bucket():
 
 
 def upload_image(file) -> str:
+    """Uploads an image and returns its public URL"""
     s3 = _get_s3_client()
     ensure_public_bucket()
     key = f"posts/{uuid.uuid4()}-{file.name}"
