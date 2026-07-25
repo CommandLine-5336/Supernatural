@@ -4,6 +4,8 @@ import { getVotes } from "../../api/user";
 import promoIcon from "../../assets/images/promo.png";
 import exIcon from "../../assets/images/ex.png";
 import "./Voting_court.css";
+import BackButton from "../../shared/ui/BackButton/BackButton";
+import { Link } from "react-router-dom";
 
 export default function VotingCourt() {
 
@@ -48,11 +50,11 @@ export default function VotingCourt() {
     <main className="vote-catalog">
       <header className="vote-header">
         <div className="vote-header-row">
-          <a href="/">{"<-"}</a>
+          <BackButton onClick={() => window.location.href = '/'}/>
           <h1 className="vote-title">Voting Court</h1>
-          <a href="/votes/new" style={{ display: me?.status === "copper" ? "none" : "inline-flex" }}>
+          <Link to="/votes/new" state={{ me }} style={{ display: me?.status === "copper" ? "none" : "inline-flex" }}>
             New vote
-          </a>
+          </Link>
           <div className="for-title" style={{ display: me?.status === "copper" ? "inline-flex" : "none" }}></div>
         </div>
       </header>
