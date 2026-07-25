@@ -5,6 +5,7 @@ from .models import Post
 from .serializers import PostSerializer
 from .storage import upload_image
 
+
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by("-created_at")
     serializer_class = PostSerializer
@@ -17,7 +18,9 @@ class PostViewSet(viewsets.ModelViewSet):
         image_url = upload_image(image) if image else None
         serializer.save(image_url=image_url)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
 
     @action(detail=True, methods=["post"])
     def seen(self, request, pk=None):

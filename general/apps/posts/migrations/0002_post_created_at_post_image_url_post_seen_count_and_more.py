@@ -6,28 +6,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('posts', '0001_initial'),
+        ("posts", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='post',
-            name='created_at',
+            model_name="post",
+            name="created_at",
             field=models.DateTimeField(auto_now_add=True, null=True),
         ),
         migrations.AddField(
-            model_name='post',
-            name='image_url',
+            model_name="post",
+            name="image_url",
             field=models.URLField(blank=True, max_length=500, null=True),
         ),
         migrations.AddField(
-            model_name='post',
-            name='seen_count',
+            model_name="post",
+            name="seen_count",
             field=models.PositiveIntegerField(default=0),
         ),
         migrations.AddField(
-            model_name='post',
-            name='visibility_level',
-            field=models.CharField(choices=[('copper', 'Copper'), ('silver', 'Silver'), ('gold', 'Gold')], default='copper', max_length=10),
+            model_name="post",
+            name="visibility_level",
+            field=models.CharField(
+                choices=[("copper", "Copper"), ("silver", "Silver"), ("gold", "Gold")],
+                default="copper",
+                max_length=10,
+            ),
         ),
     ]

@@ -39,18 +39,21 @@
   flex-shrink: 0;
   margin: 0;
 }
+
 .post-details__description {
   color: #9ca3af;
   line-height: 1.5;
   font-size: 15px;
   margin: 0;
 }
+
 .post-details__coords {
   color: #6b7280;
   font-size: 13px;
   flex-shrink: 0;
   margin: 0;
 }
+
 .post-details__seen-btn {
   background: #8b5cf6;
   border: none;

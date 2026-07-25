@@ -9,10 +9,11 @@ from ..authentication.models import User
 
 class Post(models.Model):
     """Posts table"""
+
     VISIBILITY_CHOICES = [
-            ("copper", "Copper"),
-            ("silver", "Silver"),
-            ("gold", "Gold"),
+        ("copper", "Copper"),
+        ("silver", "Silver"),
+        ("gold", "Gold"),
     ]
 
     name = models.CharField(max_length=100)
@@ -20,7 +21,9 @@ class Post(models.Model):
     latitude = models.CharField(max_length=100)
     longitude = models.CharField(max_length=100)
     image_url = models.URLField(max_length=500, blank=True, null=True)
-    visibility_level = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default="copper")
+    visibility_level = models.CharField(
+        max_length=10, choices=VISIBILITY_CHOICES, default="copper"
+    )
     seen_count = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
 
