@@ -38,4 +38,4 @@ def start():
             replace_existing=True,
         )
         scheduler.start()
-        print("Scheduler started...", file=sys.stdout)
+        print("Scheduler for votes started", file=sys.stdout)
