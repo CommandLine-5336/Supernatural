@@ -1,19 +1,19 @@
 """Scheduler for automatic inquisitor estting up"""
+
 import random
 import sys
 
-from apscheduler.schedulers.background import BackgroundScheduler
-
 from apps.authentication.models import User
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 def set_inquisitor():
     """Find new inquisitor"""
     prev_inq = User.objects.filter(inquisitor=True).first()
-    id_list = list(User.objects.values_list('id', flat=True))
+    id_list = list(User.objects.values_list("id", flat=True))
     if prev_inq:
         prev_inq.inquisitor = False
-        prev_inq.save(update_fields=['inquisitor'])
+        prev_inq.save(update_fields=["inquisitor"])
         id_list.remove(prev_inq.id)
 
     if not id_list:
@@ -23,7 +23,7 @@ def set_inquisitor():
     new_inq_id = random.choice(id_list)
     new_inq = User.objects.get(id=new_inq_id)
     new_inq.inquisitor = True
-    new_inq.save(update_fields=['inquisitor'])
+    new_inq.save(update_fields=["inquisitor"])
     print(f"New inquisitor - {new_inq.alias}")
 
 
