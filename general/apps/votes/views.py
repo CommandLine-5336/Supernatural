@@ -50,6 +50,7 @@ class VoteViewSet(viewsets.ModelViewSet):
         votes_serializer = VoteSerializer(votes_queryset, many=True)
         user_votes_queryset = VoteRes.objects.filter(user=request.user)
         user_votes_serializer = VoteResSerializer(user_votes_queryset, many=True)
+        user = User.objects.get(id=request.user.id)
         return Response(
             {
                 "votes": votes_serializer.data,
@@ -57,6 +58,7 @@ class VoteViewSet(viewsets.ModelViewSet):
                 "me": {
                     "id": request.user.id,
                     "status": request.user.status,
+                    "inquisitor": user.inquisitor,
                 },
             }
         )

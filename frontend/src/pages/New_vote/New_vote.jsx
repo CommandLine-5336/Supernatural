@@ -65,7 +65,7 @@ export default function NewVote({ mode }) {
                                 onChange={(e) => setField('type', e.target.value)}
                             >
                                 <option value="promotion">promotion</option>
-                                <option value="excommunication">excommunication</option>
+                                <option style={{ display: me?.inquisitor === True ? "inline-flex" : "none" }} value="excommunication">excommunication</option>
                             </select>
                         </div>
 
