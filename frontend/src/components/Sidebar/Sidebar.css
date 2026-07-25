@@ -49,6 +49,14 @@
   background: linear-gradient(135deg, #f97316 0%, #ec4899 100%);
 }
 
+.sidebar__avatar--silver {
+  background: linear-gradient(135deg, #c0c0c0 0%, #e5e7eb 100%);
+}
+
+.sidebar__avatar--gold {
+  background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+}
+
 .sidebar__username {
   color: #f3f4f6;
   font-family: inherit;
