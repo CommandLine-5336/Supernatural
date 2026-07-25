@@ -1,4 +1,5 @@
 """S3/SeaweedFS storage"""
+
 import json
 import uuid
 import boto3

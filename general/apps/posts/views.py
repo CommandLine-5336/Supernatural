@@ -1,4 +1,5 @@
 """Views for posts"""
+
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -9,6 +10,7 @@ from .storage import upload_image
 
 class PostViewSet(viewsets.ModelViewSet):
     """Handles list, create, retrieve, update, delete for posts"""
+
     queryset = Post.objects.all().order_by("-created_at")
     serializer_class = PostSerializer
 
