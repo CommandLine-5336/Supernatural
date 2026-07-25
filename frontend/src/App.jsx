@@ -7,7 +7,7 @@ import NewVote from './pages/New_vote/New_vote';
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { session } from "./auth/api";
+import { session } from "./api/auth";
 
 function ProtectedRoute({ user, children }) {
   return user ? children : <Navigate to="/login" replace />;

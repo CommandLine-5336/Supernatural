@@ -1,5 +1,5 @@
 import "./LogoutButton.css";
-import { logout } from "../../../auth/api";
+import { logout } from "../../../api/auth";
 
 export default function LogoutButton({ setUser }) {
   async function handleLogout() {
