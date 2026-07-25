@@ -13,7 +13,7 @@ export default function Sidebar({ user, onLogout, mode, posts = [], onCreatePost
             <span className={`sidebar__avatar sidebar__avatar--${user.status}`} />
             <span className="sidebar__username">{user.displayName}</span>
           </div>
-          <LogoutButton setUser={setUser} />
+          <LogoutButton onLogout={onLogout} />
         </div>
         <div className="sidebar__card">
           {mode?.type === "create" && (
