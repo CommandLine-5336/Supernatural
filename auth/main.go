@@ -74,11 +74,12 @@ func register(w http.ResponseWriter, r *http.Request) {
 	displayName := generateRandomName()
 
 	_, err := db.Exec(
-		"INSERT INTO users (display_name, email, password, status) VALUES ($1, $2, $3, $4)",
+		"INSERT INTO users (display_name, email, password, status, inquisitor) VALUES ($1, $2, $3, $4, $5)",
 		displayName,
 		email,
 		hashedPassword,
 		"copper",
+		false,
 	)
 
 	if err != nil {
