@@ -5,7 +5,7 @@ Sets up database service for Supernatural with Docker. Creates database with a u
 
 ## Steps
 - First, create database/.env and database/my.cnf files.
-- Then run `docker compose up --build`
+- Then run `docker compose up --build` in root directory
 - To test db backup creation run `docker compose exec db_backup /usr/local/bin/backup.sh`
 
 ## Files content
@@ -14,6 +14,7 @@ DB_NAME='supernatural_db'
 DB_USER='*'
 DB_PASS='*'
 DB_HOST='database'
+JWT_KEY=''
 `
 - my.cnf: `[client]
 database = supernatural_db
@@ -21,4 +22,4 @@ user = *
 password = *
 host = db
 port = 5432`
-- Get SECRET_KEY, DB_USER/user, DB_PASS/password values from AWS Secrets Manager.
+- Get JWT_KEY, SECRET_KEY, DB_USER/user, DB_PASS/password values from AWS Secrets Manager.
