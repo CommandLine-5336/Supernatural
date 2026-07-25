@@ -4,7 +4,7 @@ import PostForm from "../PostForm/PostForm";
 import PostDetails from "../PostDetails/PostDetails";
 import "./Sidebar.css";
 
-export default function Sidebar({ user, onLogout, mode, posts = [] }) {
+export default function Sidebar({ user, onLogout, mode, posts = [], onCreatePost, onSeenPost }) {
   return (
     <aside className="sidebar">
       <div className="sidebar__top">
@@ -15,19 +15,24 @@ export default function Sidebar({ user, onLogout, mode, posts = [] }) {
           </div>
           <LogoutButton onClick={onLogout} />
         </div>
-
         <div className="sidebar__card">
           {mode?.type === "create" && (
-            <PostForm lat={mode.lat} lng={mode.lng} locked={mode.locked} />
+            <PostForm lat={mode.lat} lng={mode.lng} locked={mode.locked} onSubmit={onCreatePost} />
           )}
           {mode?.type === "view" && (
-            <PostDetails post={posts.find((p) => p.id === mode.postId)} />
+            <PostDetails post={posts.find((p) => p.id === mode.postId)} onSeen={onSeenPost} />
           )}
           {(!mode || mode.type === "idle") && (
-            <p className="sidebar__card-text custom-scrollbar">
-            Click on the map to see a marked anomaly, or press{" "}
-            <span className="sidebar__highlight">"+ Add new post"</span> button to report your own sighting.
-          </p>
+            <div className="sidebar__idle">
+              <p className="sidebar__stat">
+                <span className="sidebar__stat-number">{posts.length}</span>
+                <span className="sidebar__stat-label">anomalies recorded</span>
+              </p>
+              <p className="sidebar__card-text">
+                Click on the map to see a marked anomaly, or press{" "}
+                <span className="sidebar__highlight">"+ Add new post"</span> to report your own sighting.
+              </p>
+            </div>
           )}
         </div>
       </div>

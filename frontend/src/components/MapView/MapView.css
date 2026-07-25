@@ -46,6 +46,16 @@
   display: none !important;
 }
 
+.leaflet-popup-content {
+  max-width: 200px;
+  overflow-wrap: break-word;
+}
+
+.leaflet-popup-content strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
 .leaflet-control-attribution.leaflet-control {
   display: none;
 }

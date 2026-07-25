@@ -22,6 +22,7 @@ Thumbs.db
 *.swp
 *.swo
 
+s3config.json
 
 terraform/iac/.terraform
 terraform/iac/.terraform.lock.hcl

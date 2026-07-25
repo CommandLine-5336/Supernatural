@@ -1,6 +1,6 @@
 .custom-scrollbar {
   overflow-y: auto;
-  padding-right: 6px;
+  padding: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

@@ -1,0 +1,14 @@
+{
+    "identities": [
+      {
+        "name": "supernatural",
+        "credentials": [
+          {
+            "accessKey": "your-access-key-here",
+            "secretKey": "your-secret-key-here"
+          }
+        ],
+        "actions": ["Admin", "Read", "Write"]
+      }
+    ]
+  }
