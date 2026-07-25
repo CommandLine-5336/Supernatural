@@ -8,11 +8,17 @@ function postForm(url, data) {
   });
 }
 
-export function login(email, password) {
-  return postForm("/login", {
+export async function login(email, password) {
+  const res = await postForm("/login", {
     email,
     password,
   });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return res.json();
 }
 
 export function register(email, password) {
