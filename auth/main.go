@@ -78,7 +78,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 		displayName,
 		email,
 		hashedPassword,
-		"Copper",
+		"copper",
 	)
 
 	if err != nil {
@@ -139,7 +139,13 @@ func login(w http.ResponseWriter, r *http.Request) {
 		Path:     "/",
 	})
 
-	fmt.Fprintf(w, "Login successful, %s!", displayName)
+	w.Header().Set("Content-Type", "application/json")
+
+	fmt.Fprintf(w, `{
+		"id": %d,
+		"displayName": "%s",
+		"status": "%s"
+	}`, userID, displayName, status)
 }
 
 func session(w http.ResponseWriter, r *http.Request) {
