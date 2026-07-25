@@ -22,9 +22,12 @@ export function useSidebarMode() {
     setSidebarMode({ type: "view", postId });
   };
 
+  const resetMode = () => setSidebarMode({ type: "idle" });
+
   return {
     sidebarMode,
     handleMapClick,
     handleMarkerClick,
+    resetMode,
   };
 }

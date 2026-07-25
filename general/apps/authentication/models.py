@@ -12,6 +12,7 @@ class User(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=300)
     status = models.CharField(max_length=100)
+    inquisitor = models.BooleanField(default=False)
 
     class Meta:
         """Meta for Users"""

@@ -20,13 +20,23 @@ services:
       start_period: 30s
       timeout: 10s
 
+  seaweedfs:
+    container_name: seaweedfs
+    image: chrislusf/seaweedfs:4.40
+    command: server -s3 -s3.config=/etc/seaweedfs/s3config.json
+    ports:
+      - "8333:8333"
+    volumes:
+      - seaweedfs_data:/data
+      - ./general/seaweedfs-config/s3config.json:/etc/seaweedfs/s3config.json
+
   general:
     container_name: general
     build: ./general
     env_file:
       - .env
     command: >
-      sh -c "sleep 10 && python manage.py makemigrations authentication main posts promotion &&
+      sh -c "sleep 10 && python manage.py makemigrations authentication main posts votes &&
       python manage.py migrate &&
       python manage.py runserver"
     volumes:
@@ -49,13 +59,14 @@ services:
         condition: service_healthy
 
   frontend:
+    build:
+      context: ./frontend
     container_name: frontend
-    build: ./frontend
     ports:
       - "8090:8080"
     depends_on:
-      database:
-        condition: service_healthy
+      - general
+    restart: unless-stopped
 
   db_backup:
     container_name: db_backup
@@ -91,3 +102,4 @@ services:
 volumes:
   postgresql_data:
   db_backups:
+  seaweedfs_data:

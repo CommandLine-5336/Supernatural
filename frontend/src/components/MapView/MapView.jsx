@@ -34,7 +34,7 @@ export default function MapView({ onMapClick, posts = [], onMarkerClick }) {
             }}
           >
             <Popup>
-              <strong>{post.name}</strong>
+              <strong>{post.name.length > 40 ? `${post.name.slice(0, 40)}…` : post.name}</strong>
               <p>
                 {post.description.length > 80
                   ? `${post.description.slice(0, 80)}…`

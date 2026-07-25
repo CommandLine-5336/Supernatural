@@ -2,6 +2,9 @@ import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import NotFound from "./pages/NotFound/NotFound";
+import VotingCourt from './pages/Voting_court/Voting_court';
+import NewVote from './pages/New_vote/New_vote';
+
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { session } from "./auth/api";
@@ -51,6 +54,24 @@ export default function App() {
             <GuestRoute user={user}>
               <Register />
             </GuestRoute>
+          }
+        />
+
+        <Route
+          path="/votes"
+          element={
+            <ProtectedRoute user={user}>
+              <VotingCourt />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/votes/new"
+          element={
+            <ProtectedRoute user={user}>
+              <NewVote />
+            </ProtectedRoute>
           }
         />
 

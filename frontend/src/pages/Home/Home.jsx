@@ -1,27 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import MapView from "../../components/MapView/MapView";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { mockPosts } from "../../data/mockPosts";
 import { useSidebarMode } from "../../hooks/useSidebarMode";
+import { usePosts } from "../../hooks/usePosts";
 import "./Home.css";
 
 export default function Home({ user, setUser }) {
-  const { sidebarMode, handleMapClick, handleMarkerClick } = useSidebarMode();
+  const { posts, addPost, markSeen } = usePosts();
+
+  const {
+    sidebarMode,
+    handleMapClick,
+    handleMarkerClick,
+    resetMode
+  } = useSidebarMode();
+
+  const handleLogout = () => {
+    setUser(null);
+  };
+
+  const handleCreatePost = async (data) => {
+    await addPost(data);
+    resetMode();
+  };
+
 
   return (
     <div className="home-shell">
       <div className="home-frame">
         <MapView
           onMapClick={handleMapClick}
-          posts={mockPosts}
+          posts={posts}
           onMarkerClick={handleMarkerClick}
         />
-
         <Sidebar
           user={user}
-          setUser={setUser}
+          onLogout={handleLogout}
           mode={sidebarMode}
-          posts={mockPosts}
+          posts={posts}
+          onCreatePost={handleCreatePost}
+          onSeenPost={markSeen}
         />
       </div>
     </div>
