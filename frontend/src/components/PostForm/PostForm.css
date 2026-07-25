@@ -11,6 +11,7 @@
   padding: 24px;
   text-align: center;
   color: #9ca3af;
+  cursor: pointer;
 }
 
 .post-form__input, .post-form__textarea {
@@ -45,4 +46,21 @@
   padding: 12px;
   color: white;
   cursor: pointer;
+}
+
+.post-form__error {
+  margin: 0;
+  color: #f87171;
+  font-size: 13px;
+  background: rgb(239 68 68 / 10%);
+  border: 1px solid rgb(239 68 68 / 30%);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.post-form__char-count {
+  margin: -6px 0 0;
+  font-size: 12px;
+  color: #6b7280;
+  text-align: right;
 }

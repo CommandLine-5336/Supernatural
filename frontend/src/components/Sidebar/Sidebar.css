@@ -56,6 +56,7 @@
   font-weight: 600;
   white-space: nowrap;
   text-overflow: ellipsis;
+  overflow: hidden
 }
 
 .sidebar__card {
@@ -80,6 +81,23 @@
 .sidebar__highlight {
   color: #a78bfa;
   font-weight: 600;
+}
+
+.sidebar__stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.sidebar__stat-number {
+  font-size: 26px;
+  color: #a78bfa;
+}
+
+.sidebar__stat-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 @media (width <= 768px) {
