@@ -54,14 +54,14 @@ func checkPasswordHash(password, hash string) bool {
 
 var jwtSecret = []byte(os.Getenv("JWT_KEY"))
 
-func createJWT(id int, status string) (string, error) {
+func createJWT(id int) (string, error) {
 	claims := jwt.MapClaims{
-		"sub":    id,
-		"status": status,
-		"exp":    time.Now().Add(24 * time.Hour).Unix(),
+		"sub": id,
+		"exp": time.Now().Add(24 * time.Hour).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
 	return token.SignedString(jwtSecret)
 }
 

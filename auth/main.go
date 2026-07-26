@@ -121,10 +121,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := createJWT(
-		userID,
-		status,
-	)
+	token, err := createJWT(userID)
 
 	if err != nil {
 		http.Error(w, "could not create token", http.StatusInternalServerError) // 500
