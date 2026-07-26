@@ -10,6 +10,10 @@ import { useEffect, useState } from "react";
 import { session } from "./api/auth";
 
 function ProtectedRoute({ user, children }) {
+  if (user === undefined) {
+    return <div>Loading...</div>;
+  }
+
   return user ? children : <Navigate to="/login" replace />;
 }
 

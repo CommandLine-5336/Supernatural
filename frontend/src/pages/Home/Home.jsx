@@ -35,7 +35,7 @@ export default function Home({ user, setUser }) {
         />
         <Sidebar
           user={user}
-          onLogout={handleLogout}
+          setUser={setUser}
           mode={sidebarMode}
           posts={posts}
           onCreatePost={handleCreatePost}

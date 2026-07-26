@@ -1,11 +1,14 @@
 import "./LogoutButton.css";
+import { useNavigate } from "react-router-dom";
 import { logout } from "../../../api/auth";
 
 export default function LogoutButton({ setUser }) {
+  const navigate = useNavigate();
+
   async function handleLogout() {
     await logout();
     setUser(null);
-    window.location.href = "/login";
+    navigate("/login", { replace: true });
   }
 
   return (

@@ -4,7 +4,7 @@ import PostForm from "../PostForm/PostForm";
 import PostDetails from "../PostDetails/PostDetails";
 import "./Sidebar.css";
 
-export default function Sidebar({ user, onLogout, mode, posts = [], onCreatePost, onSeenPost }) {
+export default function Sidebar({ user, setUser, mode, posts = [], onCreatePost, onSeenPost }) {
   return (
     <aside className="sidebar">
       <div className="sidebar__top">
@@ -13,7 +13,7 @@ export default function Sidebar({ user, onLogout, mode, posts = [], onCreatePost
             <span className={`sidebar__avatar sidebar__avatar--${user.status}`} />
             <span className="sidebar__username">{user.displayName}</span>
           </div>
-          <LogoutButton onLogout={onLogout} />
+          <LogoutButton setUser={setUser} />
         </div>
         <div className="sidebar__card">
           {mode?.type === "create" && (
