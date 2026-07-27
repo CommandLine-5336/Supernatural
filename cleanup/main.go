@@ -32,11 +32,6 @@ func eraseHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if token := os.Getenv("ERASE_TOKEN"); token != "" && r.Header.Get("X-Erase-Token") != token {
-		WriteResponseToJSON(w, http.StatusUnauthorized, map[string]any{"status": "error", "message": "ERASE_TOKEN not provided or provided an incorrect token"})
-		return
-	}
-
 	rows, err := db.Query(`SELECT tablename FROM pg_tables WHERE schemaname = 'public'`)
 	if err != nil {
 		WriteResponseToJSON(w, http.StatusInternalServerError, map[string]any{"status": "error", "message": err.Error()})
