@@ -26,7 +26,8 @@ def execute_vote(vote):
 
         elif vote.type == "excommunication":
             if vote.agree > total_users * 0.8:
-                user.delete()
+                user.banned = True
+                user.save(update_fields=["banned"])
 
     VoteRes.objects.filter(vote=vote).delete()
     vote.delete()
@@ -50,16 +51,10 @@ class VoteViewSet(viewsets.ModelViewSet):
         votes_serializer = VoteSerializer(votes_queryset, many=True)
         user_votes_queryset = VoteRes.objects.filter(user=request.user)
         user_votes_serializer = VoteResSerializer(user_votes_queryset, many=True)
-        user = User.objects.get(id=request.user.id)
         return Response(
             {
                 "votes": votes_serializer.data,
                 "user_voted": user_votes_serializer.data,
-                "me": {
-                    "id": request.user.id,
-                    "status": request.user.status,
-                    "inquisitor": user.inquisitor,
-                },
             }
         )
 
@@ -77,7 +72,7 @@ class VoteViewSet(viewsets.ModelViewSet):
         serializer.save(user=user)
 
     @action(detail=True, methods=["post", "put"])
-    def set_vote(self, request, _pk=None):
+    def set_vote(self, request, pk=None):
         """Set vote"""
         vote = self.get_object()
         res = request.data.get("res")

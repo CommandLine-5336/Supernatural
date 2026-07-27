@@ -4,13 +4,13 @@ import { getVotes } from "../../api/user";
 import promoIcon from "../../assets/images/promo.png";
 import exIcon from "../../assets/images/ex.png";
 import "./Voting_court.css";
+import BackButton from "../../shared/ui/BackButton/BackButton";
 
-export default function VotingCourt() {
+export default function VotingCourt({ user, setUser }) {
 
   const [votes, setVotes] = useState([]);
   const [votedIds, setVotedIds] = useState(new Set());
   const [error, setError] = useState("");
-  const [me, setMe] = useState(null);
 
   const load = async () => {
     setError("");
@@ -20,7 +20,6 @@ export default function VotingCourt() {
       const voted = Array.isArray(data?.user_voted) ? data.user_voted : [];
       setVotes(v);
       setVotedIds(new Set(voted.map((r) => r.vote)));
-      setMe(data?.me ?? null);
     } catch (err) {
       setError(err?.message || "Couldn't get amy votes");
     }
@@ -48,11 +47,11 @@ export default function VotingCourt() {
     <main className="vote-catalog">
       <header className="vote-header">
         <div className="vote-header-row">
-          <a href="/">{"<-"}</a>
+          <BackButton onClick={() => window.location.href = '/'}/>
           <h1 className="vote-title">Voting Court</h1>
-          <a href="/votes/new" style={{ display: me?.status === "copper" ? "none" : "inline-flex" }}>
+          <button onClick={() => window.location.href = '/votes/new'} style={{ display: user?.status === "copper" ? "none" : "inline-flex" }}>
             New vote
-          </a>
+          </button>
           <div className="for-title" style={{ display: me?.status === "copper" ? "inline-flex" : "none" }}></div>
         </div>
       </header>

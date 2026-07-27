@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { newVote } from '../../api/user';
 import "./New_vote.css";
+import BackButton from "../../shared/ui/BackButton/BackButton";
+import { useLocation } from 'react-router-dom';
 
-export default function NewVote({ mode }) {
+export default function NewVote({ user, setUser }) {
+    const location = useLocation();
     const [error, setError] = useState('');
     const [form, setForm] = useState({
         type: 'promotion',
@@ -21,14 +24,14 @@ export default function NewVote({ mode }) {
         setError('');
 
         try {
-            await  newVote({
+            await newVote({
                 type: form.type,
                 description: form.description,
                 user_alias: form.user_alias,
                 agree: 0,
                 disagree: 0,
             });
-        window.location.href = '/votes';
+            window.location.href = '/votes';
         } catch (err) {
             setError(err.message || 'Couldn`t create vote');
         }
@@ -39,9 +42,9 @@ export default function NewVote({ mode }) {
         <main className="vote-catalog">
             <header className="vote-header">
                 <div className="vote-header-row">
-                  <a href="/votes">{"<-"}</a>
-                  <h1 className="vote-title">New vote</h1>
-                  <div className="for-title"></div>
+                    <BackButton onClick={() => window.location.href = '/votes'} />
+                    <h1 className="vote-title">New vote</h1>
+                    <div className="for-title"></div>
                 </div>
             </header>
 
@@ -65,7 +68,9 @@ export default function NewVote({ mode }) {
                                 onChange={(e) => setField('type', e.target.value)}
                             >
                                 <option value="promotion">promotion</option>
-                                <option style={{ display: me?.inquisitor === True ? "inline-flex" : "none" }} value="excommunication">excommunication</option>
+                                <option style={{ display: user?.inquisitor === true ? "inline-flex" : "none" }} value="excommunication">
+                                    excommunication
+                                </option>
                             </select>
                         </div>
 
