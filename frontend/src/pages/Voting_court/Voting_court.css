@@ -26,7 +26,7 @@ html, body, #root {
     justify-content: space-between;
 }
 
-.vote-header-row a {
+.vote-header-row button {
     background:rgba(22, 31, 49, 0.6);
     color: #ffffff;
     text-decoration: none;
@@ -38,7 +38,7 @@ html, body, #root {
     transition: all 0.3s ease;
 }
 
-.vote-header-row a:hover {
+.vote-header-row button:hover {
     background-color: rgba(106, 127, 180, 0.264);
     transform: translateY(-1px);
 }

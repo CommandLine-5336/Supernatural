@@ -33,7 +33,7 @@ def start():
         scheduler.add_job(
             delete_votes,
             "interval",
-            minutes=10,
+            minutes=1,
             name="delete_votes",
             replace_existing=True,
         )
