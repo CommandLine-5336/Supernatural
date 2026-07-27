@@ -8,6 +8,10 @@ dependencies = [
     "django==6.0.7",
     "gunicorn==26.0.0",
     "psycopg[binary,pool]==3.3.4",
-    "pyjwt>=2.13.0",
-    "python-dotenv>=1.2.2",
+    "djangorestframework==3.17.1",
+    "django-cors-headers==4.9.0",
+    "boto3==1.35.0",
+    "django-crontab",
+    "PyJWT==2.8.0",
+    "apscheduler==3.11.3",
 ]

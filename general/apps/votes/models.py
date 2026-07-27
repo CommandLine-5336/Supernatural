@@ -15,6 +15,7 @@ class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     agree = models.IntegerField()
     disagree = models.IntegerField()
+    time_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         """Meta for Votes"""
@@ -24,3 +25,19 @@ class Vote(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user_id} {self.type}"
+
+
+class VoteRes(models.Model):
+    """Votes results table"""
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    vote = models.ForeignKey(Vote, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        """Meta for Votes results"""
+
+        db_table = "votes_res"
+        verbose_name = "Vote_res"
+
+    def __str__(self) -> str:
+        return f"{self.user_id} {self.vote_id}"

@@ -1,5 +1,6 @@
 services:
   database:
+    container_name: database
     image: postgres:18-alpine
     restart: always
     env_file:
@@ -19,8 +20,19 @@ services:
       start_period: 30s
       timeout: 10s
 
+  seaweedfs:
+    container_name: seaweedfs
+    image: chrislusf/seaweedfs:4.40
+    command: server -s3 -s3.config=/etc/seaweedfs/s3config.json
+    ports:
+      - "8333:8333"
+    volumes:
+      - seaweedfs_data:/data
+      - ./general/seaweedfs-config/s3config.json:/etc/seaweedfs/s3config.json
+
   general:
-    build: .
+    container_name: general
+    build: ./general
     env_file:
       - .env
     command: >
@@ -28,7 +40,7 @@ services:
       python manage.py migrate &&
       python manage.py runserver"
     volumes:
-      - .:/app
+      - ./general:/app
       - /app/.venv
     ports:
       - "4040:4040"
@@ -37,10 +49,10 @@ services:
         condition: service_healthy
 
   db_backup:
-    build:
-      context: .
-      dockerfile: Dockerfile.backup
     container_name: db_backup
+    build:
+      context: ./general
+      dockerfile: Dockerfile.backup
     env_file:
       - .env
     environment:
@@ -57,6 +69,27 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - general
+    restart: unless-stopped
+
+  mail_service:
+    container_name: mail_service
+    build: ./mail_sending
+    env_file: .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+
 volumes:
   postgresql_data:
   db_backups:
+  seaweedfs_data:
