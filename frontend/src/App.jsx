@@ -79,7 +79,15 @@ export default function App() {
           }
         />
 
-        <Route path="*" element={<NotFound />} />
+
+        <Route
+          path="*"
+          element={
+            <ProtectedRoute user={user}>
+              <NotFound />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
