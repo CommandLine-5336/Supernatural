@@ -53,7 +53,7 @@ services:
     build: ./auth
     env_file: .env
     ports:
-      - "8080:8080"
+      - "8100:8080"
     depends_on:
       database:
         condition: service_healthy
@@ -63,7 +63,7 @@ services:
       context: ./frontend
     container_name: frontend
     ports:
-      - "8090:8080"
+      - "8080:8080"
     depends_on:
       - general
     restart: unless-stopped

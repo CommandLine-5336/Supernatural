@@ -1,4 +1,4 @@
-const AUTH_URL = "http://localhost:8080";
+const AUTH_URL = "http://localhost:8100";
 
 function postForm(url, data) {
   return fetch(`${AUTH_URL}${url}`, {
