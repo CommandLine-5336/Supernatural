@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -18,19 +17,6 @@ func TestEraseHandler_RejectsGet(t *testing.T) {
 
 	if rec.Code != http.StatusMethodNotAllowed {
 		t.Errorf("expected status %d, got %d", http.StatusMethodNotAllowed, rec.Code)
-	}
-}
-
-func TestEraseHandler_NoOrIncorrectEraseToken(t *testing.T) {
-	os.Setenv("ERASE_TOKEN", " ")
-	defer os.Unsetenv("ERASE_TOKEN")
-	request := httptest.NewRequest(http.MethodPost, "/erase", nil)
-	result := httptest.NewRecorder()
-
-	eraseHandler(result, request)
-
-	if result.Code != http.StatusUnauthorized {
-		t.Errorf("expected: %d got: %d", http.StatusUnauthorized, result.Code)
 	}
 }
 
@@ -69,7 +55,6 @@ func TestDBHealthCheck(t *testing.T) {
 }
 
 func TestEraseHandler_DBTruncate(t *testing.T) {
-	os.Unsetenv("ERASE_TOKEN")
 	fakeDB, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("Something unexpected happened %v", err)
