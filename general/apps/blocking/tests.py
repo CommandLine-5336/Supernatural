@@ -11,7 +11,8 @@ class TestReportip(TestCase):
     """This is a class where all the testing is concluded"""
 
     def setUp(self):
-        """This is a func where we set up default variables in our case we dont need anything but url
+        """This is a func where we set up default variables
+        in our case we dont need anything but url
         Client() is provided by TestCase import
         """
         self.url = "/api/blocking/report/"
@@ -22,7 +23,7 @@ class TestReportip(TestCase):
         self.assertEqual(response.status_code, 405)
 
     def test_noip_provided(self):
-        """Test no ip was provided(emty json)"""
+        """Test no ip was provided(empty json)"""
         response = self.client.post(
             self.url, data=json.dumps({}), content_type="application/json"
         )
@@ -56,7 +57,7 @@ class TestReportip(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_ip_exists(self):
-        """test if existing ip was porvided"""
+        """test if existing ip was provided"""
         Banned.objects.create(ip_address="1.2.3.4")
         response = self.client.post(
             self.url,
