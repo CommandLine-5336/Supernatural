@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	_ "github.com/lib/pq"
+	"github.com/rs/cors"
 )
 
 func WriteResponseToJSON(w http.ResponseWriter, status int, payload map[string]any) {
@@ -90,14 +91,21 @@ func main() {
 		log.Fatalf("failed to connect to db: %v", err)
 	}
 	log.Println("connected to database")
-	mux := http.NewServeMux()
-	mux.HandleFunc("/erase", eraseHandler)
-	mux.HandleFunc("/healthdb", DBHealthCheck)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
+	http.HandleFunc("/erase", eraseHandler)
+	http.HandleFunc("/healthdb", DBHealthCheck)
+
+	// Start HTTP server
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:8080"},
+		AllowCredentials: true,
+	})
+
+	handler := c.Handler(http.DefaultServeMux)
+
+	log.Println("Starting server at port 8080")
+	err = http.ListenAndServe(":8080", handler)
+	if err != nil {
+		log.Println("Error starting the server:", err)
 	}
-	log.Println("listening on port:", port)
-	log.Fatal(http.ListenAndServe(":"+port, mux))
 }
