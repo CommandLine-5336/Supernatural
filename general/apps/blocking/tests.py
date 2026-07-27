@@ -10,7 +10,7 @@ from .models import Banned
 class TestReportip(TestCase):
     """This is a class where all the testing is concluded"""
 
-    def setUp(self):
+    def setUp(self):  # pylint: disable=invalid-name
         """This is a func where we set up default variables
         in our case we dont need anything but url
         Client() is provided by TestCase import
