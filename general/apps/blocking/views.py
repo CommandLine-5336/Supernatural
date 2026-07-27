@@ -1,3 +1,5 @@
+"""View for blocking part, this is where the logic lies"""
+
 import ipaddress
 import json
 
@@ -13,7 +15,8 @@ from .models import Banned
 def report_ip(request):
     """This is where well be getting our IP and putting it into a DB
     First i need to parse the jwt and get a user status
-    My guess is that it will be great to get IP as a JSON this is the way i found to decode a json request
+    My guess is that it will be great to get IP as
+    a JSON this is the way i found to decode a json request
     https://stackoverflow.com/questions/19573747/parsing-json-fields-in-python
     www.geeksforgeeks.org/python/creating-a-json-response-using-django-and-python/
     https://docs.djangoproject.com/en/6.0/ref/models/querysets/
