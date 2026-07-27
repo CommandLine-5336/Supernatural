@@ -19,7 +19,7 @@ services:
       retries: 5
       start_period: 30s
       timeout: 10s
-      
+
   seaweedfs:
     container_name: seaweedfs
     image: chrislusf/seaweedfs:4.40
@@ -48,6 +48,26 @@ services:
       database:
         condition: service_healthy
 
+  auth:
+    container_name: auth
+    build: ./auth
+    env_file: .env
+    ports:
+      - "8100:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - general
+    restart: unless-stopped
+
   db_backup:
     container_name: db_backup
     build:
@@ -69,22 +89,12 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
-  frontend:
-    build:
-      context: ./frontend
-    container_name: frontend
-    ports:
-      - "8080:8080"
-    depends_on:
-      - general
-    restart: unless-stopped
-
   mail_service:
     container_name: mail_service
     build: ./mail_sending
     env_file: .env
     ports:
-      - "8080:8080"
+      - "8070:8080"
     depends_on:
       database:
         condition: service_healthy
