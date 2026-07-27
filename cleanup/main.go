@@ -103,8 +103,8 @@ func main() {
 
 	handler := c.Handler(http.DefaultServeMux)
 
-	log.Println("Starting server at port 8080")
-	err = http.ListenAndServe(":8080", handler)
+	log.Println("Starting server at port 8585")
+	err = http.ListenAndServe(":8585", handler)
 	if err != nil {
 		log.Println("Error starting the server:", err)
 	}
