@@ -65,7 +65,7 @@ export default function App() {
           path="/votes"
           element={
             <ProtectedRoute user={user}>
-              <VotingCourt />
+              <VotingCourt user={user} setUser={setUser} />
             </ProtectedRoute>
           }
         />
@@ -74,7 +74,7 @@ export default function App() {
           path="/votes/new"
           element={
             <ProtectedRoute user={user}>
-              <NewVote />
+              <NewVote user={user} setUser={setUser} />
             </ProtectedRoute>
           }
         />

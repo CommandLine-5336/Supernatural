@@ -11,7 +11,7 @@ export default function Sidebar({ user, setUser, mode, posts = [], onCreatePost,
         <div className="sidebar__header-row">
           <div className="sidebar__user-pill">
             <span className={`sidebar__avatar sidebar__avatar--${user.status}`} />
-            <span className="sidebar__username">{user.displayName}</span>
+            <span className="sidebar__username">{user.alias}</span>
           </div>
           <LogoutButton setUser={setUser} />
         </div>

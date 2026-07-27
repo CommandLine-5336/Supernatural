@@ -74,11 +74,12 @@ func register(w http.ResponseWriter, r *http.Request) {
 	displayName := generateRandomName()
 
 	_, err := db.Exec(
-		"INSERT INTO users (display_name, email, password, status, inquisitor) VALUES ($1, $2, $3, $4, $5)",
+		"INSERT INTO users (alias, email, password, status, inquisitor, banned) VALUES ($1, $2, $3, $4, $5, $6)",
 		displayName,
 		email,
 		hashedPassword,
 		"copper",
+		false,
 		false,
 	)
 
@@ -86,8 +87,6 @@ func register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "user already exists", http.StatusConflict) // 409
 		return
 	}
-
-	fmt.Fprintf(w, "Registration successful! Assigned Name: %s", displayName)
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
@@ -96,19 +95,23 @@ func login(w http.ResponseWriter, r *http.Request) {
 		displayName  string
 		passwordHash string
 		status       string
+		inquisitor   bool
+		banned       bool
 	)
 
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
 	err := db.QueryRow(
-		`SELECT id, display_name, password, status FROM users WHERE email=$1`,
+		`SELECT id, alias, password, status, inquisitor, banned FROM users WHERE email=$1`,
 		email,
 	).Scan(
 		&userID,
 		&displayName,
 		&passwordHash,
 		&status,
+		&inquisitor,
+		&banned,
 	)
 
 	if err == sql.ErrNoRows {
@@ -141,12 +144,22 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, `{
 		"id": %d,
-		"displayName": "%s",
-		"status": "%s"
-	}`, userID, displayName, status)
+		"alias": "%s",
+		"status": "%s",
+		"inquisitor": %t,
+		"banned": %t
+	}`, userID, displayName, status, inquisitor, banned)
 }
 
 func session(w http.ResponseWriter, r *http.Request) {
+	var (
+		userID      int
+		displayName string
+		status      string
+		inquisitor  bool
+		banned      bool
+	)
+
 	userID, err := Authorize(r)
 
 	if err != nil {
@@ -154,15 +167,14 @@ func session(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var displayName string
-	var status string
-
 	err = db.QueryRow(
-		`SELECT display_name, status FROM users WHERE id=$1`,
+		`SELECT alias, status, inquisitor, banned FROM users WHERE id=$1`,
 		userID,
 	).Scan(
 		&displayName,
 		&status,
+		&inquisitor,
+		&banned,
 	)
 
 	if err != nil {
@@ -174,9 +186,11 @@ func session(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, `{
 		"id": %d,
-		"displayName": "%s",
-		"status": "%s"
-	}`, userID, displayName, status)
+		"alias": "%s",
+		"status": "%s",
+		"inquisitor": %t,
+		"banned": %t
+	}`, userID, displayName, status, inquisitor, banned)
 }
 
 func logout(w http.ResponseWriter, r *http.Request) {
