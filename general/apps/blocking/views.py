@@ -1,33 +1,11 @@
 import ipaddress
 import json
-import os
 
-import jwt
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from .models import Banned
-
-
-def get_user_from_JWT(request):
-    """Since Maksym stores user information inside JWT i need to get information from JWT cookie
-    https://pyjwt.readthedocs.io/en/stable/usage.html#encoding-decoding-tokens-with-hs256
-    https://www.youtube.com/watch?v=T14xCFlAUuM
-    https://stackoverflow.com/questions/5113660/how-to-set-or-get-a-cookie-value-in-django
-
-    returns entire payload to be used in the future.
-    """
-    token = request.COOKIES.get("jwt")
-    if not token:
-        return None
-
-    try:
-        payload = jwt.decode(token, os.environ["JWT_SECRET"], algorithms=["HS256"])
-    except jwt.PyJWTError:
-        return None
-
-    return payload
 
 
 @csrf_exempt
@@ -43,23 +21,6 @@ def report_ip(request):
     https://www.youtube.com/watch?v=Da5abtjf0Bg&t=22s
 
     """
-    payload = get_user_from_JWT(request)
-    if payload is None:
-        return JsonResponse(
-            {"status": "error", "message": "unauthorized or invalid cookie"},
-            status=401,
-        )
-
-    jwtstatus = payload.get("status")
-    if jwtstatus not in ("silver", "gold", "inquisitor"):
-        return JsonResponse(
-            {
-                "status": "error",
-                "message": "forbidden, get out of here you dirty copper",
-            },
-            status=403,
-        )
-
     try:
         jsonbody = json.loads(request.body)
         ip_address = jsonbody["ip_address"]
@@ -69,6 +30,11 @@ def report_ip(request):
             status=400,
         )
 
+    if not isinstance(ip_address, str):
+        return JsonResponse(
+            {"status": "error", "message": "Bad request, Invalid ip address"},
+            status=400,
+        )
     try:
         ipaddress.IPv4Address(ip_address)
 
