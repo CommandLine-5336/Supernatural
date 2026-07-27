@@ -77,7 +77,7 @@ class VoteViewSet(viewsets.ModelViewSet):
         serializer.save(user=user)
 
     @action(detail=True, methods=["post", "put"])
-    def set_vote(self, request, _pk=None):
+    def set_vote(self, request, pk=None):
         """Set vote"""
         vote = self.get_object()
         res = request.data.get("res")
