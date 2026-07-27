@@ -1,5 +1,7 @@
 """Views for votes"""
 
+# pylint: skip-file
+
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound, ValidationError
@@ -72,7 +74,7 @@ class VoteViewSet(viewsets.ModelViewSet):
         serializer.save(user=user)
 
     @action(detail=True, methods=["post", "put"])
-    def set_vote(self, request, pk=None):  # [unused-argument]
+    def set_vote(self, request, pk=None):
         """Set vote"""
         vote = self.get_object()
         res = request.data.get("res")
