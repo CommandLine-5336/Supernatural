@@ -52,7 +52,7 @@ export default function VotingCourt({ user, setUser }) {
           <button onClick={() => window.location.href = '/votes/new'} style={{ display: user?.status === "copper" ? "none" : "inline-flex" }}>
             New vote
           </button>
-          <div className="for-title" style={{ display: me?.status === "copper" ? "inline-flex" : "none" }}></div>
+          <div className="for-title" style={{ display: user?.status === "copper" ? "inline-flex" : "none" }}></div>
         </div>
       </header>
 
