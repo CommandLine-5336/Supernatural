@@ -1,50 +1,53 @@
-.vagrant/
-JustFile
-venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-.env
-env/
-
+# OS files
 .DS_Store
-.DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
 Thumbs.db
+ehthumbs.db
+JustFile
 
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 
-s3config.json
+# Environment
+.env
+venv/
+.venv/
+env/
+.Python
 
-terraform/iac/.terraform
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node.js
+node_modules/
+dist/
+.vite/
+
+# Terraform
+terraform/iac/.terraform/
 terraform/iac/.terraform.lock.hcl
-terraform/iac/terraform.tfstate.backup
 terraform/iac/terraform.tfstate
+terraform/iac/terraform.tfstate.backup
 terraform/iac/terraform.tfvars
 
-terraform/state_bucket/.terraform
+terraform/state_bucket/.terraform/
 terraform/state_bucket/.terraform.lock.hcl
-terraform/state_bucket/terraform.tfstate.backup
 terraform/state_bucket/terraform.tfstate
+terraform/state_bucket/terraform.tfstate.backup
 terraform/state_bucket/terraform.tfvars
 
-.git
-**/.venv/
-**/__pycache__/
-.env
-**/my.cnf
+# Local configuration
+my.cnf
 
-**/node_modules/
-**/dist/
-**/.vite/
+# Local data
+db_backups/
 
-**/.DS_Store
-**/db_backups
+# Other
+s3config.json
