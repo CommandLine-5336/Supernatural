@@ -2,8 +2,11 @@ import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import NotFound from "./pages/NotFound/NotFound";
+import Mail from "./pages/Mail/Mail";
 import VotingCourt from './pages/Voting_court/Voting_court';
 import NewVote from './pages/New_vote/New_vote';
+import Admin_page from './pages/Admin_page/Admin';
+
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -78,13 +81,27 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-
-
         <Route
           path="*"
           element={
             <ProtectedRoute user={user}>
               <NotFound />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute user={user}>
+              <Admin_page user={user} setUser={setUser} />
+            </ProtectedRoute>
+          }
+          />
+        <Route
+          path="/mail"
+          element={
+            <ProtectedRoute user={user}>
+              <Mail />
             </ProtectedRoute>
           }
         />
