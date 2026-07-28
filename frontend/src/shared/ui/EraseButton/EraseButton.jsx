@@ -1,13 +1,13 @@
 import React from "react";
-import "./LogoutButton.css";
+import "./EraseButton.css";
 
-export default function LogoutButton({ onClick }) {
+export default function EraseButton({ onClick }) {
   return (
     <button
       type="button"
-      className="ui-logout-btn"
+      className="ui-erase-btn"
       onClick={onClick}
-      aria-label="Log out"
+      aria-label="COMPROMISED"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

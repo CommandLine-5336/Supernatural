@@ -19,7 +19,7 @@ services:
       retries: 5
       start_period: 30s
       timeout: 10s
-      
+
   seaweedfs:
     container_name: seaweedfs
     image: chrislusf/seaweedfs:4.40
@@ -87,6 +87,17 @@ services:
       - "8080:8080"
     depends_on:
       database:
+        condition: service_healthy
+  cleanup:
+     container_name: cleanup
+     build: ./cleanup
+     env_file: .env
+     environment:
+       DATABASE_URL: postgres://${DB_USER}:${DB_PASS}@database:5432/${DB_NAME}?sslmode=disable
+     ports:
+       - "8585:8585"
+     depends_on:
+       database:
         condition: service_healthy
 
 volumes:

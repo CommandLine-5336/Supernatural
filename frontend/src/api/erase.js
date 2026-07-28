@@ -1,7 +1,7 @@
-const API_URL = "http://localhost:8585"
+const CLEANUP_URL = "http://localhost:8585"
 
 export function erase(){
-    return fetch(`${API_URL}/erase`, {
+    return fetch(`${CLEANUP_URL}/erase`, {
         method:"POST",
     });
 }
