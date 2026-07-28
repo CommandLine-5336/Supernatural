@@ -15,7 +15,7 @@ class TestReportip(TestCase):
         in our case we dont need anything but url
         Client() is provided by TestCase import
         """
-        self.url = "/api/blocking/report/"
+        self.url = "/api/report/"
 
     def test_get_reject(self):
         """Test rejection, wrong method from decorator @require_post"""
