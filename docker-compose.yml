@@ -36,7 +36,7 @@ services:
     env_file:
       - .env
     command: >
-      sh -c "sleep 10 && python manage.py makemigrations authentication main posts votes &&
+      sh -c "sleep 10 && python manage.py makemigrations authentication blocking posts promotion &&
       python manage.py migrate &&
       python manage.py runserver"
     volumes:
@@ -75,14 +75,8 @@ services:
       dockerfile: Dockerfile.backup
     env_file:
       - .env
-    environment:
-        POSTGRES_HOST : ${DB_HOST}
-        POSTGRES_USER : ${DB_USER}
-        POSTGRES_PASSWORD : ${DB_PASS}
-        POSTGRES_DB : ${DB_NAME}
     volumes:
       - ./db_backups:/db_backups
-      - ./backup.sh:/backup.sh
     entrypoint: ["sh", "/entrypoint.sh"]
     depends_on:
       database:
