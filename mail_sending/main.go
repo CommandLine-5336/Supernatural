@@ -28,7 +28,6 @@ type MailData struct {
 func init() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Print("Error .env not found")
 	}
 }
 func DailyMailScheduler() {
@@ -74,13 +73,25 @@ func main() {
 	go DailyMailScheduler() // start by cron
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("POST /send_mail", sendMail)
+	mux.HandleFunc("POST /mail", sendMail)
 
-	fmt.Println("server listening to  port 8080")
-	log.Fatal(http.ListenAndServe(":8080", mux)) // can be used like ListenAndServeTLS
+	fmt.Println("server listening to  port 8074")
+	log.Fatal(http.ListenAndServe(":8074", CORS(mux))) // can be used like ListenAndServeTLS
 
 }
+func CORS(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Access-Control-Allow-Methods", "POST")
 
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
 func sendMail(
 	w http.ResponseWriter,
 	r *http.Request,

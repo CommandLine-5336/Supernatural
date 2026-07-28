@@ -20,7 +20,7 @@ JWT_SECRET_KEY = os.getenv("JWT_KEY")
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "general", "frontend"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "general", "frontend", "mail_service"]
 
 
 INSTALLED_APPS = [
@@ -81,6 +81,7 @@ DATABASES = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
+    "http://localhost:8074",
     "http://127.0.0.1:8080",
     "http://localhost:5173",
 ]
