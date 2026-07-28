@@ -75,14 +75,8 @@ services:
       dockerfile: Dockerfile.backup
     env_file:
       - .env
-    environment:
-        POSTGRES_HOST : ${DB_HOST}
-        POSTGRES_USER : ${DB_USER}
-        POSTGRES_PASSWORD : ${DB_PASS}
-        POSTGRES_DB : ${DB_NAME}
     volumes:
       - ./db_backups:/db_backups
-      - ./backup.sh:/backup.sh
     entrypoint: ["sh", "/entrypoint.sh"]
     depends_on:
       database:

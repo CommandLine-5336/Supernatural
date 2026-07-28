@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-BACKUP_DIR="db_backups/"
+BACKUP_DIR="/db_backups"
 BACKUP_FILE="${BACKUP_DIR}/${DB_NAME}_${TIMESTAMP}.sql.gz"
 
 mkdir -p "$BACKUP_DIR"
