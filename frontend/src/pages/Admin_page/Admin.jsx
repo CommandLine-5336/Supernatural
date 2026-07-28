@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import BackButton from '../../shared/ui/BackButton/BackButton';
 import "./Admin.css";
 
-export default function Admin() {
+export default function Admin({ user, setUser }) {
   const navigate = useNavigate();
   return (
 <div>

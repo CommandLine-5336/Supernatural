@@ -7,16 +7,16 @@ export default function Register() {
   const [input_email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const {email: url_email} = useParams();
+  const {invite_token} = useParams();
 
-  const is_invited = url_email && url_email !== "null";
-  const best_email = is_invited ? url_email : input_email;
+  const is_invited = invite_token && invite_token !== "null";
+  const email = is_invited ? "null" : input_email;
 
   async function handleRegister(e) {
     e.preventDefault();
     setMessage("");
 
-    const res = await register(best_email, password);
+    const res = await register(email, password, invite_token);
     const text = await res.text();
 
     setMessage(text);
@@ -36,7 +36,7 @@ export default function Register() {
           value={input_email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <p style={{ display: is_invited ? "inline-flex" : "none" }}>Registering {url_email}</p>
+        <p style={{ display: is_invited ? "inline-block" : "none" }}>Registering for email on which you have received an invitation</p>
         <br />
         <input
           type="password"

@@ -57,7 +57,7 @@ export default function App() {
         />
 
         <Route
-          path="/register/:email?"
+          path="/register/:invite_token?"
           element={
             <GuestRoute user={user}>
               <Register />
