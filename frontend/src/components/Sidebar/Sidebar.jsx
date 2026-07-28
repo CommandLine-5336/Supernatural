@@ -5,18 +5,19 @@ import PostDetails from "../PostDetails/PostDetails";
 import { useNavigate } from 'react-router-dom';
 import "./Sidebar.css";
 
-export default function Sidebar({ user, onLogout, mode, posts = [], onCreatePost, onSeenPost }) {
-  const navigate = useNavigate();
+
+export default function Sidebar({ user, setUser, mode, posts = [], onCreatePost, onSeenPost }) {
+const navigate = useNavigate();
+
   return (
     <aside className="sidebar">
       <div className="sidebar__top">
         <div className="sidebar__header-row">
-          <div className="sidebar__user-pill"
-          onClick={() => navigate('/admin')}>
-            <span className={`sidebar__avatar sidebar__avatar--${user.level}`} />
-            <span className="sidebar__username">{user.displayName}</span>
+          <div className="sidebar__user-pill" onClick={() => navigate('/admin')}>
+            <span className={`sidebar__avatar sidebar__avatar--${user.status}`} />
+            <span className="sidebar__username">{user.alias}</span>
           </div>
-          <LogoutButton onClick={onLogout} />
+          <LogoutButton setUser={setUser} />
         </div>
         <div className="sidebar__card">
           {mode?.type === "create" && (

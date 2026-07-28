@@ -1,25 +1,111 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import NotFound from "./pages/NotFound/NotFound";
 import Mail from "./pages/Mail/Mail";
 import VotingCourt from './pages/Voting_court/Voting_court';
 import NewVote from './pages/New_vote/New_vote';
 import Admin_page from './pages/Admin_page/Admin';
 
-function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/votes" element={<VotingCourt />} />
-                <Route path="/votes/new" element={<NewVote />} />
-                <Route path="/mail" element={<Mail />} />
-                <Route path="/admin" element={<Admin_page />} />
 
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { session } from "./api/auth";
 
-            </Routes>
-        </BrowserRouter>
-    );
+function ProtectedRoute({ user, children }) {
+  if (user === undefined) {
+    return <div>Loading...</div>;
+  }
+
+  return user ? children : <Navigate to="/login" replace />;
 }
 
-export default App
+function GuestRoute({ user, children }) {
+  return user ? <Navigate to="/" replace /> : children;
+}
+
+export default function App() {
+  const [user, setUser] = useState(undefined);
+
+  useEffect(() => {
+    (async () => {
+      const res = await session();
+      setUser(res.ok ? await res.json() : null);
+    })();
+  }, []);
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute user={user}>
+              <Home user={user} setUser={setUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/login"
+          element={
+            <GuestRoute user={user}>
+              <Login setUser={setUser} />
+            </GuestRoute>
+          }
+        />
+
+        <Route
+          path="/register"
+          element={
+            <GuestRoute user={user}>
+              <Register />
+            </GuestRoute>
+          }
+        />
+
+        <Route
+          path="/votes"
+          element={
+            <ProtectedRoute user={user}>
+              <VotingCourt user={user} setUser={setUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/votes/new"
+          element={
+            <ProtectedRoute user={user}>
+              <NewVote user={user} setUser={setUser} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <ProtectedRoute user={user}>
+              <NotFound />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute user={user}>
+              <Admin_page user={user} setUser={setUser} />
+            </ProtectedRoute>
+          }
+          />
+        <Route
+          path="/admin/mail"
+          element={
+            <ProtectedRoute user={user}>
+              <Mail />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
+}

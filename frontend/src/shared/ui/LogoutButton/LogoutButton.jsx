@@ -1,12 +1,21 @@
-import React from "react";
 import "./LogoutButton.css";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../../api/auth";
 
-export default function LogoutButton({ onClick }) {
+export default function LogoutButton({ setUser }) {
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await logout();
+    setUser(null);
+    navigate("/login", { replace: true });
+  }
+
   return (
     <button
       type="button"
       className="ui-logout-btn"
-      onClick={onClick}
+      onClick={handleLogout}
       aria-label="Log out"
     >
       <svg

@@ -1,0 +1,22 @@
+info:
+  name: logout
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: http://127.0.0.1:8080/logout?email=johndoe@email.com
+  headers:
+    - name: X-CSRF-Token
+      value: SmGrvCLNNDxGxxcl-pGb09ktfFLKzaBO_jcfIZEG1hI=
+  params:
+    - name: email
+      value: johndoe@email.com
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

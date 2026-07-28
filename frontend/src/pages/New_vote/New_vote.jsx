@@ -4,9 +4,8 @@ import "./New_vote.css";
 import BackButton from "../../shared/ui/BackButton/BackButton";
 import { useLocation } from 'react-router-dom';
 
-export default function NewVote({ mode }) {
+export default function NewVote({ user, setUser }) {
     const location = useLocation();
-    const me = location.state?.me;
     const [error, setError] = useState('');
     const [form, setForm] = useState({
         type: 'promotion',
@@ -69,7 +68,7 @@ export default function NewVote({ mode }) {
                                 onChange={(e) => setField('type', e.target.value)}
                             >
                                 <option value="promotion">promotion</option>
-                                <option style={{ display: me?.inquisitor === true ? "inline-flex" : "none" }} value="excommunication">
+                                <option style={{ display: user?.inquisitor === true ? "inline-flex" : "none" }} value="excommunication">
                                     excommunication
                                 </option>
                             </select>
