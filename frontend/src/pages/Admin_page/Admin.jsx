@@ -20,7 +20,7 @@ export default function Admin() {
           Create mails
         </button>
         <button
-          // style={{ display: user?.status === "gold" ? "inline-flex" : "none" }}
+          style={{ display: user?.status === "gold" ? "inline-flex" : "none" }}
           type="button"
           className="post-form__submit"
           onClick={() => navigate('/invite')}>
