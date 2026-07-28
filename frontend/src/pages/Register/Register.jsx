@@ -36,7 +36,7 @@ export default function Register() {
           value={input_email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <p style={{ display: is_invited ? "inline-flex" : "none" }}>Registrating {url_email}</p>
+        <p style={{ display: is_invited ? "inline-flex" : "none" }}>Registering {url_email}</p>
         <br />
         <input
           type="password"
