@@ -1,16 +1,16 @@
 .ui-erase-btn {
-  width: 42px;
-  height: 42px;
-  flex-shrink: 0;
-  border: 1px solid rgb(224, 16, 16);
-  border-radius: 999px;
-  background: rgb(224 16 16 / 4%);
-  color: #9ca3af;
-  cursor: pointer;
+  width: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  background: #880f0f;
+  border: none;
+  border-radius: 10px;
+  padding: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
 }
 
 .ui-erase-btn:hover {
