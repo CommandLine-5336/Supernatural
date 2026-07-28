@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "apps.authentication",
-    "apps.main",
+    "apps.blocking",
     "apps.posts",
     "apps.votes",
 ]
