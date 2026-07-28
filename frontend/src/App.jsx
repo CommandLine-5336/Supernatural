@@ -98,7 +98,7 @@ export default function App() {
           }
           />
         <Route
-          path="/admin/mail"
+          path="/mail"
           element={
             <ProtectedRoute user={user}>
               <Mail />

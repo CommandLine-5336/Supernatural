@@ -28,7 +28,6 @@ type MailData struct {
 func init() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Print("Error .env not found")
 	}
 }
 func DailyMailScheduler() {
