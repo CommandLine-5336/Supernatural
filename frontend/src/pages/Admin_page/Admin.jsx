@@ -19,6 +19,13 @@ export default function Admin() {
           onClick={() => navigate('/mail')}>
           Create mails
         </button>
+        <button
+          // style={{ display: user?.status === "gold" ? "inline-flex" : "none" }}
+          type="button"
+          className="post-form__submit"
+          onClick={() => navigate('/invite')}>
+          Create invitation
+        </button>
       </div>
   </div>
   );

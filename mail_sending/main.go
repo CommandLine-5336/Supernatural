@@ -7,9 +7,14 @@ import (
 	"mail_sending/config"
 	"mail_sending/mail"
 	"net/http"
+	netmail "net/mail"
+	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/robfig/cron/v3"
+	"github.com/golang-jwt/jwt/v5"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 type User struct {
@@ -23,6 +28,10 @@ type MailData struct {
 	TargetStatus []string `json:"TargetStatus"`
 	Subject      string   `json:"Subject"`
 	BodyText     string   `json:"BodyText"`
+}
+
+type InviteData struct {
+    Email string `json:"email"`
 }
 
 func init() {
@@ -61,6 +70,66 @@ func SendDailyPassword() {
 	}
 }
 
+var jwtSecret = []byte(os.Getenv("JWT_KEY"))
+func CreateInviteJWT(email string) (string, error) {
+	claims := jwt.MapClaims{
+		"sub": email,
+		"exp": time.Now().Add(24 * time.Hour).Unix(),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	return token.SignedString(jwtSecret)
+}
+
+func CreateInvite(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	var emailData InviteData
+	err := json.NewDecoder(r.Body).Decode(&emailData) //decode json into go struct
+	if err != nil {
+		http.Error(
+			w,
+			err.Error(),
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+    if emailData.Email == "" {
+		http.Error(
+			w,
+			"Email is required",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	if _, err := netmail.ParseAddress(emailData.Email); err != nil {
+		http.Error(w, "invalid email format", http.StatusBadRequest) // 400
+		return
+	}
+
+    token, err := CreateInviteJWT(emailData.Email)
+
+	if err != nil {
+		http.Error(w, "could not create invite token", http.StatusInternalServerError) // 500
+		return
+	}
+
+    link := fmt.Sprintf("http://127.0.0.1:8100/invite/%s", token)
+
+	err = mail.SendInvite(emailData.Email, link)
+	if err != nil {
+		log.Print("email not send ", err)
+	} else {
+		log.Print("email send ", emailData.Email)
+	}
+}
+
+
+
 func main() {
 	_, err := config.ConnectDB()
 	if err != nil {
@@ -74,6 +143,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /mail", sendMail)
+	mux.HandleFunc("POST /invite", CreateInvite)
 
 	fmt.Println("server listening to  port 8074")
 	log.Fatal(http.ListenAndServe(":8074", CORS(mux))) // can be used like ListenAndServeTLS
