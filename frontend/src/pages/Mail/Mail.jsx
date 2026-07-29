@@ -82,7 +82,7 @@ const onSubmit = async () => {
 <div>
         <header className="mail-header">
             <div className="mail-header-row">
-              <BackButton onClick={() => window.location.href = '/'}/>
+              <BackButton onClick={() => window.location.href = '/admin'}/>
               <h1 className="mail-title">Mailing</h1>
             </div>
         </header>

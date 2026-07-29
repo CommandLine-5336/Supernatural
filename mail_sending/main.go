@@ -34,6 +34,11 @@ type InviteData struct {
     Email string `json:"email"`
 }
 
+type InquisitorMailRequest struct {
+	Email string `json:"email"`
+	Alias string `json:"alias"`
+}
+
 func init() {
 	err := godotenv.Load()
 	if err != nil {
@@ -43,7 +48,7 @@ func DailyMailScheduler() {
 	c := cron.New()
 
 	c.AddFunc("CRON_TZ=Europe/Kyiv 1 0 * * *", func() { // 00:01
-		log.Print("Start cron scheduler")
+		log.Println("Start scheduled password mailing")
 		SendDailyPassword()
 
 	})
@@ -139,19 +144,22 @@ func main() {
 
 	// SendDailyPassword() // to send email immediately
 
-	go DailyMailScheduler() // start by cron
+	DailyMailScheduler() // start by cron
+	log.Println("Cron job started")
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /mail", sendMail)
+	mux.HandleFunc("POST /inquisitor_mail", sendInquisitorMail)
 	mux.HandleFunc("POST /invite", CreateInvite)
 
-	fmt.Println("server listening to  port 8074")
+	log.Println("server listening to  port 8074")
 	log.Fatal(http.ListenAndServe(":8074", CORS(mux))) // can be used like ListenAndServeTLS
 
 }
 func CORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4040")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Access-Control-Allow-Methods", "POST")
 
@@ -218,4 +226,45 @@ func sendMail(
 
 	}
 
+}
+
+
+func sendInquisitorMail(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	var inquisitorMail InquisitorMailRequest
+
+	err := json.NewDecoder(r.Body).Decode(&inquisitorMail) //decode json into go struct
+	if err != nil {
+		http.Error(
+			w,
+			err.Error(),
+			http.StatusBadRequest,
+		)
+		return
+	}
+	if inquisitorMail.Email == "" {
+		http.Error(
+			w,
+			"Subject can not be empty",
+			http.StatusBadRequest,
+		)
+		return
+	}
+	if inquisitorMail.Alias == "" {
+		http.Error(
+			w,
+			"Subject can not be empty",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	err = mail.SendInquisitorMail(inquisitorMail.Email, inquisitorMail.Alias)
+	if err != nil {
+		log.Print("email not send ", err)
+	} else {
+		log.Print("email send ", inquisitorMail.Email)
+	}
 }

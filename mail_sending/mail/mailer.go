@@ -121,3 +121,38 @@ func SendInvite(emailAddress string, link string) error {
 	return nil
 
 }
+
+func SendInquisitorMail(emailAddress string, userAlias string) error {
+	email_host := os.Getenv("EMAIL_HOST")
+	email_from := os.Getenv("EMAIL_FROM")
+	password := os.Getenv("EMAIL_PASSWORD")
+	templateData := struct {
+		UserAlias string
+	}{
+		UserAlias: userAlias,
+	}
+
+	tmpl, err := template.ParseFiles("templates/Inquisitor_index.html")
+	if err != nil {
+		panic(fmt.Errorf("failed to parse template file: %w", err))
+	}
+
+	d := gomail.NewDialer(email_host, 587, email_from, password)
+
+	var bodyBuffer bytes.Buffer
+	if err := tmpl.Execute(&bodyBuffer, templateData); err != nil {
+		return err
+	}
+
+	m := gomail.NewMessage()
+	m.SetHeader("From", "unown@gmail.com")
+	m.SetHeader("To", emailAddress)
+	m.SetHeader("Subject", "THE CIRCLE")
+	m.SetBody("text/html", bodyBuffer.String())
+
+	if err := d.DialAndSend(m); err != nil {
+		return err
+	}
+	return nil
+
+}
