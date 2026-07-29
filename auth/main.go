@@ -8,6 +8,7 @@ import (
 	"net/mail"
 	"os"
 	"time"
+	"strings"
 
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
@@ -32,6 +33,7 @@ func main() {
 	http.HandleFunc("/login", login)
 	http.HandleFunc("/session", session)
 	http.HandleFunc("/logout", logout)
+	http.HandleFunc("/invite/", setTrespassingCookie)
 
 	// Start HTTP server
 	c := cors.New(cors.Options{
@@ -61,9 +63,47 @@ func connectDB() (*sql.DB, error) {
 	return db, nil
 }
 
+
+func setTrespassingCookie(w http.ResponseWriter, r *http.Request) {
+    token := strings.TrimPrefix(r.URL.Path, "/invite/")
+    if token == "" {
+	    http.Error(w, "no invite token", http.StatusBadRequest) // 400
+	    return
+    }
+    _, err := parseInviteJWT(token)
+	if err != nil {
+	    http.Error(w, "couldn't get email", http.StatusBadRequest) // 400
+	    return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "trespass",
+		Value:    "true",
+		Expires:  time.Now().Add(1 * time.Hour),
+		SameSite: http.SameSiteLaxMode,
+		HttpOnly: true,
+		Path:     "/",
+	})
+
+	w.Header().Set("Content-Type", "application/json")
+
+	register_url := fmt.Sprintf("http://localhost:8080/register/%s", token)
+    http.Redirect(w, r, register_url, http.StatusSeeOther)
+}
+
 func register(w http.ResponseWriter, r *http.Request) {
+    invite_token := r.FormValue("invite_token")
 	email := r.FormValue("email")
 	password := r.FormValue("password")
+
+	if invite_token != "" && invite_token != "null" && invite_token != "undefined" {
+	    token_email, err := parseInviteJWT(invite_token)
+        if err != nil {
+            http.Error(w, "couldn't get email", http.StatusBadRequest) // 400
+            return
+        }
+        email = token_email
+	}
 
 	if _, err := mail.ParseAddress(email); err != nil {
 		http.Error(w, "invalid email format", http.StatusBadRequest) // 400

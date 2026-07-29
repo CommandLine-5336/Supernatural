@@ -3,6 +3,7 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import NotFound from "./pages/NotFound/NotFound";
 import Mail from "./pages/Mail/Mail";
+import Invite from "./pages/Invite/Invite";
 import VotingCourt from './pages/Voting_court/Voting_court';
 import NewVote from './pages/New_vote/New_vote';
 import Admin_page from './pages/Admin_page/Admin';
@@ -56,7 +57,7 @@ export default function App() {
         />
 
         <Route
-          path="/register"
+          path="/register/:invite_token?"
           element={
             <GuestRoute user={user}>
               <Register />
@@ -102,6 +103,14 @@ export default function App() {
           element={
             <ProtectedRoute user={user}>
               <Mail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/invite"
+          element={
+            <ProtectedRoute user={user}>
+              <Invite />
             </ProtectedRoute>
           }
         />

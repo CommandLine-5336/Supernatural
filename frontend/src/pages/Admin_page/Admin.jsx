@@ -6,7 +6,7 @@ import EraseButton from '../../shared/ui/EraseButton/EraseButton';
 import { erase } from '../../api/erase';
 import { report } from '../../api/report';
 
-export default function Admin({ user }) {
+export default function Admin({ user, setUser }) {
   const navigate = useNavigate();
   const [eraseMessage, setEraseMessage] = useState("");
   const [reportMessage, setReportMessage] = useState("");
@@ -56,7 +56,13 @@ export default function Admin({ user }) {
         onClick={handleReport}
         > Report </button>
         {reportMessage && <p>{reportMessage}</p>}
-
+        <button
+          style={{ display: user?.status === "gold" ? "inline-block" : "none" }}
+          type="button"
+          className="post-form__submit"
+          onClick={() => navigate('/invite')}>
+          Create invitation
+        </button>
         <EraseButton onClick={handleErase} style={{ display: user?.status === "gold" ? "flex" : "none" }}/>
         {eraseMessage && <p>{eraseMessage}</p>}
       </div>

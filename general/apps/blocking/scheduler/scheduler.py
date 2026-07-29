@@ -3,6 +3,7 @@
 import random
 import sys
 
+import requests
 from apps.authentication.models import User
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -25,6 +26,20 @@ def set_inquisitor():
     new_inq.inquisitor = True
     new_inq.save(update_fields=["inquisitor"])
     print(f"New inquisitor - {new_inq.alias}")
+
+    try:
+        response = requests.post(
+            "http://mail_service:8074/inquisitor_mail",
+            headers={"Content-Type": "application/json"},
+            json={
+                "email": new_inq.email,
+                "alias": new_inq.alias,
+            },
+            timeout=5,
+        )
+        response.raise_for_status()
+    except requests.RequestException as e:
+        print(f"Couldn't send email to inquisitor {e}")
 
 
 scheduler = BackgroundScheduler()
