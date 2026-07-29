@@ -1,6 +1,7 @@
 FROM golang:1.26.5-alpine AS build
 WORKDIR /mail_service
 COPY . .
+RUN go mod tidy
 RUN go build -o main
 
 # Runtime stage

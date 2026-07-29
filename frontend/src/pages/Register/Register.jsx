@@ -1,19 +1,23 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { register } from "../../api/auth";
 import "./Register.css";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [input_email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const {invite_token} = useParams();
+
+  const is_invited = invite_token && invite_token !== "null";
+  const email = is_invited ? "null" : input_email;
 
   async function handleRegister(e) {
     e.preventDefault();
     setMessage("");
 
-    const res = await register(email, password);
+    const res = await register(email, password, invite_token);
     const text = await res.text();
 
     setMessage(text);
@@ -32,13 +36,15 @@ export default function Register() {
           <div>
             <label htmlFor="id_email">Email</label>
             <input
+              style={{ display: is_invited ? "none" : "inline-flex" }}
               id="id_email"
               type="email"
               placeholder="Enter your email"
-              value={email}
+              value={input_email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+            <p style={{ display: is_invited ? "inline-block" : "none" }}>Registering for email on which you have received an invitation</p>
           </div>
           <div>
             <label htmlFor="id_password">Password</label>
