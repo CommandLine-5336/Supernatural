@@ -78,3 +78,17 @@ func parseJWT(tokenString string) (int, error) {
 
 	return int(claims["sub"].(float64)), nil
 }
+
+func parseInviteJWT(tokenString string) (string, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
+
+	if err != nil || !token.Valid {
+		return "", err
+	}
+
+	claims := token.Claims.(jwt.MapClaims)
+
+	return claims["sub"].(string), nil
+}

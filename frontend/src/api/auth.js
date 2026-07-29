@@ -21,10 +21,11 @@ export async function login(email, password) {
   return res.json();
 }
 
-export function register(email, password) {
+export function register(email, password, invite_token) {
   return postForm("/register", {
     email,
     password,
+    invite_token,
   });
 }
 
