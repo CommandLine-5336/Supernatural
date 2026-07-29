@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import BackButton from '../../shared/ui/BackButton/BackButton';
 import "./Admin.css";
 
-export default function Admin() {
+export default function Admin({ user, setUser }) {
   const navigate = useNavigate();
   return (
 <div>
@@ -18,6 +18,13 @@ export default function Admin() {
           className="post-form__submit"
           onClick={() => navigate('/mail')}>
           Create mails
+        </button>
+        <button
+          style={{ display: user?.status === "gold" ? "inline-block" : "none" }}
+          type="button"
+          className="post-form__submit"
+          onClick={() => navigate('/invite')}>
+          Create invitation
         </button>
       </div>
   </div>

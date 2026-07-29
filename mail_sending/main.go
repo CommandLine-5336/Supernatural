@@ -150,6 +150,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /mail", sendMail)
 	mux.HandleFunc("POST /inquisitor_mail", sendInquisitorMail)
+	mux.HandleFunc("POST /invite", CreateInvite)
 
 	log.Println("server listening to  port 8074")
 	log.Fatal(http.ListenAndServe(":8074", CORS(mux))) // can be used like ListenAndServeTLS

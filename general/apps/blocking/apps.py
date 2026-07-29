@@ -10,7 +10,7 @@ from django.apps import AppConfig
 class MainConfig(AppConfig):
     """Configuration for main schedule"""
 
-    name = "apps.main"
+    name = "apps.blocking"
 
     def ready(self):
         """Starting scheduler with application"""
