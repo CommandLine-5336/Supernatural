@@ -2,7 +2,7 @@
 FROM golang:1.26.5-alpine AS build
 WORKDIR /mail_service
 COPY . .
-RUN apk add --no-cache tzdata && go build -o main
+RUN go build -o main
 
 # Runtime stage
 FROM alpine:3.23.5
