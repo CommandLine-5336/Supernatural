@@ -4,10 +4,20 @@ import BackButton from '../../shared/ui/BackButton/BackButton';
 import "./Admin.css";
 import EraseButton from '../../shared/ui/EraseButton/EraseButton';
 import { erase } from '../../api/erase';
+import { report } from '../../api/report';
 
 export default function Admin({ user }) {
   const navigate = useNavigate();
   const [eraseMessage, setEraseMessage] = useState("");
+  const [reportMessage, setReportMessage] = useState("");
+  const [ip_address,setip_address] = useState("");
+
+  const handleReport = async () => {
+    const response = await report(ip_address)
+    const data = await response.json();
+    setReportMessage(data.message);
+    setip_address("");
+  }
 
   const handleErase = async () => {
     const confirmed = window.confirm("This will permanently erase all data. Are you sure?");
@@ -15,7 +25,7 @@ export default function Admin({ user }) {
     const response = await erase();
     const data = await response.json();
     setEraseMessage(data.message);
-    navigate('/')
+    navigate('/login')
   };
 
   return (
@@ -33,6 +43,20 @@ export default function Admin({ user }) {
           onClick={() => navigate('/mail')}>
           Create mails
         </button>
+
+        <input type="text"
+        placeholder="IPv4 address"
+        style={{ display: ["gold", "silver"].includes(user?.status) ? "flex" : "none" }}
+        value={ip_address}
+        onChange={(e) => setip_address(e.target.value)}
+        />
+        <button
+        type="button"
+        style={{ display: ["gold", "silver"].includes(user?.status) ? "flex" : "none" }}
+        onClick={handleReport}
+        > Report </button>
+        {reportMessage && <p>{reportMessage}</p>}
+
         <EraseButton onClick={handleErase} style={{ display: user?.status === "gold" ? "flex" : "none" }}/>
         {eraseMessage && <p>{eraseMessage}</p>}
       </div>
