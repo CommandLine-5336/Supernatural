@@ -27,39 +27,47 @@ export default function Register() {
   }
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form onSubmit={handleRegister}>
-        <input
-          style={{ display: is_invited ? "none" : "inline-flex" }}
-          placeholder="Email"
-          value={input_email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <p style={{ display: is_invited ? "inline-block" : "none" }}>Registering for email on which you have received an invitation</p>
-        <br />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
-        <button type="submit">
-          Register
-        </button>
-      </form>
-      {message && (
-        <p>
-          {message}
-        </p>
-      )}
-      <button
-        type="button"
-        onClick={() => navigate("/login")}
-      >
-        Back to login
-      </button>
+    <div className="register-container">
+      <div className="register-card">
+        <h1>Register</h1>
+        <form onSubmit={handleRegister} style={{ display: "contents" }}>
+          {message && <div className="register-error-msg">{message}</div>}
+          <div>
+            <label htmlFor="id_email">Email</label>
+            <input
+              style={{ display: is_invited ? "none" : "inline-flex" }}
+              id="id_email"
+              type="email"
+              placeholder="Enter your email"
+              value={input_email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <p style={{ display: is_invited ? "inline-block" : "none" }}>Registering for email on which you have received an invitation</p>
+          </div>
+          <div>
+            <label htmlFor="id_password">Password</label>
+            <input
+              id="id_password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="btn-register-submit">
+            Register
+          </button>
+          <button
+            type="button"
+            className="btn-register-back"
+            onClick={() => navigate("/login")}
+          >
+            Back to login
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
