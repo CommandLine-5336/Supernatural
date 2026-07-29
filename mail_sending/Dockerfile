@@ -1,8 +1,8 @@
-# hadolint ignore=all
+# hadolint global ignore=DL3003,DL3006,SC1035 # We accept these issues
 FROM golang:1.26.5-alpine AS build
 WORKDIR /mail_service
 COPY . .
-RUN apk add --no-cache tzdata && go build -o main
+RUN go build -o main
 
 # Runtime stage
 FROM alpine:3.23.5
