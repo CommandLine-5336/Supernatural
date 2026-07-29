@@ -44,8 +44,12 @@ export default function Admin({ user, setUser }) {
           Create mails
         </button>
 
+
+
+
+        <div className="report-row">
         <input type="text"
-        placeholder="IPv4 address"
+        placeholder="IPv4 address to report"
         style={{ display: ["gold", "silver"].includes(user?.status) ? "flex" : "none" }}
         value={ip_address}
         onChange={(e) => setip_address(e.target.value)}
@@ -53,9 +57,20 @@ export default function Admin({ user, setUser }) {
         <button
         type="button"
         style={{ display: ["gold", "silver"].includes(user?.status) ? "flex" : "none" }}
+        className="post-form__submit report-submit-btn"
         onClick={handleReport}
         > Report </button>
-        {reportMessage && <p>{reportMessage}</p>}
+        </div>
+
+
+
+
+        {reportMessage && <p className="report-message">{reportMessage}</p>}
+
+
+
+
+
         <button
           style={{ display: user?.status === "gold" ? "inline-block" : "none" }}
           type="button"
