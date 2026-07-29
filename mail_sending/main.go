@@ -7,9 +7,14 @@ import (
 	"mail_sending/config"
 	"mail_sending/mail"
 	"net/http"
+	netmail "net/mail"
+	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/robfig/cron/v3"
+	"github.com/golang-jwt/jwt/v5"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 type User struct {
@@ -25,6 +30,15 @@ type MailData struct {
 	BodyText     string   `json:"BodyText"`
 }
 
+type InviteData struct {
+    Email string `json:"email"`
+}
+
+type InquisitorMailRequest struct {
+	Email string `json:"email"`
+	Alias string `json:"alias"`
+}
+
 func init() {
 	err := godotenv.Load()
 	if err != nil {
@@ -34,7 +48,7 @@ func DailyMailScheduler() {
 	c := cron.New()
 
 	c.AddFunc("CRON_TZ=Europe/Kyiv 1 0 * * *", func() { // 00:01
-		log.Print("Start cron scheduler")
+		log.Println("Start scheduled password mailing")
 		SendDailyPassword()
 
 	})
@@ -61,6 +75,66 @@ func SendDailyPassword() {
 	}
 }
 
+var jwtSecret = []byte(os.Getenv("JWT_KEY"))
+func CreateInviteJWT(email string) (string, error) {
+	claims := jwt.MapClaims{
+		"sub": email,
+		"exp": time.Now().Add(24 * time.Hour).Unix(),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	return token.SignedString(jwtSecret)
+}
+
+func CreateInvite(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	var emailData InviteData
+	err := json.NewDecoder(r.Body).Decode(&emailData) //decode json into go struct
+	if err != nil {
+		http.Error(
+			w,
+			err.Error(),
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+    if emailData.Email == "" {
+		http.Error(
+			w,
+			"Email is required",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	if _, err := netmail.ParseAddress(emailData.Email); err != nil {
+		http.Error(w, "invalid email format", http.StatusBadRequest) // 400
+		return
+	}
+
+    token, err := CreateInviteJWT(emailData.Email)
+
+	if err != nil {
+		http.Error(w, "could not create invite token", http.StatusInternalServerError) // 500
+		return
+	}
+
+    link := fmt.Sprintf("http://127.0.0.1:8100/invite/%s", token)
+
+	err = mail.SendInvite(emailData.Email, link)
+	if err != nil {
+		log.Print("email not send ", err)
+	} else {
+		log.Print("email send ", emailData.Email)
+	}
+}
+
+
+
 func main() {
 	_, err := config.ConnectDB()
 	if err != nil {
@@ -70,18 +144,21 @@ func main() {
 
 	// SendDailyPassword() // to send email immediately
 
-	go DailyMailScheduler() // start by cron
+	DailyMailScheduler() // start by cron
+	log.Println("Cron job started")
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /mail", sendMail)
+	mux.HandleFunc("POST /inquisitor_mail", sendInquisitorMail)
 
-	fmt.Println("server listening to  port 8074")
+	log.Println("server listening to  port 8074")
 	log.Fatal(http.ListenAndServe(":8074", CORS(mux))) // can be used like ListenAndServeTLS
 
 }
 func CORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4040")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Access-Control-Allow-Methods", "POST")
 
@@ -148,4 +225,45 @@ func sendMail(
 
 	}
 
+}
+
+
+func sendInquisitorMail(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	var inquisitorMail InquisitorMailRequest
+
+	err := json.NewDecoder(r.Body).Decode(&inquisitorMail) //decode json into go struct
+	if err != nil {
+		http.Error(
+			w,
+			err.Error(),
+			http.StatusBadRequest,
+		)
+		return
+	}
+	if inquisitorMail.Email == "" {
+		http.Error(
+			w,
+			"Subject can not be empty",
+			http.StatusBadRequest,
+		)
+		return
+	}
+	if inquisitorMail.Alias == "" {
+		http.Error(
+			w,
+			"Subject can not be empty",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	err = mail.SendInquisitorMail(inquisitorMail.Email, inquisitorMail.Alias)
+	if err != nil {
+		log.Print("email not send ", err)
+	} else {
+		log.Print("email send ", inquisitorMail.Email)
+	}
 }

@@ -29,7 +29,8 @@ def set_inquisitor():
 
     try:
         response = requests.post(
-            "http://127.0.0.1:8074/inquisitor_mail",
+            "http://mail_service:8074/inquisitor_mail",
+            headers={"Content-Type": "application/json"},
             json={
                 "email": new_inq.email,
                 "alias": new_inq.alias,
@@ -50,7 +51,7 @@ def start():
         scheduler.add_job(
             set_inquisitor,
             "interval",
-            hours=24,
+            minutes=1,
             name="set_inquisitor",
             replace_existing=True,
         )
