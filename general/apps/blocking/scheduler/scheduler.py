@@ -51,7 +51,7 @@ def start():
         scheduler.add_job(
             set_inquisitor,
             "interval",
-            minutes=1,
+            hours=24,
             name="set_inquisitor",
             replace_existing=True,
         )
