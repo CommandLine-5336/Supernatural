@@ -17,6 +17,6 @@ WORKDIR /cleanup
 
 COPY --from=build-stage /cleanup/cleanup ./
 
-EXPOSE 8080
+EXPOSE 8585
 
 CMD [ "./cleanup" ]

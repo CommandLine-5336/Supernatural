@@ -1,4 +1,4 @@
-const CLEANUP_URL = "http://localhost:8585"
+const CLEANUP_URL = "/api/cleanup"
 
 export function erase(){
     return fetch(`${CLEANUP_URL}/erase`, {
