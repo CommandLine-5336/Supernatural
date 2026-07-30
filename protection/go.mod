@@ -1,4 +1,4 @@
-module password_generator
+module protection
 
 go 1.26.5
 

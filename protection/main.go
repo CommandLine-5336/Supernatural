@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"math/rand"
 	"os"
@@ -25,9 +24,10 @@ func main() {
 	// Close database connection when main exits
 	defer db.Close()
 
-	// Generate password
-	password := PasswordGenerator(64)
-	fmt.Printf("Website password: %s\n", password)
+	err = rotatePassword(db)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func connectDB() (*sql.DB, error) {
@@ -43,12 +43,42 @@ func connectDB() (*sql.DB, error) {
 	return db, nil
 }
 
+func rotatePassword(db *sql.DB) error {
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	// Disable current password
+	_, err = tx.Exec(
+		"UPDATE website_passwords SET is_active = false WHERE is_active = true",
+	)
+	if err != nil {
+		return err
+	}
+
+	// Create new password
+	password := PasswordGenerator(64)
+
+	_, err = tx.Exec(
+		"INSERT INTO website_passwords (password, is_active) VALUES ($1, $2)",
+		password,
+		true,
+	)
+	if err != nil {
+		return err
+	}
+
+	return tx.Commit()
+}
+
 func PasswordGenerator(passwordLength int) string {
 	// Character sets for generating passwords
-	lowerCase := "abcdefghijklmnopqrstuvwxyz" // lowercase
-	upperCase := "ABCDEFGHIJKLMNOPQRSTUVWXYZ" // uppercase
-	numbers := "0123456789"                   // numbers
-	specialChar := "!@#$%^&*()_-+={}[/?]"     // special characters
+	lowerCase := "abcdefghijklmnopqrstuvwxyz"
+	upperCase := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	numbers := "0123456789Є"
+	specialChar := "!@#$%^&*()_-+={}[/?]"
 
 	// Variable for storing password
 	password := ""
