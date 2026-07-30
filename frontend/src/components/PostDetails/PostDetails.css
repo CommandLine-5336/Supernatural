@@ -54,6 +54,22 @@
   margin: 0;
 }
 
+.post-details__seen-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  color: 
+  #9ca3af;
+  font-size: 12px;
+  font-weight: 500;
+  width: fit-content;
+  margin: 0;
+  }
+
 .post-details__seen-btn {
   background: #8b5cf6;
   border: none;
@@ -62,5 +78,19 @@
   color: white;
   cursor: pointer;
   font-size: 13px;
+  font-weight: 600;
   flex-shrink: 0;
+  transition: background 0.15s ease;
+  margin-top: 10px;
+}
+
+.post-details__seen-btn:hover:not(:disabled) {
+  background: #7c3aed;
+}
+
+.post-details__seen-btn--disabled {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.05));
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  cursor: not-allowed;
 }
