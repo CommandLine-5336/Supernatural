@@ -20,7 +20,10 @@ export function usePosts() {
 
   const markSeen = useCallback(async (id) => {
     const { seen_count } = await markPostSeen(id);
-    setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, seen_count } : p)));
+    setPosts((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, seen_count, already_seen: true } : p))
+    );
+    return { seen_count };
   }, []);
 
   return { posts, loading, addPost, markSeen };

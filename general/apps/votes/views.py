@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from .models import User, Vote, VoteRes
 from .serializers import VoteResSerializer, VoteSerializer
-from .token import CookieJWTAuthentication
+from ..token import CookieJWTAuthentication
 
 
 def execute_vote(vote):
