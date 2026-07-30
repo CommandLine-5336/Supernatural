@@ -42,7 +42,7 @@ export default function Register() {
               placeholder="Enter your email"
               value={input_email}
               onChange={(e) => setEmail(e.target.value)}
-              required
+              required={!is_invited}
             />
             <p style={{ display: is_invited ? "inline-block" : "none" }}>Registering for email on which you have received an invitation</p>
           </div>
