@@ -1,14 +1,46 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	"log"
 	"math/rand"
+	"os"
 	"time"
+
+	_ "github.com/joho/godotenv/autoload"
+	_ "github.com/lib/pq"
 )
 
+var db *sql.DB
+
 func main() {
+	// Init database connection
+	var err error
+	db, err = connectDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Close database connection when main exits
+	defer db.Close()
+
+	// Generate password
 	password := PasswordGenerator(64)
 	fmt.Printf("Website password: %s\n", password)
+}
+
+func connectDB() (*sql.DB, error) {
+	db, err := sql.Open("postgres", os.Getenv("DSN"))
+	if err != nil {
+		return nil, err
+	}
+
+	if err := db.Ping(); err != nil {
+		return nil, err
+	}
+
+	return db, nil
 }
 
 func PasswordGenerator(passwordLength int) string {
