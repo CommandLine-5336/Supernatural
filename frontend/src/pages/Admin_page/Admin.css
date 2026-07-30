@@ -26,6 +26,7 @@ html, body, #root {
   color: #fff;
   margin: 0;
 }
+
 .admin-container {
     max-width: 800px;
     margin: auto;
@@ -35,6 +36,7 @@ html, body, #root {
     flex-direction: column;
     gap: 15px;
 }
+
 .report-message {
   background: #918aa1;
   border: none;

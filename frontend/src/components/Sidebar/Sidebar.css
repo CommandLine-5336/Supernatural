@@ -57,7 +57,6 @@
   background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
 }
 
-.sidebar__user-pill:has(.sidebar__avatar--copper),
 .sidebar__user-pill:has(.sidebar__avatar--silver),
 .sidebar__user-pill:has(.sidebar__avatar--gold) {
   cursor: pointer;
@@ -65,14 +64,12 @@
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.sidebar__user-pill:has(.sidebar__avatar--copper):hover,
 .sidebar__user-pill:has(.sidebar__avatar--silver):hover,
 .sidebar__user-pill:has(.sidebar__avatar--gold):hover {
   border-color: rgba(139, 92, 246, 0.4);
   background: rgba(139, 92, 246, 0.08);
 }
 
-.sidebar__avatar--copper + .sidebar__username::after,
 .sidebar__avatar--silver + .sidebar__username::after,
 .sidebar__avatar--gold + .sidebar__username::after {
   content: "admin";

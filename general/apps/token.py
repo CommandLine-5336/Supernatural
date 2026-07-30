@@ -1,14 +1,11 @@
 """Retrieving authentication data from JWT token stored in HTTP cookie"""
-
-# pylint: disable=duplicate-code
-
 import os
 
 import jwt
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 
-from ..authentication.models import User
+from .authentication.models import User
 
 JWT_SECRET = os.getenv("JWT_KEY")
 

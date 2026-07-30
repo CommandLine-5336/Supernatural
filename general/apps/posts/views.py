@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from .models import Post, Report
 from .serializers import PostSerializer
 from .storage import upload_image
-from .token import CookieJWTAuthentication
+from ..token import CookieJWTAuthentication
 
 
 class PostViewSet(viewsets.ModelViewSet):
