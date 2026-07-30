@@ -1,4 +1,4 @@
-const API_URL = "/api";
+const API_URL = "http://localhost:4040/api";
 
 async function request(path, options = {}) {
   const isFormData = options.body instanceof FormData;
