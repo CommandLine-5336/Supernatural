@@ -4,40 +4,9 @@ name: Build & Push Docker Images into ECR
 on:
   push:
   workflow_dispatch:
-    inputs:
-      manual_bump:
-        description: 'Version number to increase'
-        required: true
-        type: choice
-        options:
-          - major
-          - minor
-          - patch
-        default: patch
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-24.04
-    outputs:
-      version: ${{ steps.calculate-version.outputs.version-string }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-      - name: Configure version information
-        id: calculate-version
-        uses: bitshifted/git-auto-semver@v2
-        with:
-          create_tag: true
-          initial_version: 0.2.0
-          # THIS IS IMPORTANT! it will pass the required parameter to action
-          manual_bump: ${{ inputs.manual_bump }}
-      # add any other jobs you need
-  # Create release if needed (optional)
   build-tag-push-image:
-    needs: build-and-test
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -88,7 +57,7 @@ jobs:
         env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{ matrix.dir }}
-            IMAGE_TAG: ${{ needs.build-and-test.outputs.version }}
+            IMAGE_TAG: v.0.1.${{ github.run_number }}
             DIR_NAME: ${{ matrix.dir }}
             TAG_PREFIX: ${{ github.ref == 'refs/heads/main' && 'dev' || 'test' }} # if we in main branch taf is dev, else tag is test
         run: |
