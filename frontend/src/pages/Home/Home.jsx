@@ -15,10 +15,6 @@ export default function Home({ user, setUser }) {
     resetMode
   } = useSidebarMode();
 
-  const handleLogout = () => {
-    setUser(null);
-  };
-
   const handleCreatePost = async (data) => {
     await addPost(data);
     resetMode();
