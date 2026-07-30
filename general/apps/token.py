@@ -1,4 +1,5 @@
 """Retrieving authentication data from JWT token stored in HTTP cookie"""
+
 import os
 
 import jwt
