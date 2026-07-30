@@ -60,9 +60,9 @@ jobs:
         env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{ matrix.dir }}
-            IMAGE_TAG: v.0.1.${{ github.run_number }}
+            IMAGE_TAG: v.${{ github.run_number }}
             DIR_NAME: ${{ matrix.dir }}
             TAG_PREFIX: ${{ github.ref == 'refs/heads/main' && 'dev' || 'test' }} # if we in main branch taf is dev, else tag is test
         run: |
-          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$DIR_NAME-$IMAGE_TAG" .
-          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX-$DIR_NAME-$IMAGE_TAG"
+          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX_$DIR_NAME_$IMAGE_TAG" .
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$TAG_PREFIX_$DIR_NAME_$IMAGE_TAG"
