@@ -1,4 +1,5 @@
 """Serializers for posts"""
+
 from rest_framework import serializers
 from .models import Post, Report
 
@@ -26,7 +27,13 @@ class PostSerializer(serializers.ModelSerializer):
             "created_at",
             "already_seen",
         ]
-        read_only_fields = ["id", "image_url", "seen_count", "created_at", "already_seen"]
+        read_only_fields = [
+            "id",
+            "image_url",
+            "seen_count",
+            "created_at",
+            "already_seen",
+        ]
 
     def get_already_seen(self, obj):
         """Check whether the current authenticated user already reported seeing this post"""

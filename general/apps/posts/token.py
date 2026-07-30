@@ -1,4 +1,6 @@
 """Retrieving authentication data from JWT token stored in HTTP cookie"""
+# pylint: disable=duplicate-code
+
 import os
 
 import jwt
