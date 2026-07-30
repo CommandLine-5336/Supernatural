@@ -1,0 +1,18 @@
+{
+  "identities": [
+    {
+      "actions": [
+        "Admin",
+        "Read",
+        "Write"
+      ],
+      "credentials": [
+        {
+          "accessKey": "example",
+          "secretKey": "example"
+        }
+      ],
+      "name": "supernatural"
+    }
+  ]
+}

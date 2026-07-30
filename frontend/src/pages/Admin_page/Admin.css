@@ -31,4 +31,54 @@ html, body, #root {
     margin: auto;
     padding: 10px 20px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.report-message {
+  background: #918aa1;
+  border: none;
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0px;
+  text-align: center;
+}
+
+.report-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.report-row input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 14px;
+}
+
+.report-row input::placeholder {
+  color: #9ca3af;
+  text-align: left;
+}
+
+.report-submit-btn {
+  flex-shrink: 0;
+    width: auto;
+  background: #8b5cf6;
+  border: none;
+  border-radius: 12px;
+  padding: 11px 30px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s;
+  margin-top: 0px;
 }
