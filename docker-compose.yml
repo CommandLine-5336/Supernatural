@@ -58,6 +58,14 @@ services:
       database:
         condition: service_healthy
 
+  protection:
+    container_name: protection
+    build: ./protection
+    env_file: .env
+    depends_on:
+      database:
+        condition: service_healthy
+
   frontend:
     build:
       context: ./frontend
