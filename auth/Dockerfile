@@ -8,5 +8,4 @@ RUN go build -o main
 FROM alpine:3.23.5
 WORKDIR /auth
 COPY --from=build /auth/main ./
-EXPOSE 8080
 CMD ["./main"]
