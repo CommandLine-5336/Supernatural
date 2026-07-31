@@ -9,6 +9,7 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var db *sql.DB
@@ -63,9 +64,19 @@ func rotatePassword(db *sql.DB) error {
 	// Create new password
 	password := PasswordGenerator(64)
 
+	// Log generated password
+	log.Printf("New password: %s", password)
+
+	// Hash password
+	hashedPassword, err := hashPassword(password)
+	if err != nil {
+		return err
+	}
+
+	// Store hashed password
 	_, err = tx.Exec(
 		"INSERT INTO website_passwords (password, is_active) VALUES ($1, $2)",
-		password,
+		hashedPassword,
 		true,
 	)
 	if err != nil {
@@ -111,4 +122,9 @@ func PasswordGenerator(passwordLength int) string {
 	}
 
 	return password
+}
+
+func hashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+	return string(bytes), err
 }
