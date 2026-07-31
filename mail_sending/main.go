@@ -6,6 +6,8 @@ import (
 	"log"
 	"mail_sending/config"
 	"mail_sending/mail"
+	sendmail "mail_sending/send_mail"
+
 	"net/http"
 	netmail "net/mail"
 	"os"
@@ -14,7 +16,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/robfig/cron/v3"
+
 	"github.com/rs/cors"
 )
 
@@ -43,36 +45,6 @@ type InquisitorMailRequest struct {
 func init() {
 	err := godotenv.Load()
 	if err != nil {
-	}
-}
-func DailyMailScheduler() {
-	c := cron.New()
-
-	c.AddFunc("CRON_TZ=Europe/Kyiv 1 0 * * *", func() { // 00:01
-		log.Println("Start scheduled password mailing")
-		SendDailyPassword()
-
-	})
-	c.Start()
-}
-func SendDailyPassword() {
-	var users []User
-
-	result := config.DB.Find(&users)
-	if result.Error != nil {
-		log.Fatal("Error fetching emails", result)
-
-	}
-	// send email for each email in db
-	for _, user := range users {
-		err := mail.SendPasswordMail(user.Email, user.Status, user.Alias)
-		if err != nil {
-			log.Print("Email not send ", err)
-		} else {
-			log.Print("Email send ", user.Email)
-
-		}
-
 	}
 }
 
@@ -144,11 +116,11 @@ func main() {
 
 	// SendDailyPassword() // to send email immediately
 
-	DailyMailScheduler() // start by cron
 	log.Println("Cron job started")
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /mail", sendMail)
+	mux.HandleFunc("POST /mail_password", sendmail.SendDailyPassword)
 	mux.HandleFunc("POST /inquisitor_mail", sendInquisitorMail)
 	mux.HandleFunc("POST /invite", CreateInvite)
 
