@@ -5,6 +5,7 @@ async function request(path, options = {}) {
 
   const res = await fetch(`${API_URL}${path}`, {
     ...options,
+    credentials: "include",
     headers: isFormData ? undefined : { "Content-Type": "application/json" },
   });
   if (!res.ok) throw new Error(`Request failed: ${res.status}`);
