@@ -34,6 +34,7 @@ func main() {
 	http.HandleFunc("/session", session)
 	http.HandleFunc("/logout", logout)
 	http.HandleFunc("/invite/", setTrespassingCookie)
+	http.HandleFunc("/verify-password", verifyPassword)
 
 	// Start HTTP server
 	c := cors.New(cors.Options{
@@ -243,4 +244,27 @@ func logout(w http.ResponseWriter, r *http.Request) {
 	})
 
 	fmt.Fprintf(w, "Logout successful!")
+}
+
+func verifyPassword(w http.ResponseWriter, r *http.Request) {
+	password := r.FormValue("password")
+	var passwordHash string
+
+	err := db.QueryRow(`
+		SELECT password
+		FROM website_passwords
+		WHERE is_active = true
+	`).Scan(&passwordHash)
+
+	if err != nil {
+		http.Error(w, "password not found", http.StatusNotFound) // 500
+		return
+	}
+
+	if !checkPasswordHash(password, passwordHash) {
+		http.Error(w, "incorrect password", http.StatusUnauthorized) // 401
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
