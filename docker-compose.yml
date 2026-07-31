@@ -48,8 +48,6 @@ services:
     container_name: auth
     build: ./auth
     env_file: .env
-    ports:
-      - "8100:8080"
     depends_on:
       database:
         condition: service_healthy

@@ -80,7 +80,7 @@ DATABASES = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8074",
+    "http://mail_service:8074",
     "http://frontend:8080",
     "http://frontend:5173",
 ]
