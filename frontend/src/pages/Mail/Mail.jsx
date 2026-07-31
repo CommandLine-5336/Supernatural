@@ -3,7 +3,7 @@ import { FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import BackButton from '../../shared/ui/BackButton/BackButton';
 import axios from 'axios';
 import "./Mail.css";
-const API_ENDPOINT = 'http://127.0.0.1:8074/mail';
+const API_ENDPOINT = '/api/mail';
 
 export default function Mail() {
   const [headerText, setHeaderText] = useState("");
