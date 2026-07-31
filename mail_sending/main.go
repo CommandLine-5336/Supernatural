@@ -11,10 +11,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
-	"github.com/robfig/cron/v3"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/robfig/cron/v3"
+	"github.com/rs/cors"
 )
 
 type User struct {
@@ -31,7 +32,7 @@ type MailData struct {
 }
 
 type InviteData struct {
-    Email string `json:"email"`
+	Email string `json:"email"`
 }
 
 type InquisitorMailRequest struct {
@@ -76,6 +77,7 @@ func SendDailyPassword() {
 }
 
 var jwtSecret = []byte(os.Getenv("JWT_KEY"))
+
 func CreateInviteJWT(email string) (string, error) {
 	claims := jwt.MapClaims{
 		"sub": email,
@@ -102,7 +104,7 @@ func CreateInvite(
 		return
 	}
 
-    if emailData.Email == "" {
+	if emailData.Email == "" {
 		http.Error(
 			w,
 			"Email is required",
@@ -116,14 +118,14 @@ func CreateInvite(
 		return
 	}
 
-    token, err := CreateInviteJWT(emailData.Email)
+	token, err := CreateInviteJWT(emailData.Email)
 
 	if err != nil {
 		http.Error(w, "could not create invite token", http.StatusInternalServerError) // 500
 		return
 	}
 
-    link := fmt.Sprintf("http://127.0.0.1:8100/invite/%s", token)
+	link := fmt.Sprintf("http://127.0.0.1:8100/invite/%s", token)
 
 	err = mail.SendInvite(emailData.Email, link)
 	if err != nil {
@@ -132,8 +134,6 @@ func CreateInvite(
 		log.Print("email send ", emailData.Email)
 	}
 }
-
-
 
 func main() {
 	_, err := config.ConnectDB()
@@ -157,18 +157,13 @@ func main() {
 
 }
 func CORS(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4040")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-		w.Header().Set("Access-Control-Allow-Methods", "POST")
-
-		if r.Method == http.MethodOptions {
-			w.WriteHeader(http.StatusOK)
-			return
-		}
-		next.ServeHTTP(w, r)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:8080", "http://127.0.0.1:4040", "http://127.0.0.1:8080", "http://localhost:4040"},
+		AllowedMethods:   []string{"POST", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type"},
+		AllowCredentials: true,
 	})
+	return c.Handler(next)
 }
 func sendMail(
 	w http.ResponseWriter,
@@ -227,7 +222,6 @@ func sendMail(
 	}
 
 }
-
 
 func sendInquisitorMail(
 	w http.ResponseWriter,

@@ -57,6 +57,37 @@
   background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
 }
 
+.sidebar__user-pill:has(.sidebar__avatar--silver),
+.sidebar__user-pill:has(.sidebar__avatar--gold) {
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.sidebar__user-pill:has(.sidebar__avatar--silver):hover,
+.sidebar__user-pill:has(.sidebar__avatar--gold):hover {
+  border-color: rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.sidebar__avatar--silver + .sidebar__username::after,
+.sidebar__avatar--gold + .sidebar__username::after {
+  content: "admin";
+  margin-left: auto;
+  padding-left: 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  opacity: 0.4;
+  transition: opacity 0.15s ease;
+}
+
+.sidebar__user-pill:hover .sidebar__username::after {
+  opacity: 1;
+  color: #a78bfa;
+}
+
 .sidebar__username {
   color: #f3f4f6;
   font-family: inherit;

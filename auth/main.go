@@ -37,8 +37,9 @@ func main() {
 
 	// Start HTTP server
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:8080"},
+		AllowedOrigins:   []string{"http://localhost:8080", "http://127.0.0.1:8080"},
 		AllowCredentials: true,
+		AllowedHeaders:   []string{"Access-Control-Allow-Origin", "Content-Type"},
 	})
 
 	handler := c.Handler(http.DefaultServeMux)

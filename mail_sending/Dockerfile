@@ -1,4 +1,4 @@
-# hadolint global ignore=DL3003,DL3006,SC1035 # We accept these issues
+# hadolint global ignore=DL3003,DL3006,SC1035 # We accept these issue
 FROM golang:1.26.5-alpine AS build
 WORKDIR /mail_service
 COPY . .

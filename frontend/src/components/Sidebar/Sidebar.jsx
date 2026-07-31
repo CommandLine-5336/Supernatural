@@ -13,7 +13,7 @@ const navigate = useNavigate();
     <aside className="sidebar">
       <div className="sidebar__top">
         <div className="sidebar__header-row">
-          <div className="sidebar__user-pill" onClick={() => navigate('/admin')}>
+          <div className="sidebar__user-pill" onClick={() =>  user?.status === "copper" ? navigate('/') : navigate('/admin')}>
             <span className={`sidebar__avatar sidebar__avatar--${user.status}`} />
             <span className="sidebar__username">{user.alias}</span>
           </div>

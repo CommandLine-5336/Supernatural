@@ -100,6 +100,17 @@ services:
     depends_on:
       database:
         condition: service_healthy
+  cleanup:
+     container_name: cleanup
+     build: ./cleanup
+     env_file: .env
+     environment:
+       DATABASE_URL: postgres://${DB_USER}:${DB_PASS}@database:5432/${DB_NAME}?sslmode=disable
+     ports:
+       - "8585:8585"
+     depends_on:
+       database:
+        condition: service_healthy
 
 volumes:
   postgresql_data:
