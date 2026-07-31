@@ -81,8 +81,6 @@ services:
     container_name: mail_service
     build: ./mail_sending
     env_file: .env
-    ports:
-      - "8074:8074"
     depends_on:
       database:
         condition: service_healthy

@@ -125,7 +125,7 @@ func CreateInvite(
 		return
 	}
 
-	link := fmt.Sprintf("http://localhost:8100/invite/%s", token)
+	link := fmt.Sprintf("http://auth:8080/invite/%s", token)
 
 	err = mail.SendInvite(emailData.Email, link)
 	if err != nil {
