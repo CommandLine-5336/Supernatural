@@ -97,8 +97,8 @@ def check_ip(request):
             {"status": "true", "message": "IP is banned"},
             status=403,
         )
-    else:
-        return JsonResponse(
-            {"status": "false", "message": "IP is not banned"},
-            status=200,
-        )
+
+    return JsonResponse(
+        {"status": "false", "message": "IP is not banned"},
+        status=200,
+    )
