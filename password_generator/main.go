@@ -28,6 +28,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	log.Println("Password rotated successfully")
 }
 
 func connectDB() (*sql.DB, error) {
