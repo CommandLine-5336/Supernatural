@@ -36,3 +36,15 @@ export async function setVote(voteId, value) {
   }
   return res.json();
 }
+
+export async function checkIP() {
+  const res = await fetch(`${API_BASE}/check/`, {
+      method: "GET",
+      credentials: "include"
+  });
+  if (res.status === 403) {
+    return { isBanned: true };
+  }
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return { isBanned: false };
+}
