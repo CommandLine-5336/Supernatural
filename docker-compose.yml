@@ -58,9 +58,9 @@ services:
       database:
         condition: service_healthy
 
-  protection:
-    container_name: protection
-    build: ./protection
+  password_generator:
+    container_name: password_generator
+    build: ./password_generator
     env_file: .env
     depends_on:
       database:
