@@ -8,6 +8,12 @@ function postForm(url, data) {
   });
 }
 
+export function verifyPassword(password) {
+  return postForm("/verify-password", {
+    password,
+  });
+}
+
 export async function login(email, password) {
   const res = await postForm("/login", {
     email,
