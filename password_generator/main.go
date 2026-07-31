@@ -79,7 +79,7 @@ func PasswordGenerator(passwordLength int) string {
 	// Character sets for generating passwords
 	lowerCase := "abcdefghijklmnopqrstuvwxyz"
 	upperCase := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	numbers := "0123456789Є"
+	numbers := "0123456789"
 	specialChar := "!@#$%^&*()_-+={}[/?]"
 
 	// Variable for storing password
