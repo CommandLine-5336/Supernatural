@@ -3,7 +3,7 @@ import { FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import BackButton from '../../shared/ui/BackButton/BackButton';
 import axios from 'axios';
 import "./Invite.css";
-const API_ENDPOINT = 'http://127.0.0.1:8074/invite';
+const API_ENDPOINT = '/api/mail/invite';
 
 export default function Invite() {
   const [email, setEmail] = useState("");
