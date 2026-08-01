@@ -23,7 +23,7 @@ class PostViewSet(viewsets.ModelViewSet):
         context = super().get_serializer_context()
         context["request"] = self.request
         return context
-    
+
     def get_permissions(self):
         """Require authentication only for creating a post"""
         if self.action == "create":
@@ -34,7 +34,7 @@ class PostViewSet(viewsets.ModelViewSet):
         """Creates a post, uploading an image if provided (copper users are not allowed)"""
         if request.user.status == "copper":
             raise PermissionDenied("Copper masons are not allowed to create posts")
-        
+
         data = request.data.copy()
         image = request.FILES.get("image")
         serializer = self.get_serializer(data=data)
