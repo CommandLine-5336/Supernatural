@@ -65,6 +65,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+      mail_service:
+        condition: service_started
 
   frontend:
     build:
