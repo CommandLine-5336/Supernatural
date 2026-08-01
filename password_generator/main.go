@@ -65,7 +65,7 @@ func rotatePassword(db *sql.DB) error {
 	}
 
 	// Create new password
-	password := PasswordGenerator(64)
+	password := PasswordGenerator(20)
 
 	// Send password to mail service
 	err = sendPassword(password)
