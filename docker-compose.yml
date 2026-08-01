@@ -22,8 +22,6 @@ services:
     container_name: seaweedfs
     image: chrislusf/seaweedfs:4.40
     command: server -s3 -s3.config=/etc/seaweedfs/s3config.json
-    ports:
-      - "8333:8333"
     volumes:
       - seaweedfs_data:/data
       - ./general/seaweedfs-config/s3config.json:/etc/seaweedfs/s3config.json
