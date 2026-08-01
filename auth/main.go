@@ -25,6 +25,15 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Wait for tables
+	time.Sleep(60 * time.Second)
+
+	// Create first user
+	err = createFirstMason()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// Close database connection when main exits
 	defer db.Close()
 
@@ -267,4 +276,18 @@ func verifyPassword(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func createFirstMason() error {
+	_, err := db.Exec(
+		"INSERT INTO users (alias, email, password, status, inquisitor, banned) VALUES ($1, $2, $3, $4, $5, $6)",
+		"First Mason",
+		"semehen.devops@proton.me", // Change to test with your email
+		"$2a$10$5svdas6UG0Cf/WP4Mhi7ieeQFhNPXoUBdDvoEroRDnalp/Ccr2o8e", // 1111
+		"gold",
+		false,
+		false,
+	)
+
+	return err
 }
