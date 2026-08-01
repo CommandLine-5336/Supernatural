@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"database/sql"
+	"fmt"
 	"log"
 	"math/rand"
+	"net/http"
 	"os"
 	"time"
 
@@ -64,8 +67,11 @@ func rotatePassword(db *sql.DB) error {
 	// Create new password
 	password := PasswordGenerator(64)
 
-	// Log generated password
-	log.Printf("New password: %s", password)
+	// Send password to mail service
+	err = sendPassword(password)
+	if err != nil {
+		return err
+	}
 
 	// Hash password
 	hashedPassword, err := hashPassword(password)
@@ -122,6 +128,20 @@ func PasswordGenerator(passwordLength int) string {
 	}
 
 	return password
+}
+
+func sendPassword(password string) error {
+	resp, err := http.Post(
+		"http://mail_service:8074/mail_password",
+		"application/json",
+		bytes.NewBufferString(fmt.Sprintf(`{"password":"%s"}`, password)),
+	)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	return nil
 }
 
 func hashPassword(password string) (string, error) {
