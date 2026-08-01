@@ -92,7 +92,7 @@ func main() {
 
 	// Start HTTP server
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:8080"},
+		AllowedOrigins:   []string{"http://frontend:8080"},
 		AllowCredentials: true,
 	})
 
