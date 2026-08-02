@@ -47,7 +47,7 @@ func main() {
 
 	// Start HTTP server
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:8080", "http://127.0.0.1:8080"},
+		AllowedOrigins:   []string{"http://frontend:8080", "http://mail_service:8074"},
 		AllowCredentials: true,
 		AllowedHeaders:   []string{"Access-Control-Allow-Origin", "Content-Type"},
 	})
@@ -97,7 +97,7 @@ func setTrespassingCookie(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	register_url := fmt.Sprintf("http://localhost:8080/register/%s", token)
+	register_url := fmt.Sprintf("http://frontend:8080/register/%s", token)
 	http.Redirect(w, r, register_url, http.StatusSeeOther)
 }
 

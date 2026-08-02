@@ -1,4 +1,4 @@
-const REPORT_URL = "http://localhost:4040/api"
+const REPORT_URL = "/api"
 
 
 export function report(ip_address){

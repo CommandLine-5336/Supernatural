@@ -1,18 +1,14 @@
 {
-  "identities": [
-    {
-      "actions": [
-        "Admin",
-        "Read",
-        "Write"
-      ],
-      "credentials": [
-        {
-          "accessKey": "example",
-          "secretKey": "example"
-        }
-      ],
-      "name": "supernatural"
-    }
-  ]
-}
+    "identities": [
+      {
+        "name": "supernatural",
+        "credentials": [
+          {
+            "accessKey": "supernatural-access-key",
+            "secretKey": "supernatural-secret-key"
+          }
+        ],
+        "actions": ["Admin", "Read", "Write"]
+      }
+    ]
+  }

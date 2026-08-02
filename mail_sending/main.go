@@ -55,7 +55,7 @@ func main() {
 }
 func CORS(next http.Handler) http.Handler {
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:8080", "http://127.0.0.1:4040", "http://127.0.0.1:8080", "http://localhost:4040"},
+		AllowedOrigins:   []string{"http://frontend:8080", "http://general:4040"},
 		AllowedMethods:   []string{"POST", "OPTIONS"},
 		AllowedHeaders:   []string{"Content-Type"},
 		AllowCredentials: true,
