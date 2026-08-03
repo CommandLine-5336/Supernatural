@@ -12,6 +12,7 @@ import EnterPassword from "./pages/EnterPassword/EnterPassword";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { session } from "./api/auth";
+import { checkIP } from "./api/user";
 
 function ProtectedRoute({ user, children }) {
   if (user === undefined) {
@@ -26,6 +27,15 @@ function GuestRoute({ user, children }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    (async () => {
+      const res = await checkIP();
+      if (res.isBanned){
+        window.location.href = 'https://birdwatch.org.ua/ukraine';
+      }
+    })();
+  }, []);
+
   const [user, setUser] = useState(undefined);
 
   const [passwordVerified, setPasswordVerified] = useState(
