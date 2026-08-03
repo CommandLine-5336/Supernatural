@@ -10,16 +10,20 @@ export default function Home({ user, setUser }) {
 
   const {
     sidebarMode,
-    handleMapClick,
+    handleMapClick: rawHandleMapClick,
     handleMarkerClick,
     resetMode
   } = useSidebarMode();
+
+  const handleMapClick = (lat, lng) => {
+    if (user?.status === "copper") return;
+    rawHandleMapClick(lat, lng);
+  };
 
   const handleCreatePost = async (data) => {
     await addPost(data);
     resetMode();
   };
-
 
   return (
     <div className="home-shell">
@@ -28,6 +32,7 @@ export default function Home({ user, setUser }) {
           onMapClick={handleMapClick}
           posts={posts}
           onMarkerClick={handleMarkerClick}
+          user={user}
         />
         <Sidebar
           user={user}
