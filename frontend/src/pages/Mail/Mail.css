@@ -143,3 +143,9 @@ html, body, #root {
     font-size: 14px;
     margin: 20px 0px
 }
+
+@media (width <=768px) {
+    .form-fieldset > .form-group {
+        width: 100%;
+    }
+  }

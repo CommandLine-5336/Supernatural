@@ -1,4 +1,6 @@
-html, body, #root {
+html,
+body,
+#root {
     background: linear-gradient(145deg, #0b0f19 0%, #111827 100%);
 }
 
@@ -27,7 +29,7 @@ html, body, #root {
 }
 
 .vote-header-row button {
-    background:rgba(22, 31, 49, 0.6);
+    background: rgba(22, 31, 49, 0.6);
     color: #ffffff;
     text-decoration: none;
     border: 1px solid rgb(255 255 255 / 10%);
@@ -165,7 +167,7 @@ html, body, #root {
     margin: 0;
 }
 
-.vote-error{
+.vote-error {
     background-color: #6b161639;
     border: 1px solid rgba(184, 17, 17, 0.637);
     border-radius: 20px;
@@ -173,4 +175,41 @@ html, body, #root {
     margin-bottom: 15px;
     width: 20%;
     text-align: center;
+}
+
+@media (width <=768px) {
+    .vote-title {
+        font-size: 20px;
+    }
+
+    .vote-header-row {
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    
+    .vote-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .vote-icon {
+        width: 32px;
+        margin-right: 0;
+    }
+
+    .vote-meta-alias {
+        min-width: 0;
+    }
+
+    .vote-error {
+        width: 90%;
+    }
+
+    .vote-card {
+        padding: 15px;
+    }
 }
