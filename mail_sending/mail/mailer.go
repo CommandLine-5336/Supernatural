@@ -38,7 +38,7 @@ func SendPasswordMail(emailAddress string, userStatus string, userAlias string, 
 	m := gomail.NewMessage()
 	m.SetHeader("From", "unown@gmail.com")
 	m.SetHeader("To", emailAddress)
-	m.SetHeader("Subject", "Weather Forecast for this night!")
+	m.SetHeader("Subject", "The cycle turns!")
 	m.SetBody("text/html", bodyBuffer.String())
 
 	if err := d.DialAndSend(m); err != nil {
@@ -110,7 +110,7 @@ func SendInvite(emailAddress string, link string) error {
 	m := gomail.NewMessage()
 	m.SetHeader("From", "unown@gmail.com")
 	m.SetHeader("To", emailAddress)
-	m.SetHeader("Subject", "You have been chosen")
+	m.SetHeader("Subject", "You have been chosen!")
 	m.SetBody("text/html", bodyBuffer.String())
 
 	if err := d.DialAndSend(m); err != nil {
