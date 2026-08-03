@@ -2,6 +2,7 @@
 
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -24,8 +25,17 @@ class PostViewSet(viewsets.ModelViewSet):
         context["request"] = self.request
         return context
 
+    def get_permissions(self):
+        """Require authentication only for creating a post"""
+        if self.action == "create":
+            return [IsAuthenticated()]
+        return super().get_permissions()
+
     def create(self, request, *args, **kwargs):  # pylint: disable=unused-argument
-        """Creates a post, uploading an image if provided"""
+        """Creates a post, uploading an image if provided (copper users are not allowed)"""
+        if request.user.status == "copper":
+            raise PermissionDenied("Copper masons are not allowed to create posts")
+
         data = request.data.copy()
         image = request.FILES.get("image")
         serializer = self.get_serializer(data=data)

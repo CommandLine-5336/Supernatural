@@ -45,7 +45,7 @@ export function usePostForm({ lat, lng, onSubmit }) {
       setDescription("");
       setImage(null);
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      setError(err.message || "Something went wrong. Please try again.");
       console.error("Failed to create post:", err);
     } finally {
       setSubmitting(false);

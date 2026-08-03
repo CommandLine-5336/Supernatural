@@ -8,7 +8,12 @@ async function request(path, options = {}) {
     credentials: "include",
     headers: isFormData ? undefined : { "Content-Type": "application/json" },
   });
-  if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || `Request failed: ${res.status}`);
+  }
+
   return res.status === 204 ? null : res.json();
 }
 
