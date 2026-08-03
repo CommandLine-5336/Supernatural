@@ -4,15 +4,14 @@ import Register from "./pages/Register/Register";
 import NotFound from "./pages/NotFound/NotFound";
 import Mail from "./pages/Mail/Mail";
 import Invite from "./pages/Invite/Invite";
-import VotingCourt from './pages/Voting_court/Voting_court';
-import NewVote from './pages/New_vote/New_vote';
-import Admin_page from './pages/Admin_page/Admin';
-
+import VotingCourt from "./pages/Voting_court/Voting_court";
+import NewVote from "./pages/New_vote/New_vote";
+import Admin_page from "./pages/Admin_page/Admin";
+import EnterPassword from "./pages/EnterPassword/EnterPassword";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { session } from "./api/auth";
-import { checkIP } from "./api/user";
 
 function ProtectedRoute({ user, children }) {
   if (user === undefined) {
@@ -27,16 +26,11 @@ function GuestRoute({ user, children }) {
 }
 
 export default function App() {
-  useEffect(() => {
-    (async () => {
-      const res = await checkIP();
-       if (res.isBanned){
-         window.location.href = 'https://birdswatching.site/';
-       }
-    })();
-  }, []);
-
   const [user, setUser] = useState(undefined);
+
+  const [passwordVerified, setPasswordVerified] = useState(
+    sessionStorage.getItem("passwordVerified") === "true"
+  );
 
   useEffect(() => {
     (async () => {
@@ -48,6 +42,16 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+        <Route
+          path="/enter-password"
+          element={
+            <EnterPassword
+              setPasswordVerified={setPasswordVerified}
+            />
+          }
+        />
+
         <Route
           path="/"
           element={
@@ -60,18 +64,26 @@ export default function App() {
         <Route
           path="/login"
           element={
-            <GuestRoute user={user}>
-              <Login setUser={setUser} />
-            </GuestRoute>
+            !passwordVerified ? (
+              <Navigate to="/enter-password" replace />
+            ) : (
+              <GuestRoute user={user}>
+                <Login setUser={setUser} />
+              </GuestRoute>
+            )
           }
         />
 
         <Route
           path="/register/:invite_token?"
           element={
-            <GuestRoute user={user}>
-              <Register />
-            </GuestRoute>
+            !passwordVerified ? (
+              <Navigate to="/enter-password" replace />
+            ) : (
+              <GuestRoute user={user}>
+                <Register />
+              </GuestRoute>
+            )
           }
         />
 
@@ -92,14 +104,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="*"
-          element={
-            <ProtectedRoute user={user}>
-              <NotFound />
-            </ProtectedRoute>
-          }
-        />
+
         <Route
           path="/admin"
           element={
@@ -107,7 +112,8 @@ export default function App() {
               <Admin_page user={user} setUser={setUser} />
             </ProtectedRoute>
           }
-          />
+        />
+
         <Route
           path="/mail"
           element={
@@ -116,6 +122,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/invite"
           element={
@@ -124,6 +131,16 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="*"
+          element={
+            <ProtectedRoute user={user}>
+              <NotFound />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
     </BrowserRouter>
   );
