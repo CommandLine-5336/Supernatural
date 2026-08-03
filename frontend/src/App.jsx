@@ -87,12 +87,12 @@ export default function App() {
         <Route
           path="/register/:invite_token?"
           element={
-            !passwordVerified ? (
-              <Navigate to="/enter-password" replace />
-            ) : (
+            window.location.pathname.startsWith("/register/") || passwordVerified ? (
               <GuestRoute user={user}>
                 <Register />
               </GuestRoute>
+            ) : (
+              <Navigate to="/enter-password" replace />
             )
           }
         />
