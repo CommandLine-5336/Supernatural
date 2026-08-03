@@ -282,8 +282,8 @@ func createFirstMason() error {
 	_, err := db.Exec(
 		"INSERT INTO users (alias, email, password, status, inquisitor, banned) VALUES ($1, $2, $3, $4, $5, $6)",
 		"First Mason",
-		"semehen.devops@proton.me", // Change to test with your email
-		"$2a$10$5svdas6UG0Cf/WP4Mhi7ieeQFhNPXoUBdDvoEroRDnalp/Ccr2o8e", // 1111
+		"semehen.devops@proton.me",
+		"$2a$10$9Owy5mvK.YLoXmypAOd6deW.Nm1e98oOqiyC/4xJWJIgnUV76pYXW",
 		"gold",
 		false,
 		false,
