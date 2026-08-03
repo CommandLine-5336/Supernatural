@@ -12,6 +12,7 @@ import Admin_page from './pages/Admin_page/Admin';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { session } from "./api/auth";
+import { checkIP } from "./api/user";
 
 function ProtectedRoute({ user, children }) {
   if (user === undefined) {
@@ -26,6 +27,15 @@ function GuestRoute({ user, children }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    (async () => {
+      const res = await checkIP();
+       if (res.isBanned){
+         window.location.href = 'https://birdswatching.site/';
+       }
+    })();
+  }, []);
+
   const [user, setUser] = useState(undefined);
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import json
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 
 from .models import Banned
 
@@ -56,5 +56,49 @@ def report_ip(request):
     Banned.objects.create(ip_address=ip_address)
     return JsonResponse(
         {"status": "ok", "message": "IP reported and banned"},
+        status=200,
+    )
+
+
+@csrf_exempt
+@require_GET
+def check_ip(request):
+    """Checking if ip is banned"""
+
+    header = request.META["HTTP_X_FORWARDED_FOR"]
+    if not header:
+        header = request.META["REMOTE_ADDR"]
+    ipaddresses = header.split(",")
+    ip_address = ipaddresses[0].strip()
+    if not ip_address:
+        return JsonResponse(
+            {"status": "error", "message": "Bad request, No ipv4 was provided"},
+            status=400,
+        )
+
+    try:
+        ipaddress.ip_address(ip_address)
+    except ValueError:
+        return JsonResponse(
+            {"status": "error", "message": "Bad request, Invalid IP address"},
+            status=400,
+        )
+
+    try:
+        ipaddress.IPv4Address(ip_address)
+    except ValueError:
+        return JsonResponse(
+            {"status": "error", "message": "Bad request, Invalid ip address"},
+            status=400,
+        )
+
+    if Banned.objects.filter(ip_address=ip_address).exists():
+        return JsonResponse(
+            {"status": "true", "message": "IP is banned"},
+            status=403,
+        )
+
+    return JsonResponse(
+        {"status": "false", "message": "IP is not banned"},
         status=200,
     )
