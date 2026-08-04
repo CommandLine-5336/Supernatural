@@ -23,3 +23,19 @@ class User(models.Model):
 
     def __str__(self) -> str:
         return f"{self.alias}"
+
+
+class WebsitePassword(models.Model):
+    """Website password table"""
+
+    password = models.CharField(max_length=300)
+    is_active = models.BooleanField()
+
+    class Meta:
+        """Meta for Password"""
+
+        db_table = "website_passwords"
+        verbose_name = "Website passwords"
+
+    def __str__(self) -> str:
+        return f"{self.pk}"

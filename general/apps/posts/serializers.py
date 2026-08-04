@@ -1,6 +1,7 @@
 """Serializers for posts"""
 
 from rest_framework import serializers
+
 from .models import Post, Report
 
 # pylint: disable=too-few-public-methods

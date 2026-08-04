@@ -9,19 +9,18 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
-func SendPasswordMail(emailAddress string, userStatus string, userAlias string) error {
+func SendPasswordMail(emailAddress string, userStatus string, userAlias string, sitePassword string) error {
 	email_host := os.Getenv("EMAIL_HOST")
 	email_from := os.Getenv("EMAIL_FROM")
 	password := os.Getenv("EMAIL_PASSWORD")
-	var AWSpassword = "ab&uOJ^ILDgg,dslOD" //this part need to be done via AWS secretmager
 	templateData := struct {
-		Status     string
-		SecretPswd string
-		Alias      string
+		Status       string
+		SitePassword string
+		Alias        string
 	}{
-		Status:     userStatus,
-		SecretPswd: AWSpassword,
-		Alias:      userAlias,
+		Status:       userStatus,
+		SitePassword: sitePassword,
+		Alias:        userAlias,
 	}
 
 	tmpl, err := template.ParseFiles("templates/index.html")
@@ -39,7 +38,7 @@ func SendPasswordMail(emailAddress string, userStatus string, userAlias string) 
 	m := gomail.NewMessage()
 	m.SetHeader("From", "unown@gmail.com")
 	m.SetHeader("To", emailAddress)
-	m.SetHeader("Subject", "Weather Forecast for this night!")
+	m.SetHeader("Subject", "The cycle turns!")
 	m.SetBody("text/html", bodyBuffer.String())
 
 	if err := d.DialAndSend(m); err != nil {
@@ -86,7 +85,6 @@ func SendCustomdMail(emailAddress string, userStatus string, subject string, bod
 
 }
 
-
 func SendInvite(emailAddress string, link string) error {
 	email_host := os.Getenv("EMAIL_HOST")
 	email_from := os.Getenv("EMAIL_FROM")
@@ -112,7 +110,7 @@ func SendInvite(emailAddress string, link string) error {
 	m := gomail.NewMessage()
 	m.SetHeader("From", "unown@gmail.com")
 	m.SetHeader("To", emailAddress)
-	m.SetHeader("Subject", "You have been chosen")
+	m.SetHeader("Subject", "You have been chosen!")
 	m.SetBody("text/html", bodyBuffer.String())
 
 	if err := d.DialAndSend(m); err != nil {

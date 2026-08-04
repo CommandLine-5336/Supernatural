@@ -1,14 +1,15 @@
 """Views for posts"""
 
-from rest_framework import viewsets, status
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.exceptions import PermissionDenied
+
+from ..token import CookieJWTAuthentication
 from .models import Post, Report
 from .serializers import PostSerializer
 from .storage import upload_image
-from ..token import CookieJWTAuthentication
 
 
 class PostViewSet(viewsets.ModelViewSet):

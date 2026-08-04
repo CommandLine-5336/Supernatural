@@ -25,6 +25,15 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Wait for tables
+	time.Sleep(60 * time.Second)
+
+	// Create first user
+	err = createFirstMason()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// Close database connection when main exits
 	defer db.Close()
 
@@ -34,6 +43,7 @@ func main() {
 	http.HandleFunc("/session", session)
 	http.HandleFunc("/logout", logout)
 	http.HandleFunc("/invite/", setTrespassingCookie)
+	http.HandleFunc("/verify-password", verifyPassword)
 
 	// Start HTTP server
 	c := cors.New(cors.Options{
@@ -87,7 +97,7 @@ func setTrespassingCookie(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	register_url := fmt.Sprintf("http://frontend:8080/register/%s", token)
+	register_url := fmt.Sprintf("http://127.0.0.1:8080/register/%s", token)
 	http.Redirect(w, r, register_url, http.StatusSeeOther)
 }
 
@@ -243,4 +253,41 @@ func logout(w http.ResponseWriter, r *http.Request) {
 	})
 
 	fmt.Fprintf(w, "Logout successful!")
+}
+
+func verifyPassword(w http.ResponseWriter, r *http.Request) {
+	password := r.FormValue("password")
+	var passwordHash string
+
+	err := db.QueryRow(`
+		SELECT password
+		FROM website_passwords
+		WHERE is_active = true
+	`).Scan(&passwordHash)
+
+	if err != nil {
+		http.Error(w, "password not found", http.StatusNotFound) // 500
+		return
+	}
+
+	if !checkPasswordHash(password, passwordHash) {
+		http.Error(w, "incorrect password", http.StatusUnauthorized) // 401
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func createFirstMason() error {
+	_, err := db.Exec(
+		"INSERT INTO users (alias, email, password, status, inquisitor, banned) VALUES ($1, $2, $3, $4, $5, $6)",
+		"First Mason",
+		"semehen.devops@proton.me",
+		"$2a$10$9Owy5mvK.YLoXmypAOd6deW.Nm1e98oOqiyC/4xJWJIgnUV76pYXW",
+		"gold",
+		false,
+		false,
+	)
+
+	return err
 }
