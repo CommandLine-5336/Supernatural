@@ -14,7 +14,7 @@ This repository contains secure social network application that consists of seve
 * New users can be invited via email (bypassing website password-protection)
 * Some users can send email to masons of selected tier
 
-```
+```text
 .
 ├── auth                  # User authentication service
 ├── cleanup               # Cleanup service for erase database button
