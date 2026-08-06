@@ -2,21 +2,24 @@
 
 # pylint: skip-file
 
+import requests
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from ..authentication.models import Architect
+from ..token import CookieJWTAuthentication
 from .models import User, Vote, VoteRes
 from .serializers import VoteResSerializer, VoteSerializer
-from ..token import CookieJWTAuthentication
 
 
 def execute_vote(vote):
     """Deleting vote and applying its results"""
     user = vote.user
     total_users = User.objects.count()
+    gold_silver_users = User.objects.filter(status__in=["silver", "gold"]).count()
     if user is not None:
         if vote.type == "promotion":
             if vote.agree > total_users / 2:
@@ -30,6 +33,31 @@ def execute_vote(vote):
             if vote.agree > total_users * 0.8:
                 user.banned = True
                 user.save(update_fields=["banned"])
+
+        elif vote.type == "architect":
+            if vote.agree > gold_silver_users * 0.9:
+                arch = User.objects.get(architect=True)
+                arch.architect = False
+                arch.save(update_fields=["architect"])
+                user.architect = True
+                user.save(update_fields=["architect"])
+                obj = Architect.objects.create(user=user)
+                obj.save()
+
+                try:
+                    response = requests.post(
+                        "http://mail_service:8074/inquisitor_mail",
+                        headers={"Content-Type": "application/json"},
+                        json={
+                            "email": user.email,
+                            "alias": user.alias,
+                            "type": "architect",
+                        },
+                        timeout=5,
+                    )
+                    response.raise_for_status()
+                except requests.RequestException as e:
+                    print(f"Couldn't send email to architect {e}")
 
     VoteRes.objects.filter(vote=vote).delete()
     vote.delete()

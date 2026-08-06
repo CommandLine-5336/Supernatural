@@ -66,7 +66,7 @@ export default function VotingCourt({ user, setUser }) {
           const alreadyVoted = votedIds.has(voteId);
 
           return (
-            <article key={voteId} className="vote-card">
+            <article style={{ display: (type === "architect" && user?.status === "copper") ? "none" : "inline-flex" }} key={voteId} className="vote-card">
               <div className="vote-content">
                 <img src={type === "promotion" ? promoIcon : exIcon} alt={type} className="vote-icon" />
 

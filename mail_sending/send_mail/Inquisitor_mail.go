@@ -12,6 +12,7 @@ import (
 type InquisitorMailRequest struct {
 	Email string `json:"email"`
 	Alias string `json:"alias"`
+	Type string `json:"type"`
 }
 
 func SendInquisitorMail(
@@ -46,7 +47,7 @@ func SendInquisitorMail(
 		return
 	}
 
-	err = mail.SendInquisitorMail(inquisitorMail.Email, inquisitorMail.Alias)
+	err = mail.SendInquisitorMail(inquisitorMail.Email, inquisitorMail.Alias, inquisitorMail.Type)
 	if err != nil {
 		log.Print("email not send ", err)
 	} else {

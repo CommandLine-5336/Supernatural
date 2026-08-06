@@ -7,12 +7,14 @@ import Invite from "./pages/Invite/Invite";
 import VotingCourt from "./pages/Voting_court/Voting_court";
 import NewVote from "./pages/New_vote/New_vote";
 import Admin_page from "./pages/Admin_page/Admin";
+import HallOfFame from "./pages/HallOfFame/HallOfFame";
 import EnterPassword from "./pages/EnterPassword/EnterPassword";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { session } from "./api/auth";
 import { checkIP } from "./api/user";
+import HallOfFame from "./pages/HallOfFame/HallOfFame";
 
 function ProtectedRoute({ user, children }) {
   if (user === undefined) {
@@ -138,6 +140,15 @@ export default function App() {
           element={
             <ProtectedRoute user={user}>
               <Invite />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/architects"
+          element={
+            <ProtectedRoute >
+              <HallOfFame />
             </ProtectedRoute>
           }
         />

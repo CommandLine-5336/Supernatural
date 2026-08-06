@@ -13,6 +13,7 @@ class User(models.Model):
     password = models.CharField(max_length=300)
     status = models.CharField(max_length=100)
     inquisitor = models.BooleanField(default=False)
+    architect = models.BooleanField(default=False)
     banned = models.BooleanField(default=False)
 
     class Meta:
@@ -39,3 +40,18 @@ class WebsitePassword(models.Model):
 
     def __str__(self) -> str:
         return f"{self.pk}"
+
+
+class Architect(models.Model):
+    """Architect table"""
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        """Meta for Password"""
+
+        db_table = "architect"
+        verbose_name = "Architect"
+
+    def __str__(self) -> str:
+        return f"{self.user}"
