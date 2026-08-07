@@ -97,8 +97,6 @@ services:
       container_name: cleanup
       build: ./cleanup
       env_file: .env
-      environment:
-        DATABASE_URL: postgres://${DB_USER}:${DB_PASS}@database:5432/${DB_NAME}?sslmode=disable
       depends_on:
         database:
           condition: service_healthy
