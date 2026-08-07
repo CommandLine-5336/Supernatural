@@ -1,7 +1,6 @@
 """URL routes for votes"""
 
-from django.urls import include, path
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 
 from . import views
 
