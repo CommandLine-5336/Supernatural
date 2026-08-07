@@ -37,14 +37,14 @@ export default function HallOfFame() {
                         <p>{error}</p>
                     </div>}
 
-      <section className="votes">
+      <section className="archs">
         {architects.map((arch) => {
           const { alias, id } = arch;
 
           return (
-            <article className="vote-card">
-              <div className="vote-content">
-                <p className="vote-meta-alias">{alias}</p>
+            <article className="arch-card">
+              <div className="arch-content">
+                <p className="arch-meta-alias">{alias}</p>
               </div>
             </article>
           );

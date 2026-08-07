@@ -71,7 +71,7 @@ export default function NewVote({ user, setUser }) {
                                 <option style={{ display: user?.inquisitor === true ? "inline-flex" : "none" }} value="excommunication">
                                     excommunication
                                 </option>
-                                <option style={{ display: user?.architect === true ? "inline-flex" : "none" }} value="architect">
+                                <option style={{ display: user?.is_architect === true ? "inline-flex" : "none" }} value="architect">
                                     architect
                                 </option>
                             </select>

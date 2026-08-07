@@ -65,7 +65,7 @@
 }
 
 .grade-input{
-  max-width: 70%;
+  max-width: 80%;
 }
 
 .report-submit-btn {
@@ -91,11 +91,12 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+    margin-top: 0px;
 }
 
-.vote-yes,
-.vote-no {
-    max-width: 15%;
+.vote-up,
+.vote-down {
+    max-width: 10%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -103,21 +104,21 @@
     justify-content: space-around;
 }
 
-.vote-yes-btn {
+.vote-up {
     border: 2px solid #13b616;
     color: #188b1a;
 }
 
-.vote-yes-btn:hover:not(:disabled) {
+.vote-up:hover {
     background-color: rgba(34, 197, 94, 0.15);
 }
 
-.vote-no-btn {
+.vote-down {
     border: 2px solid #ef4444;
     color: #ef4444;
 }
 
-.vote-no-btn:hover:not(:disabled) {
+.vote-down:hover {
     background-color: rgba(239, 68, 68, 0.15);
 }
 

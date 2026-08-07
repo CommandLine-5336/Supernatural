@@ -13,7 +13,7 @@ class User(models.Model):
     password = models.CharField(max_length=300)
     status = models.CharField(max_length=100)
     inquisitor = models.BooleanField(default=False)
-    architect = models.BooleanField(default=False)
+    is_architect = models.BooleanField(default=False)
     banned = models.BooleanField(default=False)
 
     class Meta:

@@ -130,11 +130,9 @@ func SendInquisitorMail(emailAddress string, userAlias string, typeOfRole string
 		UserAlias: userAlias,
 	}
 
-    if typeOfRole == "inquisitor"{
-	tmpl, err := template.ParseFiles("templates/Inquisitor_index.html")
-    }
+    tmpl, err := template.ParseFiles("templates/Inquisitor_index.html")
     if typeOfRole == "architect"{
-	tmpl, err := template.ParseFiles("templates/architect_index.html")
+	    tmpl, err = template.ParseFiles("templates/architect_index.html")
     }
 	if err != nil {
 		panic(fmt.Errorf("failed to parse template file: %w", err))

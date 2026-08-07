@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { setVote } from "../../api/user";
 import { getVotes } from "../../api/user";
 import promoIcon from "../../assets/images/promo.png";
+import archIcon from "../../assets/images/arch.png";
 import exIcon from "../../assets/images/ex.png";
 import "./Voting_court.css";
 import BackButton from "../../shared/ui/BackButton/BackButton";
@@ -66,9 +67,9 @@ export default function VotingCourt({ user, setUser }) {
           const alreadyVoted = votedIds.has(voteId);
 
           return (
-            <article style={{ display: (type === "architect" && user?.status === "copper") ? "none" : "inline-flex" }} key={voteId} className="vote-card">
+            <article style={{ display: (type === "architect" && user?.status === "copper") ? "none" : "flex" }} key={voteId} className="vote-card">
               <div className="vote-content">
-                <img src={type === "promotion" ? promoIcon : exIcon} alt={type} className="vote-icon" />
+                <img src={type !== "promotion" ? type === "excommunication" ? exIcon : archIcon : promoIcon} alt={type} className="vote-icon" />
 
                 <p className="vote-meta-alias">{user_alias}</p>
                 <p className="vote-meta-desc">{description}</p>
@@ -96,7 +97,7 @@ export default function VotingCourt({ user, setUser }) {
       </section>
 
       <footer className="vote-footer">
-        <h1 className="vote-descr">+ Promotion, - Excommunicado</h1>
+        <h1 className="vote-descr">+ Promotion, - Excommunicado, hammer - Architect</h1>
       </footer>
     </main>
   );

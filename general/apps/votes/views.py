@@ -36,11 +36,11 @@ def execute_vote(vote):
 
         elif vote.type == "architect":
             if vote.agree > gold_silver_users * 0.9:
-                arch = User.objects.get(architect=True)
-                arch.architect = False
-                arch.save(update_fields=["architect"])
-                user.architect = True
-                user.save(update_fields=["architect"])
+                arch = User.objects.get(is_architect=True)
+                arch.is_architect = False
+                arch.save(update_fields=["is_architect"])
+                user.is_architect = True
+                user.save(update_fields=["is_architect"])
                 obj = Architect.objects.create(user=user)
                 obj.save()
 
@@ -99,6 +99,10 @@ class VoteViewSet(viewsets.ModelViewSet):
             raise NotFound(
                 {"detail": f"User with alias '{user_alias}' does not exist"}
             ) from exc
+        if self.request.data.get("type") == "architect" and user.status != "gold":
+            raise ValidationError(
+                {"detail": "Only gold users can be nominated architects"}
+            )
         serializer.save(user=user)
 
     @action(detail=True, methods=["post", "put"])

@@ -14,7 +14,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { session } from "./api/auth";
 import { checkIP } from "./api/user";
-import HallOfFame from "./pages/HallOfFame/HallOfFame";
 
 function ProtectedRoute({ user, children }) {
   if (user === undefined) {
@@ -147,7 +146,7 @@ export default function App() {
         <Route
           path="/architects"
           element={
-            <ProtectedRoute >
+            <ProtectedRoute user={user} >
               <HallOfFame />
             </ProtectedRoute>
           }

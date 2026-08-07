@@ -89,7 +89,7 @@ export default function Admin({ user, setUser }) {
           Create invitation
         </button>
 
-        <div className="report-row" style={{ display: user?.architect === true ? "flex" : "none" }}>
+        <div className="report-row" style={{ display: user?.is_architect === true ? "flex" : "none" }}>
           <input type="text"
             placeholder="User to _grade"
             className="grade-input"
@@ -98,12 +98,12 @@ export default function Admin({ user, setUser }) {
           />
           <button
             type="button"
-            className="post-form__submit vote-yes"
+            className="post-form__submit vote-up"
             onClick={() => handleGrade("up")}
           > up </button>
           <button
             type="button"
-            className="post-form__submit vote-no"
+            className="post-form__submit vote-down"
             onClick={() => handleGrade("down")}
           > down </button>
         </div>
