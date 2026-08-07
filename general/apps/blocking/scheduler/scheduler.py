@@ -34,6 +34,7 @@ def set_inquisitor():
             json={
                 "email": new_inq.email,
                 "alias": new_inq.alias,
+                "type": "inquisitor",
             },
             timeout=5,
         )
