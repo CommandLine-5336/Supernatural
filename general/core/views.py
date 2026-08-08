@@ -1,4 +1,5 @@
 """Simple health check view"""
+
 from django.http import JsonResponse
 
 
