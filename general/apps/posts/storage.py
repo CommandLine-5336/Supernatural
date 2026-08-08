@@ -1,4 +1,5 @@
 """S3 storage for post images"""
+
 import uuid
 import boto3
 from django.conf import settings
@@ -24,4 +25,6 @@ def upload_image(file) -> str:
         key,
         ExtraArgs={"ContentType": file.content_type},
     )
-    return f"https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_REGION}.amazonaws.com/{key}"
+    bucket = settings.AWS_STORAGE_BUCKET_NAME
+    region = settings.AWS_REGION
+    return f"https://{bucket}.s3.{region}.amazonaws.com/{key}"
