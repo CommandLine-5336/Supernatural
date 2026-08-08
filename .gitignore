@@ -48,6 +48,3 @@ my.cnf
 
 # Local data
 db_backups/
-
-# Other
-s3config.json
