@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: password-generator-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: password-generator
+  template:
+    metadata:
+      labels:
+        app: password-generator
+    spec:
+      containers:
+        - name: auth
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.235
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: password-generator-secret
