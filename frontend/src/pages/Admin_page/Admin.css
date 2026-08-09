@@ -64,6 +64,10 @@
   text-align: left;
 }
 
+.grade-input{
+  max-width: 80%;
+}
+
 .report-submit-btn {
   flex-shrink: 0;
     width: auto;
@@ -77,6 +81,45 @@
   cursor: pointer;
   transition: background .2s;
   margin-top: 0px;
+}
+
+.report-row button {
+    background: transparent;
+    border-radius: 12px;
+    padding: 6px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 0px;
+}
+
+.vote-up,
+.vote-down {
+    max-width: 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.vote-up {
+    border: 2px solid #13b616;
+    color: #188b1a;
+}
+
+.vote-up:hover {
+    background-color: rgba(34, 197, 94, 0.15);
+}
+
+.vote-down {
+    border: 2px solid #ef4444;
+    color: #ef4444;
+}
+
+.vote-down:hover {
+    background-color: rgba(239, 68, 68, 0.15);
 }
 
 .custom-modal-overlay {

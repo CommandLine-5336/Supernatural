@@ -124,11 +124,12 @@ func register(w http.ResponseWriter, r *http.Request) {
 	displayName := generateRandomName()
 
 	_, err := db.Exec(
-		"INSERT INTO users (alias, email, password, status, inquisitor, banned) VALUES ($1, $2, $3, $4, $5, $6)",
+		"INSERT INTO users (alias, email, password, status, inquisitor,is_architect, banned) VALUES ($1, $2, $3, $4, $5, $6, $7)",
 		displayName,
 		email,
 		hashedPassword,
 		"copper",
+		false,
 		false,
 		false,
 	)
@@ -146,6 +147,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		passwordHash string
 		status       string
 		inquisitor   bool
+		is_architect bool
 		banned       bool
 	)
 
@@ -153,7 +155,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 
 	err := db.QueryRow(
-		`SELECT id, alias, password, status, inquisitor, banned FROM users WHERE email=$1`,
+		`SELECT id, alias, password, status, inquisitor, is_architect, banned FROM users WHERE email=$1`,
 		email,
 	).Scan(
 		&userID,
@@ -161,6 +163,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		&passwordHash,
 		&status,
 		&inquisitor,
+		&is_architect,
 		&banned,
 	)
 
@@ -197,8 +200,9 @@ func login(w http.ResponseWriter, r *http.Request) {
 		"alias": "%s",
 		"status": "%s",
 		"inquisitor": %t,
+		"is_architect": %t,
 		"banned": %t
-	}`, userID, displayName, status, inquisitor, banned)
+	}`, userID, displayName, status, inquisitor, is_architect, banned)
 }
 
 func session(w http.ResponseWriter, r *http.Request) {
@@ -207,6 +211,7 @@ func session(w http.ResponseWriter, r *http.Request) {
 		displayName string
 		status      string
 		inquisitor  bool
+		is_architect bool
 		banned      bool
 	)
 
@@ -218,12 +223,13 @@ func session(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = db.QueryRow(
-		`SELECT alias, status, inquisitor, banned FROM users WHERE id=$1`,
+		`SELECT alias, status, inquisitor,is_architect, banned FROM users WHERE id=$1`,
 		userID,
 	).Scan(
 		&displayName,
 		&status,
 		&inquisitor,
+		&is_architect,
 		&banned,
 	)
 
@@ -239,8 +245,9 @@ func session(w http.ResponseWriter, r *http.Request) {
 		"alias": "%s",
 		"status": "%s",
 		"inquisitor": %t,
+		"is_architect": %t,
 		"banned": %t
-	}`, userID, displayName, status, inquisitor, banned)
+	}`, userID, displayName, status, inquisitor, is_architect, banned)
 }
 
 func logout(w http.ResponseWriter, r *http.Request) {
@@ -280,12 +287,13 @@ func verifyPassword(w http.ResponseWriter, r *http.Request) {
 
 func createFirstMason() error {
 	_, err := db.Exec(
-		"INSERT INTO users (alias, email, password, status, inquisitor, banned) VALUES ($1, $2, $3, $4, $5, $6)",
+		"INSERT INTO users (alias, email, password, status, inquisitor, is_architect, banned) VALUES ($1, $2, $3, $4, $5, $6, $7) ON CONFLICT (email) DO NOTHING",
 		"First Mason",
-		"semehen.devops@proton.me",
+		"commandlline@gmail.com",
 		"$2a$10$9Owy5mvK.YLoXmypAOd6deW.Nm1e98oOqiyC/4xJWJIgnUV76pYXW",
 		"gold",
 		false,
+		true,
 		false,
 	)
 

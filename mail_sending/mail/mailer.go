@@ -120,7 +120,7 @@ func SendInvite(emailAddress string, link string) error {
 
 }
 
-func SendInquisitorMail(emailAddress string, userAlias string) error {
+func SendInquisitorMail(emailAddress string, userAlias string, typeOfRole string) error {
 	email_host := os.Getenv("EMAIL_HOST")
 	email_from := os.Getenv("EMAIL_FROM")
 	password := os.Getenv("EMAIL_PASSWORD")
@@ -130,7 +130,10 @@ func SendInquisitorMail(emailAddress string, userAlias string) error {
 		UserAlias: userAlias,
 	}
 
-	tmpl, err := template.ParseFiles("templates/Inquisitor_index.html")
+    tmpl, err := template.ParseFiles("templates/Inquisitor_index.html")
+    if typeOfRole == "architect"{
+	    tmpl, err = template.ParseFiles("templates/architect_index.html")
+    }
 	if err != nil {
 		panic(fmt.Errorf("failed to parse template file: %w", err))
 	}
