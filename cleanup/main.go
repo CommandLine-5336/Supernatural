@@ -26,6 +26,11 @@ func DBHealthCheck(w http.ResponseWriter, r *http.Request) {
 	WriteResponseToJSON(w, http.StatusOK, map[string]any{"status": "ok"})
 }
 
+func HealthCheck(w http.ResponseWriter, r *http.Request) {
+	WriteResponseToJSON(w, http.StatusOK, map[string]any{"status": "ok"})
+
+}
+
 func eraseHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		WriteResponseToJSON(w, http.StatusMethodNotAllowed, map[string]any{"status": "error", "message": "use POST"})
@@ -84,6 +89,7 @@ func main() {
 
 	http.HandleFunc("/erase", eraseHandler)
 	http.HandleFunc("/healthdb", DBHealthCheck)
+	http.HandleFunc("/health", HealthCheck)
 
 	// Start HTTP server
 	c := cors.New(cors.Options{
