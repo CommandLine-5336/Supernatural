@@ -1,4 +1,4 @@
-#Cant be used right now, shows unknown cpu%
+#Can't be used right now, shows unknown cpu%
 #to be used we need metrics server kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/high-availability-1.21+.yaml
 
 apiVersion: autoscaling/v2
