@@ -13,10 +13,8 @@ spec:
         app: password-generator
     spec:
       containers:
-        - name: auth
-          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.235
-          ports:
-            - containerPort: 8080
+        - name: password-generator
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.269
           envFrom:
             - secretRef:
                 name: password-generator-secret
