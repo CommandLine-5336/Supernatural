@@ -16,6 +16,7 @@ spec:
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
     spec:
+      serviceAccountName: cleanup
       containers:
         - name: cleanup
           image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/cleanup:test_cleanup_v.262
