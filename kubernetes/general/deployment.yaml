@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: general
-        image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:latest
+        image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:dev_general_v.277
         ports:
         - containerPort: 4040
         env:
