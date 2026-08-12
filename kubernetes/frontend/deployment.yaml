@@ -4,7 +4,7 @@ metadata:
   name: frontend-deployment
   namespace: app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: frontend
@@ -15,9 +15,10 @@ spec:
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
     spec:
+      serviceAccountName: frontend
       containers:
       - name: frontend
-        image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/frontend:dev_frontend_v.276
+        image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/frontend:test_frontend_v.281
         ports:
         - containerPort: 8080
         resources:

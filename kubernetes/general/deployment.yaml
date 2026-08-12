@@ -4,7 +4,7 @@ metadata:
   name: general-deployment
   namespace: app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: general
@@ -15,9 +15,10 @@ spec:
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
     spec:
+      serviceAccountName: general
       containers:
       - name: general
-        image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:dev_general_v.277
+        image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:test_general_v.281
         ports:
         - containerPort: 4040
         env:
