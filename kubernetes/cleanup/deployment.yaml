@@ -1,0 +1,66 @@
+#Dont know about ServiceAccountName for now....
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cleanup-deployment
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cleanup
+  template:
+    metadata:
+      labels:
+        app: cleanup
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+    spec:
+      serviceAccountName: cleanup
+      containers:
+        - name: cleanup
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/cleanup:test_cleanup_v.262
+          ports:
+            - containerPort: 8585
+          envFrom:
+            - secretRef:
+                name: cleanup-secret
+          resources:
+            requests:
+             cpu: "150m"
+             memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8585
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+             path: /health
+             port: 8585
+            initialDelaySeconds: 10
+            periodSeconds: 15
+
+
+        # - name: db
+        #   image: postgres:18-alpine
+        #   ports:
+        #     - containerPort: 5432
+        #   resources:
+        #     requests:
+        #      cpu: "150m"
+        #      memory: "256Mi"
+        #     limits:
+        #      cpu: "500m"
+        #      memory: "512Mi"
+        #   env:
+        #     - name: POSTGRES_DB
+        #       value: {EXAMPLE}
+        #     - name: POSTGRES_USER
+        #       value: {EXAMPLE}
+        #     - name: POSTGRES_PASSWORD
+        #       value: {EXAMPLE}
