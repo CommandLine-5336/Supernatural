@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: general-deployment
+  namespace: app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: general
+  template:
+    metadata:
+      labels:
+        app: general
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+    spec:
+      containers:
+      - name: general
+        image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:latest
+        ports:
+        - containerPort: 4040
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        envFrom:
+        - secretRef:
+            name: general-secret
+        resources:
+          requests:
+            cpu: "150m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        livenessProbe:
+          httpGet:
+            path: /health/
+            port: 4040
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /health/
+            port: 4040
+          initialDelaySeconds: 10
+          periodSeconds: 15

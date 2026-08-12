@@ -21,6 +21,9 @@ JWT_SECRET_KEY = os.getenv("JWT_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "general", "frontend", "mail_service"]
+POD_IP = os.environ.get("POD_IP")
+if POD_IP:
+    ALLOWED_HOSTS.append(POD_IP)
 
 
 INSTALLED_APPS = [
