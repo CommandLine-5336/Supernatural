@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: password-generator-deployment
+  namespace: app
 spec:
   replicas: 1
   selector:
@@ -12,6 +13,7 @@ spec:
       labels:
         app: password-generator
     spec:
+      serviceAccountName: password-protection
       containers:
         - name: password-generator
           image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.269

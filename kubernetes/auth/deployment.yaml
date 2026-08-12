@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-deployment
+  namespace: app
 spec:
   replicas: 1
   selector:
@@ -14,6 +15,7 @@ spec:
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
     spec:
+      serviceAccountName: auth
       containers:
         - name: auth
           image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.257
