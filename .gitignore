@@ -51,3 +51,6 @@ db_backups/
 
 # Other
 s3config.json
+
+# kubernetes
+kubernetes/general/secret.yaml
