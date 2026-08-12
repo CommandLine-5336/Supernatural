@@ -46,13 +46,12 @@ class PostSerializer(serializers.ModelSerializer):
             return False
         return Report.objects.filter(user=user, post=obj).exists()
 
-    
     def get_image_url(self, obj):
         """Generate a fresh presigned URL for the post's image, if one exists"""
         if not obj.image_key:
             return None
         return get_presigned_url(obj.image_key)
-    
+
 
 class ReportSerializer(serializers.ModelSerializer):
     """Serializer for Report model"""

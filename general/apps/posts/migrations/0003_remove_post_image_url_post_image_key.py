@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('posts', '0002_post_created_at_post_image_url_post_seen_count_and_more'),
+        ("posts", "0002_post_created_at_post_image_url_post_seen_count_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='post',
-            name='image_url',
+            model_name="post",
+            name="image_url",
         ),
         migrations.AddField(
-            model_name='post',
-            name='image_key',
+            model_name="post",
+            name="image_key",
             field=models.CharField(blank=True, max_length=500, null=True),
         ),
     ]
