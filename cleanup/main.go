@@ -26,6 +26,11 @@ func DBHealthCheck(w http.ResponseWriter, r *http.Request) {
 	WriteResponseToJSON(w, http.StatusOK, map[string]any{"status": "ok"})
 }
 
+func HealthCheck(w http.ResponseWriter, r *http.Request) {
+	WriteResponseToJSON(w, http.StatusOK, map[string]any{"status": "ok"})
+
+}
+
 func eraseHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		WriteResponseToJSON(w, http.StatusMethodNotAllowed, map[string]any{"status": "error", "message": "use POST"})
@@ -70,13 +75,8 @@ func eraseHandler(w http.ResponseWriter, r *http.Request) {
 var db *sql.DB
 
 func main() {
-	connStr := os.Getenv("DATABASE_URL")
-	if connStr == "" {
-		log.Fatal("DATABASE_URL is not set via ENV")
-	}
-
 	var err error
-	db, err = sql.Open("postgres", connStr)
+	db, err = sql.Open("postgres", os.Getenv("DSN"))
 	if err != nil {
 		log.Fatalf("failed to open db: %v", err)
 	}
@@ -89,6 +89,7 @@ func main() {
 
 	http.HandleFunc("/erase", eraseHandler)
 	http.HandleFunc("/healthdb", DBHealthCheck)
+	http.HandleFunc("/health", HealthCheck)
 
 	// Start HTTP server
 	c := cors.New(cors.Options{

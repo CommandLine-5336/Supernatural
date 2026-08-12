@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cleanup-service
+  namespace: app
+spec:
+  selector:
+    app: cleanup
+  ports:
+  - port: 8585
+    targetPort: 8585
+  type: ClusterIP

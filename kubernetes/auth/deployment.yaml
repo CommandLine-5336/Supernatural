@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+    spec:
+      containers:
+        - name: auth
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.257
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: auth-secret
