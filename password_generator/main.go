@@ -112,7 +112,7 @@ func PasswordGenerator(passwordLength int) string {
 
 func sendPassword(password string) error {
 	resp, err := http.Post(
-		"http://mail_service:8074/mail_password",
+		"http://mail-service:8074/mail_password",
 		"application/json",
 		bytes.NewBufferString(fmt.Sprintf(`{"password":"%s"}`, password)),
 	)
