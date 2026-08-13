@@ -1,4 +1,3 @@
-#Creating namespace for testing purposes
 apiVersion: v1
 kind: Namespace
 metadata:

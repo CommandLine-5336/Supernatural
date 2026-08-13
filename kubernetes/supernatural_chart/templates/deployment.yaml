@@ -1,4 +1,3 @@
-#Dont know about ServiceAccountName for now....
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -36,12 +35,12 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: 8585
+              port: VARIABLE
             initialDelaySeconds: 15
             periodSeconds: 20
           readinessProbe:
             httpGet:
              path: /health
-             port: 8585
+             port: VARIABLE
             initialDelaySeconds: 10
             periodSeconds: 15
