@@ -14,6 +14,7 @@ spec:
         app: mail
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/transparent-proxy: 'true'
     spec:
       serviceAccountName: mail-service
       containers:
