@@ -19,7 +19,7 @@ spec:
       serviceAccountName: auth
       containers:
         - name: auth
-          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.292
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.293
           ports:
             - containerPort: 8080
           envFrom:
@@ -35,12 +35,12 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: 8585
+              port: 8080
             initialDelaySeconds: 15
             periodSeconds: 20
           readinessProbe:
             httpGet:
              path: /health
-             port: 8585
+             port: 8080
             initialDelaySeconds: 10
             periodSeconds: 15

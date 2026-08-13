@@ -19,7 +19,7 @@ spec:
       serviceAccountName: mail-service
       containers:
         - name: mail
-          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.292
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.293
           ports:
             - containerPort: 8074
           envFrom:
@@ -35,12 +35,12 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: 8585
+              port: 8074
             initialDelaySeconds: 15
             periodSeconds: 20
           readinessProbe:
             httpGet:
              path: /health
-             port: 8585
+             port: 8074
             initialDelaySeconds: 10
             periodSeconds: 15
