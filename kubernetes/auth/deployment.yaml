@@ -13,8 +13,8 @@ spec:
       labels:
         app: auth
       annotations:
-        # consul.hashicorp.com/connect-inject: 'true'
-        # consul.hashicorp.com/transparent-proxy: 'true'
+        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/transparent-proxy: 'true'
     spec:
       serviceAccountName: auth
       containers:
