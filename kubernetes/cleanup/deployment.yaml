@@ -15,7 +15,7 @@ spec:
         app: cleanup
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/transparent-proxy: 'true'
+        consul.hashicorp.com/connect-service: 'cleanup'
     spec:
       serviceAccountName: cleanup
       containers:

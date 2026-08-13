@@ -14,7 +14,7 @@ spec:
         app: frontend
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/transparent-proxy: 'true'
+        consul.hashicorp.com/connect-service: 'frontend'
     spec:
       serviceAccountName: frontend
       containers:

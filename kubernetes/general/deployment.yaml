@@ -14,7 +14,7 @@ spec:
         app: general
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/transparent-proxy: 'true'
+        consul.hashicorp.com/connect-service: 'general'
     spec:
       serviceAccountName: general
       containers:
