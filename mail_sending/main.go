@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"mail_sending/config"
 	sendmail "mail_sending/send_mail"
@@ -35,10 +36,16 @@ func init() {
 	if err != nil {
 	}
 }
+
+// Health check for k8s
+func WriteResponseToJSON(w http.ResponseWriter, status int, payload map[string]any) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(payload)
+}
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
-	//Health check for k8s
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("status ok"))
+	WriteResponseToJSON(w, http.StatusOK, map[string]any{"status": "ok"})
+
 }
 
 func main() {

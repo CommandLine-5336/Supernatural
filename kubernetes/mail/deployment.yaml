@@ -19,9 +19,28 @@ spec:
       serviceAccountName: mail-service
       containers:
         - name: mail
-          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.259
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.292
           ports:
             - containerPort: 8074
           envFrom:
             - secretRef:
                 name: mail-secret
+          resources:
+            requests:
+             cpu: "150m"
+             memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8585
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+             path: /health
+             port: 8585
+            initialDelaySeconds: 10
+            periodSeconds: 15
