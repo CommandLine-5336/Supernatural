@@ -16,7 +16,7 @@ spec:
       serviceAccountName: password-protection
       containers:
         - name: password-generator
-          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.281
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.269
           envFrom:
             - secretRef:
                 name: password-generator-secret

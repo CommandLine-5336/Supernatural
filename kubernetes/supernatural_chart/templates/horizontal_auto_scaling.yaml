@@ -1,13 +1,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: VARIABLE-autoscaler
+  name: {{ .Values.cleanup.nameAutoscaler }}
   namespace: app
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: VARIABLE-deployment
+    name: {{ .Values.cleanup.nameDeployment }}
   minReplicas: 1
   maxReplicas: 3
   metrics:

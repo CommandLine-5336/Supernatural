@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: VARIABLE-deployment
+  name: {{ .Values.cleanup.nameDeployment }}
   namespace: app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: VARIABLE
+      app: {{ .Values.cleanup.appLabel }}
   template:
     metadata:
       labels:
-        app: VARIABLE
+        app: {{ .Values.cleanup.appLabel }}
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/connect-service: 'VARIABLE'
+        consul.hashicorp.com/connect-service: '{{ .Values.cleanup.connectService }}'
     spec:
-      serviceAccountName: VARIABLE
+      serviceAccountName: {{ .Values.cleanup.serviceAccountName }}
       containers:
-        - name: VARIABLE
-          image: VARIABLE
+        - name: {{ .Values.cleanup.containerName }}
+          image: {{ .Values.cleanup.image }}
           ports:
-            - containerPort: VARIABLE
+            - containerPort: {{ .Values.cleanup.containerPort }}
           envFrom:
             - secretRef:
-                name: VARIABLE-secret
+                name: {{ .Values.cleanup.nameSecret }}
           resources:
             requests:
              cpu: "150m"
@@ -35,12 +35,12 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: VARIABLE
+              port: {{ .Values.cleanup.containerPort }}
             initialDelaySeconds: 15
             periodSeconds: 20
           readinessProbe:
             httpGet:
              path: /health
-             port: VARIABLE
+             port: {{ .Values.cleanup.containerPort }}
             initialDelaySeconds: 10
             periodSeconds: 15

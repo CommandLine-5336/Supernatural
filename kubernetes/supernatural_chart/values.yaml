@@ -1,0 +1,41 @@
+#default values
+cleanup:
+  # deployment vars
+
+  nameDeployment: cleanup-deployment
+  appLabel: cleanup
+  connectService: cleanup
+  serviceAccountName: cleanup #for mail it's mail-service
+  containerName: cleanup
+  image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/cleanup:test_cleanup_v.281
+  containerPort: 8585 #used for container port and liveness port
+  nameSecret: cleanup-secret
+
+  #horizontal_auto_scaling vars
+  nameAutoscaler: cleanup-autoscaler
+   #name-deployment as a var used here
+
+  #secret vars
+   #name-secret used here
+  DSN: '{EXAMPLE}'
+  JWT_KEY: '{EXAMPLE}'
+  DB_NAME: '{EXAMPLE}'
+  DB_USER: '{EXAMPLE}'
+  DB_PASS: '{EXAMPLE}'
+  DB_HOST: '{EXAMPLE}'
+  SECRET_KEY: '{EXAMPLE}'
+  AWS_ACCESS_KEY_ID: '{EXAMPLE}'
+  AWS_SECRET_ACCESS_KEY: '{EXAMPLE}'
+  AWS_REGION: '{EXAMPLE}'
+  AWS_STORAGE_BUCKET_NAME: '{EXAMPLE}'
+  EMAIL_FROM: '{EXAMPLE}'
+  EMAIL_PASSWORD: '{EXAMPLE}'
+  EMAIL_PORT: '{EXAMPLE}'
+
+  # service_account vars
+   #serviceAccountName used here for mail = mail-service
+
+  #service vars
+   #container-port used here x2
+  nameService: cleanup-service
+   #app-label used here

@@ -1,0 +1,5 @@
+apiVersion: v2
+name: Supernatural-Helm-Chart
+type: application
+version: 4.2.3
+appVersion: '0.0.1'
