@@ -1,6 +1,7 @@
 """S3 storage for post images"""
 
 import uuid
+
 import boto3
 from django.conf import settings
 
@@ -25,6 +26,14 @@ def upload_image(file) -> str:
         key,
         ExtraArgs={"ContentType": file.content_type},
     )
-    bucket = settings.AWS_STORAGE_BUCKET_NAME
-    region = settings.AWS_REGION
-    return f"https://{bucket}.s3.{region}.amazonaws.com/{key}"
+    return key
+
+
+def get_presigned_url(key: str) -> str:
+    """Generates a temporary URL for viewing a private S3 object"""
+    s3 = _get_s3_client()
+    return s3.generate_presigned_url(
+        "get_object",
+        Params={"Bucket": settings.AWS_STORAGE_BUCKET_NAME, "Key": key},
+        ExpiresIn=3600,
+    )
