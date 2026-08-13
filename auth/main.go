@@ -44,6 +44,8 @@ func main() {
 	http.HandleFunc("/logout", logout)
 	http.HandleFunc("/invite/", setTrespassingCookie)
 	http.HandleFunc("/verify-password", verifyPassword)
+	//Health check for k8s
+	http.HandleFunc("/health", HealthCheck)
 
 	// Start HTTP server
 	c := cors.New(cors.Options{
@@ -59,6 +61,12 @@ func main() {
 	if err != nil {
 		log.Println("Error starting the server:", err)
 	}
+}
+
+func HealthCheck(w http.ResponseWriter, r *http.Request) {
+	//Health check for k8s
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("status ok"))
 }
 
 func connectDB() (*sql.DB, error) {
@@ -207,12 +215,12 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 func session(w http.ResponseWriter, r *http.Request) {
 	var (
-		userID      int
-		displayName string
-		status      string
-		inquisitor  bool
+		userID       int
+		displayName  string
+		status       string
+		inquisitor   bool
 		is_architect bool
-		banned      bool
+		banned       bool
 	)
 
 	userID, err := Authorize(r)

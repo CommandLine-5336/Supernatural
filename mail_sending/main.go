@@ -35,6 +35,11 @@ func init() {
 	if err != nil {
 	}
 }
+func HealthCheck(w http.ResponseWriter, r *http.Request) {
+	//Health check for k8s
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("status ok"))
+}
 
 func main() {
 	_, err := config.ConnectDB()
@@ -48,6 +53,8 @@ func main() {
 	mux.HandleFunc("POST /mail_password", sendmail.SendDailyPassword)
 	mux.HandleFunc("POST /inquisitor_mail", sendmail.SendInquisitorMail)
 	mux.HandleFunc("POST /invite", sendmail.CreateInvite)
+	// Health check for k8s
+	mux.HandleFunc("GET /health", HealthCheck)
 
 	log.Println("server listening to  port 8074")
 	log.Fatal(http.ListenAndServe(":8074", CORS(mux))) // can be used like ListenAndServeTLS

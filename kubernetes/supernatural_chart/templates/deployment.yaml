@@ -1,0 +1,47 @@
+#Dont know about ServiceAccountName for now....
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: VARIABLE-deployment
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: VARIABLE
+  template:
+    metadata:
+      labels:
+        app: VARIABLE
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-service: 'VARIABLE'
+    spec:
+      serviceAccountName: VARIABLE
+      containers:
+        - name: VARIABLE
+          image: VARIABLE
+          ports:
+            - containerPort: VARIABLE
+          envFrom:
+            - secretRef:
+                name: VARIABLE-secret
+          resources:
+            requests:
+             cpu: "150m"
+             memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8585
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+             path: /health
+             port: 8585
+            initialDelaySeconds: 10
+            periodSeconds: 15
