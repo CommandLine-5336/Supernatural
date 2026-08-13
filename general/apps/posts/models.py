@@ -20,7 +20,7 @@ class Post(models.Model):
     description = models.CharField(max_length=300)
     latitude = models.CharField(max_length=100)
     longitude = models.CharField(max_length=100)
-    image_url = models.URLField(max_length=500, blank=True, null=True)
+    image_key = models.CharField(max_length=500, blank=True, null=True)
     visibility_level = models.CharField(
         max_length=10, choices=VISIBILITY_CHOICES, default="copper"
     )

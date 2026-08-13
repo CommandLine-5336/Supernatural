@@ -40,8 +40,8 @@ class PostViewSet(viewsets.ModelViewSet):
         image = request.FILES.get("image")
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
-        image_url = upload_image(image) if image else None
-        serializer.save(image_url=image_url)
+        image_key = upload_image(image) if image else None
+        serializer.save(image_key=image_key)
         headers = self.get_success_headers(serializer.data)
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
