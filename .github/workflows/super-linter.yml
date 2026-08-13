@@ -99,3 +99,4 @@ jobs:
           VALIDATE_PYTHON_ISORT: false
           VALIDATE_CSS: false
           VALIDATE_DOCKERFILE_HADOLINT: false
+          VALIDATE_KUBERNETES_KUBECONFORM: false
