@@ -3,28 +3,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .nameDeployment }}
+  name: {{ .name }}-deployment
   namespace: app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .appLabel }}
+      app: {{ .name }}
       env: {{ $.Values.global.env }}
   template:
     metadata:
       labels:
-        app: {{ .appLabel }}
+        app: {{ .name }}
         env: {{ $.Values.global.env }}
       {{- if .isPartOfConsul }}
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/connect-service: '{{ .connectService }}'
+        consul.hashicorp.com/connect-service: '{{ .serviceAccountName }}'
       {{- end }}
     spec:
       serviceAccountName: {{ .serviceAccountName }}
       containers:
-        - name: {{ .containerName }}
+        - name: {{ .name }}
           image: {{ .image }}
           {{- if ne .appLabel "password-generator" }}
           ports:
@@ -39,7 +39,7 @@ spec:
           {{- end }}
           envFrom:
             - secretRef:
-                name: {{ .nameSecret }}
+                name: {{ .name }}-secret
           resources:
             requests:
              cpu: "150m"

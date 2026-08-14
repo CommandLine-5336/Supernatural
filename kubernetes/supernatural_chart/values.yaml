@@ -9,21 +9,15 @@ services:
     hasSecret: true
 
     # deployment vars
-    nameDeployment: cleanup-deployment
-    appLabel: cleanup
+    name: cleanup
     isPartOfConsul: true
-    connectService: cleanup  #for mail it's mail-service
     serviceAccountName: cleanup #for mail it's mail-service
-    containerName: cleanup
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/cleanup:test_cleanup_v.281
     containerPort: 8585 #used for container port and liveness port
     getCheck: true
-    nameSecret: cleanup-secret
     #horizontal_auto_scaling vars
-    nameAutoscaler: cleanup-autoscaler
     #name-secret used here
     DSN: '{EXAMPLE}'
-    nameService: cleanup-service
 
   auth:
     hasHorizontalAutoScaling: true
@@ -31,20 +25,15 @@ services:
     hasSecret: true
     # deployment vars
 
-    nameDeployment: auth-deployment
-    appLabel: auth
-    partOfConsul: true
-    connectService: auth
+    name: auth
+    isPartOfConsul: true
 
     serviceAccountName: auth #for mail it's mail-service
-    containerName: auth
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.293
     containerPort: 8080 #used for container port and liveness port
     getCheck: true
-    nameSecret: auth-secret
 
     #horizontal_auto_scaling vars
-    nameAutoscaler: auth-autoscaler
     #name-deployment as a var used here
 
     #secret vars
@@ -56,7 +45,6 @@ services:
 
     #service vars
     #container-port used here x2
-    nameService: auth-service
     #app-label used here
 
   mail:
@@ -66,18 +54,13 @@ services:
     hasSecret: true
 
     # deployment vars
-    nameDeployment: mail-deployment
-    appLabel: mail
+    name: mail
     isPartOfConsul: true
-    connectService: mail-service  #for mail it's mail-service
     serviceAccountName: mail-service #for mail it's mail-service
-    containerName: mail
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.293
     containerPort: 8074 #used for container port and liveness port
     getCheck: true
-    nameSecret: mail-secret
     #horizontal_auto_scaling vars
-    nameAutoscaler: mail-autoscaler
     #secret vars
     #name-secret used here
     DSN: '{EXAMPLE}'
@@ -85,7 +68,6 @@ services:
     EMAIL_PASSWORD: '{EXAMPLE}'
     EMAIL_PORT: '{EXAMPLE}'
     #service vars
-    nameService: mail-service
 
   frontend:
     #specifying if service should have HorizontalAutoScaling and Service
@@ -93,20 +75,15 @@ services:
     hasService: true
     hasSecret: false
     # deployment vars
-    nameDeployment: frontend-deployment
-    appLabel: frontend
+    name: frontend
     isPartOfConsul: true
-    connectService: frontend  #for mail it's mail-service
     serviceAccountName: frontend #for mail it's mail-service
-    containerName: frontend
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/frontend:test_frontend_v.282
     containerPort: 8080 #used for container port and liveness port
     getCheck: true
     #horizontal_auto_scaling vars
-    nameAutoscaler: frontend-autoscaler
     #secret vars
     #service vars
-    nameService: frontend-service
 
   general:
     #specifying if service should have HorizontalAutoScaling and Service
@@ -115,18 +92,13 @@ services:
     hasSecret: true
 
     # deployment vars
-    nameDeployment: general-deployment
-    appLabel: general
+    name: general
     isPartOfConsul: true
-    connectService: general  #for mail it's mail-service
     serviceAccountName: general #for mail it's mail-service
-    containerName: general
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:test_general_v.282
     containerPort: 4040 #used for container port and liveness port
     getCheck: true
-    nameSecret: general-secret
     #horizontal_auto_scaling vars
-    nameAutoscaler: general-autoscaler
     #secret vars
     #name-secret used here
     JWT_KEY: '{EXAMPLE}'
@@ -140,7 +112,6 @@ services:
     AWS_REGION: '{EXAMPLE}'
     AWS_STORAGE_BUCKET_NAME: '{EXAMPLE}'
     #service vars
-    nameService: general-service
 
   password_generator:
      #specifying if service should have HorizontalAutoScaling and Service
@@ -149,15 +120,12 @@ services:
     hasSecret: true
 
     # deployment vars
-    nameDeployment: password-generator-deployment
-    appLabel: password-generator
+    name: password-generator
     isPartOfConsul: false
     serviceAccountName: password-protection #for mail it's mail-service
-    containerName: password-generator
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.269
     containerPort: 9058 #dummy port #used for container port and liveness port
     getCheck: false
-    nameSecret: password-generator-secret
 
     #secret vars
     #name-secret used here

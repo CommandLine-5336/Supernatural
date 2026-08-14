@@ -4,13 +4,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ .nameAutoscaler }}
+  name: {{ .name }}-autoscaler
   namespace: app
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ .nameDeployment }}
+    name: {{ .name }}-deployment
   minReplicas: 1
   maxReplicas: 3
   metrics:
