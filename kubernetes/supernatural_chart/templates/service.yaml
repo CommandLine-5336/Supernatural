@@ -1,12 +1,17 @@
+{{- range .Values.services  }}
+{{- if .hasService}}
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.cleanup.nameService }}
+  name: {{ .nameService }}
   namespace: app
 spec:
   selector:
-    app: {{ .Values.cleanup.appLabel }}
+    app: {{ .appLabel }}
   ports:
-  - port: {{ .Values.cleanup.containerPort }}
-    targetPort: {{ .Values.cleanup.containerPort }}
+  - port: {{ .containerPort }}
+    targetPort: {{ .containerPort }}
   type: ClusterIP
+{{- end }}
+{{- end }}

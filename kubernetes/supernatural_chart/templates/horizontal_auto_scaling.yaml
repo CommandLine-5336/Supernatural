@@ -1,13 +1,16 @@
+{{- range .Values.services  }}
+{{- if .hasHorizontalAutoScaling }}
+---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ .Values.cleanup.nameAutoscaler }}
+  name: {{ .nameAutoscaler }}
   namespace: app
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ .Values.cleanup.nameDeployment }}
+    name: {{ .nameDeployment }}
   minReplicas: 1
   maxReplicas: 3
   metrics:
@@ -17,3 +20,5 @@ spec:
       target:
         type: Utilization
         averageUtilization: 70
+{{- end }}
+{{- end }}

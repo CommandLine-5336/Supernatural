@@ -1,30 +1,45 @@
+{{- range .Values.services  }}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.cleanup.nameDeployment }}
+  name: {{ .nameDeployment }}
   namespace: app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.cleanup.appLabel }}
+      app: {{ .appLabel }}
+      env: {{ $.Values.global.env }}
   template:
     metadata:
       labels:
-        app: {{ .Values.cleanup.appLabel }}
+        app: {{ .appLabel }}
+        env: {{ $.Values.global.env }}
+      {{- if .isPartOfConsul }}
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/connect-service: '{{ .Values.cleanup.connectService }}'
+        consul.hashicorp.com/connect-service: '{{ .connectService }}'
+      {{- end }}
     spec:
-      serviceAccountName: {{ .Values.cleanup.serviceAccountName }}
+      serviceAccountName: {{ .serviceAccountName }}
       containers:
-        - name: {{ .Values.cleanup.containerName }}
-          image: {{ .Values.cleanup.image }}
+        - name: {{ .containerName }}
+          image: {{ .image }}
+          {{- if ne .appLabel "password-generator" }}
           ports:
-            - containerPort: {{ .Values.cleanup.containerPort }}
+            - containerPort: {{ .containerPort }}
+          {{- end }}
+          {{- if eq .appLabel "general" }}
+          env:
+            - name: POD_IP
+              valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          {{- end }}
           envFrom:
             - secretRef:
-                name: {{ .Values.cleanup.nameSecret }}
+                name: {{ .nameSecret }}
           resources:
             requests:
              cpu: "150m"
@@ -32,15 +47,18 @@ spec:
             limits:
               cpu: "500m"
               memory: "512Mi"
+          {{- if .getCheck }}
           livenessProbe:
             httpGet:
               path: /health
-              port: {{ .Values.cleanup.containerPort }}
+              port: {{ .containerPort }}
             initialDelaySeconds: 15
             periodSeconds: 20
           readinessProbe:
             httpGet:
              path: /health
-             port: {{ .Values.cleanup.containerPort }}
+             port: {{ .containerPort }}
             initialDelaySeconds: 10
             periodSeconds: 15
+          {{- end }}
+{{- end }}
