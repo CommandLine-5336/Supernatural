@@ -26,20 +26,22 @@ spec:
       containers:
         - name: {{ .name }}
           image: {{ .image }}
-          {{- if ne .appLabel "password-generator" }}
+          {{- if ne .name "password-generator" }}
           ports:
             - containerPort: {{ .containerPort }}
           {{- end }}
-          {{- if eq .appLabel "general" }}
+          {{- if eq .name "general" }}
           env:
             - name: POD_IP
               valueFrom:
               fieldRef:
                 fieldPath: status.podIP
           {{- end }}
+          {{- if ne .name "frontend" }}
           envFrom:
             - secretRef:
                 name: {{ .name }}-secret
+          {{- end }}
           resources:
             requests:
              cpu: "150m"
