@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    stages {
+        stage('Shutdown all services in EKS') {
+            steps {
+                sh 'kubectl delete -f kubernetes/frontend/ -n app --ignore-not-found'
+                sh 'kubectl delete -f kubernetes/general/ -n app --ignore-not-found'
+                sh 'kubectl delete -f kubernetes/auth/ -n app --ignore-not-found'
+                sh 'kubectl delete -f kubernetes/cleanup/ -n app --ignore-not-found'
+                sh 'kubectl delete -f kubernetes/mail/ -n app --ignore-not-found'
+                sh 'kubectl delete -f kubernetes/password_generator/ -n app --ignore-not-found'
+                sh 'kubectl delete secret general-secret -n app --ignore-not-found'
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}

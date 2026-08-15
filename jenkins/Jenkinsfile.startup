@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+    parameters {
+        string(name: 'AWS_REGION', defaultValue: '', description: 'AWS region')
+        string(name: 'S3_BUCKET_NAME', defaultValue: '', description: 'S3 bucket for post images')
+        string(name: 'DB_NAME', defaultValue: '', description: 'Database name')
+        string(name: 'DB_USER', defaultValue: '', description: 'Database user')
+        string(name: 'DB_HOST', defaultValue: '', description: 'Database host')
+    }
+    stages {
+        stage('Create general secret') {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'general-db-pass', variable: 'DB_PASS'),
+                    string(credentialsId: 'general-jwt-key', variable: 'JWT_KEY'),
+                    string(credentialsId: 'general-secret-key', variable: 'SECRET_KEY'),
+                    string(credentialsId: 'general-aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'general-aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+                    sh '''
+                    kubectl create secret generic general-secret \
+                      --from-literal=SECRET_KEY=$SECRET_KEY \
+                      --from-literal=DB_NAME=${params.DB_NAME} \
+                      --from-literal=DB_USER=${params.DB_USER} \
+                      --from-literal=DB_PASS=$DB_PASS \
+                      --from-literal=DB_HOST=${params.DB_HOST} \
+                      --from-literal=JWT_KEY=$JWT_KEY \
+                      --from-literal=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+                      --from-literal=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+                      --from-literal=AWS_REGION=${params.AWS_REGION} \
+                      --from-literal=AWS_STORAGE_BUCKET_NAME=${params.S3_BUCKET_NAME} \
+                      -n app --dry-run=client -o yaml | kubectl apply -f -
+                    '''
+                }
+            }
+        }
+        stage('Deploy all services to EKS') {
+            steps {
+                sh 'kubectl apply -f kubernetes/frontend/ -n app'
+                sh 'kubectl apply -f kubernetes/general/ -n app'
+                sh 'kubectl apply -f kubernetes/auth/ -n app'
+                sh 'kubectl apply -f kubernetes/cleanup/ -n app'
+                sh 'kubectl apply -f kubernetes/mail/ -n app'
+                sh 'kubectl apply -f kubernetes/password_generator/ -n app'
+            }
+        }
+        stage('Verify rollout') {
+            steps {
+                sh 'kubectl rollout status deployment/frontend-deployment -n app'
+                sh 'kubectl rollout status deployment/general-deployment -n app'
+                sh 'kubectl rollout status deployment/auth-deployment -n app'
+                sh 'kubectl rollout status deployment/cleanup-deployment -n app'
+                sh 'kubectl rollout status deployment/mail-deployment -n app'
+                sh 'kubectl rollout status deployment/password-generator-deployment -n app'
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
