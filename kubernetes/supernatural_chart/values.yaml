@@ -14,7 +14,7 @@ services:
     name: cleanup
     isPartOfConsul: false
     serviceAccountName: cleanup #for mail it's mail-service
-    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/cleanup:test_cleanup_v.306
+    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/cleanup:test_cleanup_v.310
     containerPort: 8585 #used for container port and liveness port
     getCheck: true
     #horizontal_auto_scaling vars
@@ -34,7 +34,7 @@ services:
     isPartOfConsul: false
 
     serviceAccountName: auth #for mail it's mail-service
-    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.306
+    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.310
     containerPort: 8080 #used for container port and liveness port
     getCheck: true
 
@@ -65,7 +65,7 @@ services:
     name: mail
     isPartOfConsul: false
     serviceAccountName: mail-service #for mail it's mail-service
-    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.306
+    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.310
     containerPort: 8074 #used for container port and liveness port
     getCheck: true
     #horizontal_auto_scaling vars
@@ -73,9 +73,9 @@ services:
     #name-secret used here
     DSN: '{EXAMPLE}'
     EMAIL_FROM: '{EXAMPLE}'
+    EMAIL_HOST: '{EXAMPLE}'
     EMAIL_PASSWORD: '{EXAMPLE}'
     EMAIL_PORT: '{EXAMPLE}'
-    EMAIL_HOST: '{EXAMPLE}'
     #service vars
 
   frontend:
@@ -108,7 +108,7 @@ services:
     name: general
     isPartOfConsul: false
     serviceAccountName: general #for mail it's mail-service
-    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:test_general_v.306
+    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:test_general_v.311
     containerPort: 4040 #used for container port and liveness port
     getCheck: true
     #horizontal_auto_scaling vars
@@ -120,8 +120,8 @@ services:
     DB_HOST: '{EXAMPLE}'
     JWT_KEY: '{EXAMPLE}'
     SECRET_KEY: '{EXAMPLE}'
-    AWS_ACCESS_KEY_ID: '{EXAMPLE}'
-    AWS_SECRET_ACCESS_KEY: '{EXAMPLE}'
+    AWS_ACCESS_KEY_ID: ''
+    AWS_SECRET_ACCESS_KEY: ''
     AWS_REGION: 'us-east-1'
     AWS_STORAGE_BUCKET_NAME: '{EXAMPLE}'
     #service vars
@@ -139,10 +139,7 @@ services:
     isPartOfConsul: false
     serviceAccountName: password-protection #for mail it's mail-service
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.306
-    containerPort: 9058 #dummy port #used for container port and liveness port
-    getCheck: false
     schedule: "0/5 * * * *"
-
     #secret vars
     #name-secret used here
     DSN: '{EXAMPLE}'
