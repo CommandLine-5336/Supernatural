@@ -7,7 +7,6 @@ metadata:
   namespace: app
 spec:
   schedule: {{ .schedule | quote }}
-
   jobTemplate:
     spec:
       template:
@@ -16,17 +15,13 @@ spec:
             app: {{ .name }}
         spec:
           serviceAccountName: {{ .serviceAccountName }}
-
           restartPolicy: OnFailure
-
           containers:
             - name: {{ .name }}
               image: {{ .image }}
-
               envFrom:
                 - secretRef:
                     name: {{ .name }}-secret
-
               resources:
                 requests:
                   cpu: "150m"
