@@ -1,0 +1,38 @@
+{{- range .Values.services  }}
+{{- if .hasCron }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .name }}-cronjob
+  namespace: app
+spec:
+  schedule: {{ .schedule | quote }}
+
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: {{ .name }}
+        spec:
+          serviceAccountName: {{ .serviceAccountName }}
+
+          restartPolicy: OnFailure
+
+          containers:
+            - name: {{ .name }}
+              image: {{ .image }}
+
+              envFrom:
+                - secretRef:
+                    name: {{ .name }}-secret
+
+              resources:
+                requests:
+                  cpu: "150m"
+                  memory: "256Mi"
+                limits:
+                  cpu: "500m"
+                  memory: "512Mi"
+{{- end }}
+{{- end }}

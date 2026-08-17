@@ -7,6 +7,8 @@ services:
     hasHorizontalAutoScaling: true
     hasService: true
     hasSecret: true
+    hasDeployment: true
+    hasCron: false
 
     # deployment vars
     name: cleanup
@@ -24,6 +26,8 @@ services:
     hasHorizontalAutoScaling: true
     hasService: true
     hasSecret: true
+    hasDeployment: true
+    hasCron: false
     # deployment vars
 
     name: auth
@@ -54,6 +58,8 @@ services:
     hasHorizontalAutoScaling: true
     hasService: true
     hasSecret: true
+    hasDeployment: true
+    hasCron: false
 
     # deployment vars
     name: mail
@@ -77,6 +83,8 @@ services:
     hasHorizontalAutoScaling: true
     hasService: true
     hasSecret: false
+    hasDeployment: true
+    hasCron: false
     # deployment vars
     name: frontend
     isPartOfConsul: false
@@ -93,6 +101,8 @@ services:
     hasHorizontalAutoScaling: true
     hasService: true
     hasSecret: true
+    hasDeployment: true
+    hasCron: false
 
     # deployment vars
     name: general
@@ -121,6 +131,8 @@ services:
     hasHorizontalAutoScaling: false
     hasService: false
     hasSecret: true
+    hasDeployment: false
+    hasCron: true
 
     # deployment vars
     name: password-generator
@@ -129,6 +141,7 @@ services:
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.306
     containerPort: 9058 #dummy port #used for container port and liveness port
     getCheck: false
+    schedule: "0/5 * * * *"
 
     #secret vars
     #name-secret used here
