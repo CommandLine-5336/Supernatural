@@ -136,7 +136,6 @@ services:
 
     # deployment vars
     name: password-generator
-    isPartOfConsul: false
     serviceAccountName: password-protection #for mail it's mail-service
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.306
     schedule: "0/5 * * * *"
