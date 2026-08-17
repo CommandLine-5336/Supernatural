@@ -14,13 +14,13 @@ spec:
       labels:
         app: cleanup
       annotations:
-        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-inject: 'false'
         consul.hashicorp.com/connect-service: 'cleanup'
     spec:
       serviceAccountName: cleanup
       containers:
         - name: cleanup
-          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/cleanup:test_cleanup_v.262
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/cleanup:test_cleanup_v.306
           ports:
             - containerPort: 8585
           envFrom:

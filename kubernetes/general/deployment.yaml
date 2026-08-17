@@ -13,13 +13,13 @@ spec:
       labels:
         app: general
       annotations:
-        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-inject: 'false'
         consul.hashicorp.com/connect-service: 'general'
     spec:
       serviceAccountName: general
       containers:
       - name: general
-        image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:test_general_v.282
+        image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:test_general_v.306
         ports:
         - containerPort: 4040
         env:

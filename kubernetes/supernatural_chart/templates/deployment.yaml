@@ -34,8 +34,8 @@ spec:
           env:
             - name: POD_IP
               valueFrom:
-              fieldRef:
-                fieldPath: status.podIP
+                fieldRef:
+                  fieldPath: status.podIP
           {{- end }}
           {{- if ne .name "frontend" }}
           envFrom:
@@ -54,13 +54,13 @@ spec:
             httpGet:
               path: /health
               port: {{ .containerPort }}
-            initialDelaySeconds: 15
+            initialDelaySeconds: 60
             periodSeconds: 20
           readinessProbe:
             httpGet:
              path: /health
              port: {{ .containerPort }}
-            initialDelaySeconds: 10
+            initialDelaySeconds: 60
             periodSeconds: 15
           {{- end }}
 {{- end }}
