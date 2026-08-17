@@ -69,6 +69,7 @@ services:
     EMAIL_FROM: '{EXAMPLE}'
     EMAIL_PASSWORD: '{EXAMPLE}'
     EMAIL_PORT: '{EXAMPLE}'
+    EMAIL_HOST: '{EXAMPLE}'
     #service vars
 
   frontend:
