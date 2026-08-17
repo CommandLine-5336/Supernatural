@@ -50,7 +50,7 @@ func main() {
 
 	// Start HTTP server
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://frontend:8080", "http://mail_service:8074"},
+		AllowedOrigins:   []string{"http://frontend-service:8080", "http://mail-service:8074"},
 		AllowCredentials: true,
 		AllowedHeaders:   []string{"Access-Control-Allow-Origin", "Content-Type"},
 	})
