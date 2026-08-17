@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mail-deployment
+  namespace: app
 spec:
   replicas: 1
   selector:
@@ -13,12 +14,33 @@ spec:
         app: mail
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-service: 'mail-service'
     spec:
+      serviceAccountName: mail-service
       containers:
         - name: mail
-          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.259
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.293
           ports:
-            - containerPort: 8080
+            - containerPort: 8074
           envFrom:
             - secretRef:
                 name: mail-secret
+          resources:
+            requests:
+             cpu: "150m"
+             memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8074
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+             path: /health
+             port: 8074
+            initialDelaySeconds: 10
+            periodSeconds: 15

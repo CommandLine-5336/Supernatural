@@ -1,6 +1,7 @@
 """S3 storage for post images"""
 
 import uuid
+
 import boto3
 from django.conf import settings
 
