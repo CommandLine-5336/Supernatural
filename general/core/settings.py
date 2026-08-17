@@ -89,12 +89,12 @@ DATABASES = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://mail_service:8074",
-    "http://frontend:8080",
-    "http://frontend:5173",
+    "http://mail-service:8074",
+    "http://frontend-service:8080",
+    "http://frontend-service:5173",
 ]
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ["http://frontend:8080"]
+CSRF_TRUSTED_ORIGINS = ["http://frontend-service:8080"]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
