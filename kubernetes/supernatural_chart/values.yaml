@@ -45,7 +45,6 @@ services:
     #name-secret used here
     DSN: '{EXAMPLE}'
     JWT_KEY: '{EXAMPLE}'
-
     # service_account vars
     #serviceAccountName used here for mail = mail-service
 

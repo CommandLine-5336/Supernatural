@@ -21,6 +21,9 @@ spec:
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
         consul.hashicorp.com/connect-service: '{{ .serviceAccountName }}'
+        {{- if ne .name "password-generator" }}
+        consul.hashicorp.com/transparent-proxy-exclude-outbound-ports: "5432"
+        {{- end }}
       {{- end }}
     spec:
       serviceAccountName: {{ .serviceAccountName }}
