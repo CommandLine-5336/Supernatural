@@ -119,8 +119,6 @@ services:
     DB_HOST: '{EXAMPLE}'
     JWT_KEY: '{EXAMPLE}'
     SECRET_KEY: '{EXAMPLE}'
-    AWS_ACCESS_KEY_ID: ''
-    AWS_SECRET_ACCESS_KEY: ''
     AWS_REGION: 'us-east-1'
     AWS_STORAGE_BUCKET_NAME: '{EXAMPLE}'
     #service vars
@@ -128,16 +126,18 @@ services:
   password_generator:
      #specifying if service should have HorizontalAutoScaling and Service
     hasHorizontalAutoScaling: false
-    hasService: false
+    hasService: true
     hasSecret: true
     hasDeployment: false
     hasCron: true
 
     # deployment vars
     name: password-generator
+    isPartOfConsul: true
     serviceAccountName: password-protection #for mail it's mail-service
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.315
-    schedule: "0/5 * * * *"
+    schedule: "0 0 * * *"
+    containerPort: 9999
     #secret vars
     #name-secret used here
     DSN: '{EXAMPLE}'
