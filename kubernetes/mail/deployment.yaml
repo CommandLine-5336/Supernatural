@@ -13,13 +13,13 @@ spec:
       labels:
         app: mail
       annotations:
-        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-inject: 'false'
         consul.hashicorp.com/connect-service: 'mail-service'
     spec:
       serviceAccountName: mail-service
       containers:
         - name: mail
-          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.293
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.306
           ports:
             - containerPort: 8074
           envFrom:

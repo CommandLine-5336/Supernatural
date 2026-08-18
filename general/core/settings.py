@@ -20,7 +20,13 @@ JWT_SECRET_KEY = os.getenv("JWT_KEY")
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "general", "frontend", "mail_service"]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "general-service",
+    "frontend-service",
+    "mail-service",
+]
 POD_IP = os.environ.get("POD_IP")
 if POD_IP:
     ALLOWED_HOSTS.append(POD_IP)
@@ -83,12 +89,12 @@ DATABASES = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://mail_service:8074",
-    "http://frontend:8080",
-    "http://frontend:5173",
+    "http://mail-service:8074",
+    "http://frontend-service:8080",
+    "http://frontend-service:5173",
 ]
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ["http://frontend:8080"]
+CSRF_TRUSTED_ORIGINS = ["http://frontend-service:8080"]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -116,7 +122,5 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
-AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
 AWS_REGION = os.environ["AWS_REGION"]
 AWS_STORAGE_BUCKET_NAME = os.environ["AWS_STORAGE_BUCKET_NAME"]

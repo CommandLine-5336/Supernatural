@@ -13,13 +13,13 @@ spec:
       labels:
         app: auth
       annotations:
-        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-inject: 'false'
         consul.hashicorp.com/connect-service: 'auth'
     spec:
       serviceAccountName: auth
       containers:
         - name: auth
-          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.293
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.306
           ports:
             - containerPort: 8080
           envFrom:
@@ -36,11 +36,11 @@ spec:
             httpGet:
               path: /health
               port: 8080
-            initialDelaySeconds: 15
+            initialDelaySeconds: 60
             periodSeconds: 20
           readinessProbe:
             httpGet:
              path: /health
              port: 8080
-            initialDelaySeconds: 10
+            initialDelaySeconds: 60
             periodSeconds: 15
