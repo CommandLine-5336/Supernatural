@@ -12,7 +12,7 @@ services:
 
     # deployment vars
     name: cleanup
-    isPartOfConsul: false
+    isPartOfConsul: true
     serviceAccountName: cleanup #for mail it's mail-service
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/cleanup:test_cleanup_v.310
     containerPort: 8585 #used for container port and liveness port
@@ -31,7 +31,7 @@ services:
     # deployment vars
 
     name: auth
-    isPartOfConsul: false
+    isPartOfConsul: true
 
     serviceAccountName: auth #for mail it's mail-service
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.310
@@ -62,7 +62,7 @@ services:
 
     # deployment vars
     name: mail
-    isPartOfConsul: false
+    isPartOfConsul: true
     serviceAccountName: mail-service #for mail it's mail-service
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/mail_sending:test_mail_sending_v.310
     containerPort: 8074 #used for container port and liveness port
@@ -86,7 +86,7 @@ services:
     hasCron: false
     # deployment vars
     name: frontend
-    isPartOfConsul: false
+    isPartOfConsul: true
     serviceAccountName: frontend #for mail it's mail-service
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/frontend:test_frontend_v.306
     containerPort: 8080 #used for container port and liveness port
@@ -105,7 +105,7 @@ services:
 
     # deployment vars
     name: general
-    isPartOfConsul: false
+    isPartOfConsul: true
     serviceAccountName: general #for mail it's mail-service
     image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:test_general_v.311
     containerPort: 4040 #used for container port and liveness port
@@ -136,7 +136,7 @@ services:
     # deployment vars
     name: password-generator
     serviceAccountName: password-protection #for mail it's mail-service
-    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.306
+    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/password_generator:test_password_generator_v.315
     schedule: "0/5 * * * *"
     #secret vars
     #name-secret used here
