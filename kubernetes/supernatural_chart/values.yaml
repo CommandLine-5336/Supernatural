@@ -19,7 +19,7 @@ services:
     getCheck: true
     #horizontal_auto_scaling vars
     #name-secret used here
-    DSN: 'host=microservice-db.cgbwawymgiu3.us-east-1.rds.amazonaws.com port=5432 user=master password=SuPeRnAtUrAldataBASE dbname=supernatural_db sslmode=require'
+    DSN: '{EXAMPLE}'
 
 
   auth:
@@ -43,8 +43,8 @@ services:
 
     #secret vars
     #name-secret used here
-    DSN: 'host=microservice-db.cgbwawymgiu3.us-east-1.rds.amazonaws.com port=5432 user=master password=SuPeRnAtUrAldataBASE dbname=supernatural_db sslmode=require'
-    JWT_KEY: 'SuPeRnAtUrAlJwTkEy'
+    DSN: '{EXAMPLE}'
+    JWT_KEY: '{EXAMPLE}'
     # service_account vars
     #serviceAccountName used here for mail = mail-service
 
@@ -70,10 +70,10 @@ services:
     #horizontal_auto_scaling vars
     #secret vars
     #name-secret used here
-    DSN: 'host=microservice-db.cgbwawymgiu3.us-east-1.rds.amazonaws.com port=5432 user=master password=SuPeRnAtUrAldataBASE dbname=supernatural_db sslmode=require'
-    EMAIL_FROM: 'soosysoosy69@gmail.com'
+    DSN: '{EXAMPLE}'
+    EMAIL_FROM: '{EXAMPLE}'
     EMAIL_HOST: 'smtp.gmail.com'
-    EMAIL_PASSWORD: 'tfuhwwydrtcnclzf'
+    EMAIL_PASSWORD: '{EXAMPLE}'
     EMAIL_PORT: '587'
     #service vars
 
@@ -113,14 +113,14 @@ services:
     #horizontal_auto_scaling vars
     #secret vars
     #name-secret used here
-    DB_NAME: 'supernatural_db'
-    DB_USER: 'master'
-    DB_PASS: 'SuPeRnAtUrAldataBASE'
-    DB_HOST: 'microservice-db.cgbwawymgiu3.us-east-1.rds.amazonaws.com'
-    JWT_KEY: 'SuPeRnAtUrAlJwTkEy'
-    SECRET_KEY: 'django-insecure-tr3rtxkrk28hfjn-@i8l6a+hdm*lh8skks2a0w8w#hk#!=!gm'
-    AWS_REGION: 'us-east-1'
-    AWS_STORAGE_BUCKET_NAME: 'developer-bucket-images-704427427594-us-east-1'
+    DB_NAME: '{EXAMPLE}'
+    DB_USER: '{EXAMPLE}'
+    DB_PASS: '{EXAMPLE}'
+    DB_HOST: '{EXAMPLE}'
+    JWT_KEY: '{EXAMPLE}'
+    SECRET_KEY: '{EXAMPLE}'
+    AWS_REGION: '{EXAMPLE}'
+    AWS_STORAGE_BUCKET_NAME: '{EXAMPLE}'
     #service vars
 
   password_generator:
@@ -140,4 +140,4 @@ services:
     containerPort: 9999
     #secret vars
     #name-secret used here
-    DSN: 'host=microservice-db.cgbwawymgiu3.us-east-1.rds.amazonaws.com port=5432 user=master password=SuPeRnAtUrAldataBASE dbname=supernatural_db sslmode=require'
+    DSN: '{EXAMPLE}'
