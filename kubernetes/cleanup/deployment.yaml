@@ -14,12 +14,13 @@ spec:
       labels:
         app: cleanup
       annotations:
-        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-inject: 'false'
+        consul.hashicorp.com/connect-service: 'cleanup'
     spec:
       serviceAccountName: cleanup
       containers:
         - name: cleanup
-          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/cleanup:test_cleanup_v.262
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/cleanup:test_cleanup_v.306
           ports:
             - containerPort: 8585
           envFrom:
@@ -44,23 +45,3 @@ spec:
              port: 8585
             initialDelaySeconds: 10
             periodSeconds: 15
-
-
-        # - name: db
-        #   image: postgres:18-alpine
-        #   ports:
-        #     - containerPort: 5432
-        #   resources:
-        #     requests:
-        #      cpu: "150m"
-        #      memory: "256Mi"
-        #     limits:
-        #      cpu: "500m"
-        #      memory: "512Mi"
-        #   env:
-        #     - name: POSTGRES_DB
-        #       value: {EXAMPLE}
-        #     - name: POSTGRES_USER
-        #       value: {EXAMPLE}
-        #     - name: POSTGRES_PASSWORD
-        #       value: {EXAMPLE}

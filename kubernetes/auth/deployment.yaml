@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-deployment
+  namespace: app
 spec:
   replicas: 1
   selector:
@@ -12,13 +13,34 @@ spec:
       labels:
         app: auth
       annotations:
-        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-inject: 'false'
+        consul.hashicorp.com/connect-service: 'auth'
     spec:
+      serviceAccountName: auth
       containers:
         - name: auth
-          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.257
+          image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/auth:test_auth_v.306
           ports:
             - containerPort: 8080
           envFrom:
             - secretRef:
                 name: auth-secret
+          resources:
+            requests:
+             cpu: "150m"
+             memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+             path: /health
+             port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 15

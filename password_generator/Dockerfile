@@ -8,4 +8,4 @@ RUN go build -o main
 FROM alpine:3.23.5
 WORKDIR /password_generator
 COPY --from=build /password_generator/main ./
-CMD ["sh", "-c", "while true; do /password_generator/main; sleep 3600; done"]
+CMD ["/password_generator/main"]

@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -44,10 +45,12 @@ func main() {
 	http.HandleFunc("/logout", logout)
 	http.HandleFunc("/invite/", setTrespassingCookie)
 	http.HandleFunc("/verify-password", verifyPassword)
+	//Health check for k8s
+	http.HandleFunc("/health", HealthCheck)
 
 	// Start HTTP server
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://frontend:8080", "http://mail_service:8074"},
+		AllowedOrigins:   []string{"http://frontend-service:8080", "http://mail-service:8074"},
 		AllowCredentials: true,
 		AllowedHeaders:   []string{"Access-Control-Allow-Origin", "Content-Type"},
 	})
@@ -59,6 +62,17 @@ func main() {
 	if err != nil {
 		log.Println("Error starting the server:", err)
 	}
+}
+
+// Health check for k8s
+func WriteResponseToJSON(w http.ResponseWriter, status int, payload map[string]any) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(payload)
+}
+func HealthCheck(w http.ResponseWriter, r *http.Request) {
+	WriteResponseToJSON(w, http.StatusOK, map[string]any{"status": "ok"})
+
 }
 
 func connectDB() (*sql.DB, error) {
@@ -207,12 +221,12 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 func session(w http.ResponseWriter, r *http.Request) {
 	var (
-		userID      int
-		displayName string
-		status      string
-		inquisitor  bool
+		userID       int
+		displayName  string
+		status       string
+		inquisitor   bool
 		is_architect bool
-		banned      bool
+		banned       bool
 	)
 
 	userID, err := Authorize(r)
