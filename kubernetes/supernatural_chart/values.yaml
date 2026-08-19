@@ -72,9 +72,9 @@ services:
     #name-secret used here
     DSN: '{EXAMPLE}'
     EMAIL_FROM: '{EXAMPLE}'
-    EMAIL_HOST: '{EXAMPLE}'
+    EMAIL_HOST: 'smtp.gmail.com'
     EMAIL_PASSWORD: '{EXAMPLE}'
-    EMAIL_PORT: '{EXAMPLE}'
+    EMAIL_PORT: '587'
     #service vars
 
   frontend:
@@ -107,7 +107,7 @@ services:
     name: general
     isPartOfConsul: true
     serviceAccountName: general #for mail it's mail-service
-    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:test_general_v.311
+    image: 704427427594.dkr.ecr.us-east-1.amazonaws.com/general:test_general_v.322
     containerPort: 4040 #used for container port and liveness port
     getCheck: true
     #horizontal_auto_scaling vars
@@ -119,7 +119,7 @@ services:
     DB_HOST: '{EXAMPLE}'
     JWT_KEY: '{EXAMPLE}'
     SECRET_KEY: '{EXAMPLE}'
-    AWS_REGION: 'us-east-1'
+    AWS_REGION: '{EXAMPLE}'
     AWS_STORAGE_BUCKET_NAME: '{EXAMPLE}'
     #service vars
 

@@ -26,6 +26,7 @@ ALLOWED_HOSTS = [
     "general-service",
     "frontend-service",
     "mail-service",
+    ".supernatural.pp.ua",
 ]
 POD_IP = os.environ.get("POD_IP")
 if POD_IP:
