@@ -28,8 +28,7 @@ This repository contains secure social network application that consists of seve
 │                             * Django application
 │                             * Database
 │                             * Database backups
-├── mail_sending          # Mail sending service
-└── docker-compose.yml    # Main entrypoint of our application
+└── mail_sending          # Mail sending service
 ```
 
 ## Prerequisites
