@@ -22,7 +22,7 @@ This repository contains secure social network application that consists of seve
 ├── auth                  # User authentication service
 ├── cleanup               # Cleanup service for erase database button
 ├── docs                  # Documentation folder
-├── kubenetes             # Kubernetes manifests + Helm chart
+├── kubernetes             # Kubernetes manifests + Helm chart
 ├── frontend              # Web UI service for application
 ├── general               # General service:
 │                             * Django application
@@ -35,10 +35,10 @@ This repository contains secure social network application that consists of seve
 
 * [Docker](https://docs.docker.com/desktop/) v29.6.2
 * [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) v2.31.35
-* [kubenetes](https://kubernetes.io/docs/tasks/tools/):
-    * Client v1.36.3
-    * Kustomize v5.8.1
-    * Server v.1.36.2
+* [kubernetes](https://kubernetes.io/docs/tasks/tools/):
+  1. Client v1.36.3
+  1. Kustomize v5.8.1
+  1. Server v.1.36.2
 * [Helm](https://helm.sh/docs/intro/install/) v4.2.3
 * Cloudflare API key with Zone edit permissions
 * Your Domain with configured cloudflare name servers
@@ -49,7 +49,7 @@ This repository contains secure social network application that consists of seve
 1. Deploy VPC, EKS, Consul and RDS from our other repo [SupernaturalIaC](https://github.com/CommandLine-5336/SupernaturalIaC)
 1. Configure kubectl to work with your EKS cluster `aws eks update-kubeconfig --region <region-code> --name  <my-cluster>`
 1. Add necessary addons like metrics server and cert-bot for certification
-    ```
+    ```bash
     helm install \
       cert-manager oci://quay.io/jetstack/charts/cert-manager \
       --version v1.21.1 \
@@ -59,13 +59,14 @@ This repository contains secure social network application that consists of seve
     helm upgrade --install cert-manager oci://quay.io/jetstack/charts/cert-manager --namespace cert-manager \
       --set config.gatewayAPI.enabled=true
     ```
-    ```
+    ```bash
     kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/high-availability-1.21+.yaml
     ```
 1. Add neecessary values and secrets to kubernetes/supernatural_chart/Values.yaml
 1. Run `helm install supernatural ./kubernetes/supernatural_chart/values.yaml`
+1. Configure your domains DNS records to point at your NLB
 1. To get TLS certification add your cloudflare api key:
-    ```
+    ```bash
     kubectl create secret generic cloudflare-api-token-secret \
     --from-literal=api-token=<YOUR_NEW_TOKEN> \
     -n cert-manager
